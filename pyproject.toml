@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unity-rag"
+version = "0.1.0"
+description = "Local Unity project retrieval with source citations"
+requires-python = ">=3.10"
+dependencies = ["PyYAML>=6.0.2,<7"]
+
+[project.scripts]
+unity-rag = "unity_rag.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["unity_rag*"]
+
+[tool.setuptools.package-data]
+unity_rag = ["roslyn/*.cs", "roslyn/*.csproj", "roslyn/NuGet.Config"]

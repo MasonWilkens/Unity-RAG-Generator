@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "version": "unity-retrieval-fixture-v1",
+  "questions": [
+    {"id": "cooldown", "query": "attack cooldown", "kind": "code_member", "relevant_entities": ["Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)"]},
+    {"id": "damage", "query": "apply damage health", "kind": "code_member", "relevant_entities": ["Assembly-CSharp::M:Game.Enemy.ApplyDamage(System.Int32)"]},
+    {"id": "identifier", "query": "CanAttack", "mode": "exact", "relevant_entities": ["Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)"]},
+    {"id": "guid", "query": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "mode": "exact", "kind": "asset", "relevant_entities": ["asset:Assets/Goblin.prefab"]},
+    {"id": "setting", "query": "movement speed", "kind": "asset_object", "relevant_entities": ["asset:Assets/Goblin.prefab#3"]},
+    {"id": "documentation", "query": "weapon balance guide", "kind": "documentation", "relevant_entities": ["document:Assets/Combat.md"]},
+    {"id": "script-users", "query": "Assets/Enemy.cs", "mode": "used-by", "relevant_entities": ["asset:Assets/Goblin.prefab#3"]},
+    {"id": "inheritance", "query": "Game.Enemy", "mode": "inherits", "relevant_entities": ["Assembly-CSharp::T:Game.Enemy"]}
+  ]
+}

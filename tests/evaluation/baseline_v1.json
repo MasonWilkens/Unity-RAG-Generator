@@ -1,0 +1,118 @@
+{
+  "dataset_version": "unity-retrieval-fixture-v1",
+  "k": 5,
+  "questions": 8,
+  "recall_at_k": 1.0,
+  "precision_at_k": 0.19999999999999998,
+  "mean_reciprocal_rank": 1.0,
+  "evaluation_unit": "Unique entity IDs in the top-k evidence records; context expansion excluded. Structured queries label source entities.",
+  "results": [
+    {
+      "id": "cooldown",
+      "query": "attack cooldown",
+      "retrieved_entities": [
+        "Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)",
+        "Assembly-CSharp::F:Game.Enemy.nextAttackTime",
+        "Assembly-CSharp::M:Game.Enemy.Tick(System.Single)"
+      ],
+      "relevant_entities": [
+        "Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "damage",
+      "query": "apply damage health",
+      "retrieved_entities": [
+        "Assembly-CSharp::M:Game.Enemy.ApplyDamage(System.Int32)",
+        "Assembly-CSharp::F:Game.Enemy.Damage"
+      ],
+      "relevant_entities": [
+        "Assembly-CSharp::M:Game.Enemy.ApplyDamage(System.Int32)"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "identifier",
+      "query": "CanAttack",
+      "retrieved_entities": [
+        "Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)"
+      ],
+      "relevant_entities": [
+        "Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "guid",
+      "query": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "retrieved_entities": [
+        "asset:Assets/Goblin.prefab"
+      ],
+      "relevant_entities": [
+        "asset:Assets/Goblin.prefab"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "setting",
+      "query": "movement speed",
+      "retrieved_entities": [
+        "asset:Assets/Goblin.prefab#3"
+      ],
+      "relevant_entities": [
+        "asset:Assets/Goblin.prefab#3"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "documentation",
+      "query": "weapon balance guide",
+      "retrieved_entities": [
+        "document:Assets/Combat.md"
+      ],
+      "relevant_entities": [
+        "document:Assets/Combat.md"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "script-users",
+      "query": "Assets/Enemy.cs",
+      "retrieved_entities": [
+        "asset:Assets/Goblin.prefab#3"
+      ],
+      "relevant_entities": [
+        "asset:Assets/Goblin.prefab#3"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    },
+    {
+      "id": "inheritance",
+      "query": "Game.Enemy",
+      "retrieved_entities": [
+        "Assembly-CSharp::T:Game.Enemy"
+      ],
+      "relevant_entities": [
+        "Assembly-CSharp::T:Game.Enemy"
+      ],
+      "recall_at_k": 1.0,
+      "precision_at_k": 0.2,
+      "reciprocal_rank": 1.0
+    }
+  ]
+}
