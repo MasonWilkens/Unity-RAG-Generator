@@ -39,5 +39,5 @@ tests/evaluation/*.md
 !tests/evaluation/passage-development-v1.json
 !tests/evaluation/grounding_adversarial_v1.json
 !tests/evaluation/stage6_fixture_acceptance_v1.json
-!tests/evaluation/release-*.json
-!tests/evaluation/release-*.md
+!tests/evaluation/release-ci-*.json
+!tests/evaluation/release-ci-*.md

@@ -84,8 +84,8 @@ same checks. No automated publishing or repository write token is configured.
 ## Before publishing a beta
 
 1. Review and commit the intended implementation, tests, fixtures, workflow and
-   release documents. This working tree contains substantial earlier untracked
-   development; a successful local build does not prove those files exist in Git.
+   release documents. Include every runtime module and required synthetic input;
+   a successful local build does not prove those files exist in Git.
    Do not bulk-add credentials, caches, private source or historical report dumps.
 2. Run the workflow on that exact commit. A fresh Git checkout is the authority
    for missing tracked files. Require every lane and clean-install check to pass.
