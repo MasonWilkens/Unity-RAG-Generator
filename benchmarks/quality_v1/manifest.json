@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "kind": "quality-benchmark",
+  "name": "Public Unity evidence baseline v1",
+  "scope": "independent-candidate",
+  "settings": {
+    "mode": "search",
+    "limit": 5,
+    "expand": 0,
+    "context_chars": 24000,
+    "context_tokens": null,
+    "token_encoding": "utf8-bytes"
+  },
+  "targets": {
+    "essential_coverage": 0.9,
+    "supported_claims": 0.95,
+    "minimum_projects": 3,
+    "minimum_questions": 60,
+    "minimum_held_out_questions": 20
+  },
+  "projects": [
+    {
+      "name": "Path-Creator",
+      "repository": "https://github.com/SebLague/Path-Creator",
+      "revision": "619c4c39d8a5a5d85914cc4c315121c288c32327",
+      "split": "development",
+      "previously_used_for_tuning": false,
+      "workspace": "../../.unity-rag/quality-indexes/Path-Creator",
+      "dataset": "path-creator.json"
+    },
+    {
+      "name": "UnityPlayground",
+      "repository": "https://github.com/Unity-Technologies/UnityPlayground",
+      "revision": "1784663d1790de7015b3adaa29e57c3276a8f19d",
+      "split": "development",
+      "previously_used_for_tuning": false,
+      "workspace": "../../.unity-rag/quality-indexes/UnityPlayground",
+      "dataset": "unityplayground.json"
+    },
+    {
+      "name": "UnityBubbleGame",
+      "repository": "https://github.com/superzhan/UnityBubbleGame",
+      "revision": "6232673b440396cab240a49c8b9024d81dac9ff8",
+      "split": "held-out",
+      "previously_used_for_tuning": false,
+      "workspace": "../../.unity-rag/quality-indexes/UnityBubbleGame",
+      "dataset": "unitybubblegame.json"
+    }
+  ]
+}

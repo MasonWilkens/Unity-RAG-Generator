@@ -22,8 +22,51 @@ These are development controls, not independent real-project acceptance.
 
 ```sh
 unity-rag refresh --project tests/fixtures/passage_project --workspace ../passage-knowledge --no-semantic
-unity-rag evaluate-passages tests/evaluation/passage-development-v1.json --workspace ../passage-knowledge --mode search --limit 5 --context-chars 1400
+unity-rag evaluate-passages --dataset tests/evaluation/passage-development-v1.json --workspace ../passage-knowledge --mode search --limit 5 --context-chars 1400
 ```
+
+## Frozen multi-project quality runs
+
+`freeze-quality-benchmark` validates and pins inputs **before** retrieval evaluation.
+It records repository identities/revisions, source and label hashes, completed
+workspace generations, question categories, evidence budgets and acceptance targets.
+The existing `freeze-benchmark` command is the older entity-regression tool;
+its baseline-first contract is unchanged.
+
+```sh
+unity-rag freeze-quality-benchmark benchmarks/quality_v1/manifest.json --output .unity-rag/quality-v1/frozen.json
+unity-rag evaluate-quality .unity-rag/quality-v1/frozen.json --output .unity-rag/quality-v1/baseline.json
+```
+
+Prepare the project copies and indexes first, following the
+[public corpus instructions](benchmarks/quality_v1/README.md). The runner writes
+JSON plus a Markdown failure report and refuses to replace earlier reports.
+Exit codes: 0 means the held-out retrieval gate passed, 1 means measured failures
+or case errors, and 2 means inputs changed during evaluation. Invalid inputs found
+before evaluation also fail immediately. A zero exit code is **not** production
+approval: generated-answer support and independent human review remain separate.
+
+Use `--workspaces candidates.json` to compare rebuilt indexes against the same
+frozen sources, questions and budgets. The file maps every project name to a
+workspace path (relative to that file). Candidate sources must match the original
+corpus; advancing a workspace during evaluation invalidates the result. Reranking
+can use the default pinned generations. Each run records implementation and index
+hashes, embedding configuration when used, and runtime/dependency versions.
+
+Reports distinguish missing index representation, retrieval selection, context
+packing, labeled negative evidence, empty-evidence outcomes, and evaluation errors.
+Errors remain in denominators. Every essential passage group must be represented
+for a question to count as complete; alternatives within a group are allowed.
+Per-project, split and category counts accompany rates and descriptive 95% Wilson
+intervals. Correlated, convenience-sampled questions do not establish population
+accuracy. An index-representation miss alone cannot identify whether ingestion,
+mapping, transformed asset facts or chunk boundaries caused the omission.
+
+The public 60-question corpus is an agent-reviewed candidate, not an independently
+human-approved acceptance suite. Synthetic controls cannot satisfy real-corpus
+requirements; a previously tuned project cannot be declared held out. After using
+a held-out failure to guide tuning, retire that repository as an independent
+holdout and version a new one. Keep the original failed baseline.
 
 ## Label and snapshot requirements
 

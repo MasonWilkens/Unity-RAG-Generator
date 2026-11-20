@@ -16,9 +16,11 @@ defined once in `unity_rag/__init__.py` and exposed by `unity-rag --version`.
 - Network access for package installation and the tokenizer vocabulary used by
   token-budget tests. Model inference and model downloads are not part of CI.
 
-Configured CI lanes: Windows 2022/Python 3.10/.NET 8; Ubuntu 22.04/Python 3.12/.NET 8;
-Windows 2022/Python 3.12/.NET 10; Ubuntu 24.04/Python 3.13/.NET 10. These are intended
-coverage, not claims of passing remote runs. See
+Verified CI lanes at commit `1bb9ce5`: Windows 2022/Python 3.10/.NET 8;
+Ubuntu 22.04/Python 3.12/.NET 8; Windows 2022/Python 3.12/.NET 10;
+Ubuntu 24.04/Python 3.13/.NET 10. All passed 529 tests and clean-install checks in
+the [release baseline run](https://github.com/MasonWilkens/Unity-RAG-Generator/actions/runs/44805817698).
+These results apply to that commit; later changes require fresh checks. See
 [public validation records](tests/evaluation/README.md) for observed results.
 macOS and other interpreter/SDK combinations remain unverified.
 

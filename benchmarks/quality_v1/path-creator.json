@@ -1,0 +1,399 @@
+{
+  "schema_version": 2,
+  "split": "development",
+  "repository": "https://github.com/SebLague/Path-Creator",
+  "revision": "619c4c39d8a5a5d85914cc4c315121c288c32327",
+  "label_review": {
+    "reviewer": "Codex",
+    "kind": "agent",
+    "rationale": "Source-inspected at the pinned revision before retrieval evaluation. Exact physical ranges and unique literal passages checked against file hashes. Convenience sample; not independent human approval."
+  },
+  "cases": [
+    {
+      "id": "distance",
+      "question": "How does PathFollower advance its travelled distance each frame?",
+      "category": "timing",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathFollower.cs",
+            "quote": "                distanceTravelled += speed * Time.deltaTime;",
+            "start_line": 26,
+            "end_line": 26
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathFollower.cs": "991912f9f02fdd1535e5f31b8b37c3a569dd09929e6629035979c9b5d8d71e6d"
+      }
+    },
+    {
+      "id": "pose",
+      "question": "How does PathFollower update both its position and rotation from the path?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathFollower.cs",
+            "quote": "                transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);\n                transform.rotation = pathCreator.path.GetRotationAtDistance(distanceTravelled, endOfPathInstruction);",
+            "start_line": 27,
+            "end_line": 28
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathFollower.cs": "991912f9f02fdd1535e5f31b8b37c3a569dd09929e6629035979c9b5d8d71e6d"
+      }
+    },
+    {
+      "id": "subscribe",
+      "question": "How does PathFollower subscribe to path edits when it starts?",
+      "category": "lifecycle",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathFollower.cs",
+            "quote": "            if (pathCreator != null)\n            {\n                // Subscribed to the pathUpdated event so that we're notified if the path changes during the game\n                pathCreator.pathUpdated += OnPathChanged;",
+            "start_line": 15,
+            "end_line": 18
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathFollower.cs": "991912f9f02fdd1535e5f31b8b37c3a569dd09929e6629035979c9b5d8d71e6d"
+      }
+    },
+    {
+      "id": "changed-path",
+      "question": "How does a follower preserve its approximate location after a path changes?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathFollower.cs",
+            "quote": "        void OnPathChanged() {\n            distanceTravelled = pathCreator.path.GetClosestDistanceAlongPath(transform.position);",
+            "start_line": 34,
+            "end_line": 35
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathFollower.cs": "991912f9f02fdd1535e5f31b8b37c3a569dd09929e6629035979c9b5d8d71e6d"
+      }
+    },
+    {
+      "id": "waypoints",
+      "question": "When does GeneratePathExample create a path and how does it assign the generated Bezier path?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/GeneratePathExample.cs",
+            "quote": "            if (waypoints.Length > 0) {\n                // Create a new bezier path from the waypoints.\n                BezierPath bezierPath = new BezierPath (waypoints, closedLoop, PathSpace.xyz);\n                GetComponent<PathCreator> ().bezierPath = bezierPath;",
+            "start_line": 13,
+            "end_line": 16
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/GeneratePathExample.cs": "f0541f9490da25dd03390f999871a786c2fdf159f4b589d8f8b4062675c42770"
+      }
+    },
+    {
+      "id": "spawn-link",
+      "question": "How does PathSpawner connect each newly spawned follower to its newly spawned path?",
+      "category": "relationships",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathSpawner.cs",
+            "quote": "            foreach (Transform t in spawnPoints) {\n                var path = Instantiate (pathPrefab, t.position, t.rotation);\n                var follower = Instantiate (followerPrefab);\n                follower.pathCreator = path;",
+            "start_line": 15,
+            "end_line": 18
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathSpawner.cs": "8fa5ee2682bb16ddd5a4b8e79fc380927410839f08ab3db09666b40d67a4b060"
+      }
+    },
+    {
+      "id": "spacing",
+      "question": "What minimum spacing does PathPlacer enforce, and where is that limit applied?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathPlacer.cs",
+            "quote": "        const float minSpacing = .1f;",
+            "start_line": 13,
+            "end_line": 13
+          }
+        ],
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathPlacer.cs",
+            "quote": "                spacing = Mathf.Max(minSpacing, spacing);",
+            "start_line": 21,
+            "end_line": 21
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathPlacer.cs": "6a161052a4f1f69401249579572e37e00f7e7419cac77cef943091aac57ef51e"
+      }
+    },
+    {
+      "id": "placements",
+      "question": "How does PathPlacer place prefabs along the path and advance between placements?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathPlacer.cs",
+            "quote": "                while (dst < path.length) {\n                    Vector3 point = path.GetPointAtDistance (dst);\n                    Quaternion rot = path.GetRotationAtDistance (dst);\n                    Instantiate (prefab, point, rot, holder.transform);\n                    dst += spacing;",
+            "start_line": 24,
+            "end_line": 28
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathPlacer.cs": "6a161052a4f1f69401249579572e37e00f7e7419cac77cef943091aac57ef51e"
+      }
+    },
+    {
+      "id": "cleanup",
+      "question": "How does PathPlacer remove previously generated child objects?",
+      "category": "lifecycle",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathPlacer.cs",
+            "quote": "            int numChildren = holder.transform.childCount;\n            for (int i = numChildren - 1; i >= 0; i--) {\n                DestroyImmediate (holder.transform.GetChild (i).gameObject, false);",
+            "start_line": 34,
+            "end_line": 36
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathPlacer.cs": "6a161052a4f1f69401249579572e37e00f7e7419cac77cef943091aac57ef51e"
+      }
+    },
+    {
+      "id": "regenerate",
+      "question": "What causes PathPlacer to regenerate when its path is updated?",
+      "category": "lifecycle",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Scripts/PathPlacer.cs",
+            "quote": "        protected override void PathUpdated () {\n            if (pathCreator != null) {\n                Generate ();\n            }",
+            "start_line": 40,
+            "end_line": 43
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Scripts/PathPlacer.cs": "6a161052a4f1f69401249579572e37e00f7e7419cac77cef943091aac57ef51e"
+      }
+    },
+    {
+      "id": "lazy-path",
+      "question": "How does the PathCreator path getter initialize its data and obtain the vertex path?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Core/Runtime/Objects/PathCreator.cs",
+            "quote": "        public VertexPath path {\n            get {\n                if (!initialized) {\n                    InitializeEditorData (false);\n                }\n                return editorData.GetVertexPath(transform);",
+            "start_line": 20,
+            "end_line": 25
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Core/Runtime/Objects/PathCreator.cs": "bcb3f154ea217b2fa9ff749e3c4beb14530a5b3b43c0c84c8b3bc58a8fd67bc2"
+      }
+    },
+    {
+      "id": "event-wiring",
+      "question": "How does InitializeEditorData avoid adding duplicate path-change subscriptions?",
+      "category": "relationships",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Core/Runtime/Objects/PathCreator.cs",
+            "quote": "            editorData.bezierOrVertexPathModified -= TriggerPathUpdate;\n            editorData.bezierOrVertexPathModified += TriggerPathUpdate;\n\n            editorData.Initialize (in2DMode);\n            initialized = true;",
+            "start_line": 52,
+            "end_line": 56
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Core/Runtime/Objects/PathCreator.cs": "bcb3f154ea217b2fa9ff749e3c4beb14530a5b3b43c0c84c8b3bc58a8fd67bc2"
+      }
+    },
+    {
+      "id": "notify",
+      "question": "When does TriggerPathUpdate notify listeners?",
+      "category": "lifecycle",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Core/Runtime/Objects/PathCreator.cs",
+            "quote": "        public void TriggerPathUpdate () {\n            if (pathUpdated != null) {\n                pathUpdated ();\n            }",
+            "start_line": 66,
+            "end_line": 69
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Core/Runtime/Objects/PathCreator.cs": "bcb3f154ea217b2fa9ff749e3c4beb14530a5b3b43c0c84c8b3bc58a8fd67bc2"
+      }
+    },
+    {
+      "id": "vertex-cache",
+      "question": "When does PathCreatorData GetVertexPath rebuild its cached vertex path?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Core/Runtime/Objects/PathCreatorData.cs",
+            "quote": "        public VertexPath GetVertexPath (Transform transform) {\n            // create new vertex path if path was modified since this vertex path was created\n            if (!vertexPathUpToDate || _vertexPath == null) {\n                vertexPathUpToDate = true;\n                _vertexPath = new VertexPath (bezierPath, transform, vertexPathMaxAngleError, vertexPathMinVertexSpacing);\n            }\n            return _vertexPath;",
+            "start_line": 99,
+            "end_line": 105
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Core/Runtime/Objects/PathCreatorData.cs": "561cce2c5e18049d2caebb5920ce5fa9984c8c80b391363566d489c77f1ed979"
+      }
+    },
+    {
+      "id": "replace-bezier",
+      "question": "How does replacing the Bezier path update event handlers and invalidate the vertex cache?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Core/Runtime/Objects/PathCreatorData.cs",
+            "quote": "                _bezierPath.OnModified -= BezierPathEdited;\n                vertexPathUpToDate = false;\n                _bezierPath = value;\n                _bezierPath.OnModified += BezierPathEdited;",
+            "start_line": 83,
+            "end_line": 86
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Core/Runtime/Objects/PathCreatorData.cs": "561cce2c5e18049d2caebb5920ce5fa9984c8c80b391363566d489c77f1ed979"
+      }
+    },
+    {
+      "id": "dimension",
+      "question": "How does PathCreatorData choose between an XY path and an XYZ path when creating a Bezier path?",
+      "category": "configuration",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Core/Runtime/Objects/PathCreatorData.cs",
+            "quote": "            var space = (defaultIs2D) ? PathSpace.xy : PathSpace.xyz;\n            _bezierPath = new BezierPath (centre, false, space);",
+            "start_line": 64,
+            "end_line": 65
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Core/Runtime/Objects/PathCreatorData.cs": "561cce2c5e18049d2caebb5920ce5fa9984c8c80b391363566d489c77f1ed979"
+      }
+    },
+    {
+      "id": "follower-prefab-speed",
+      "question": "What speed is serialized in Assets/PathCreator/Examples/Prefabs/Follower.prefab?",
+      "category": "serialized-asset",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Prefabs/Follower.prefab",
+            "quote": "  speed: 5",
+            "start_line": 450,
+            "end_line": 450
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Prefabs/Follower.prefab": "8dedb8de985a56e5a628cdb1d759b8effaa630423f0af31dc13585d6ea133f48"
+      }
+    },
+    {
+      "id": "path-prefab-name",
+      "question": "What root GameObject name is saved in Assets/PathCreator/Examples/Prefabs/Path.prefab?",
+      "category": "serialized-asset",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PathCreator/Examples/Prefabs/Path.prefab",
+            "quote": "  m_Name: Path",
+            "start_line": 24,
+            "end_line": 24
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PathCreator/Examples/Prefabs/Path.prefab": "b3626495682844cd90beea1b75976ddca32d3f43f62d93a6f08751f70dd545e1"
+      }
+    },
+    {
+      "id": "missing-symbol-a",
+      "question": "Locate QuantumBananaTelemetryBridge.",
+      "category": "absent-symbol",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    },
+    {
+      "id": "missing-symbol-b",
+      "question": "Locate FrostDragonNetworkReplicator.",
+      "category": "absent-symbol",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    }
+  ]
+}

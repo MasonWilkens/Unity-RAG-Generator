@@ -11,6 +11,10 @@ This version remains an experimental, review-required local tool.
 - Return literal source excerpts or optional model-generated draft explanations.
 - Prepare wheel and source distributions with the bundled Roslyn analyzer,
   package metadata, a version command, isolated installation verification and CI.
+- Freeze source-reviewed multi-project quality inputs before evaluation, compare
+  rebuilt indexes against the same corpus, and retain per-category failure reports
+  with explicit denominators and separate unmeasured answer-quality gates.
+- Preserve CLI failure exit codes when launched with `python -m unity_rag`.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan
