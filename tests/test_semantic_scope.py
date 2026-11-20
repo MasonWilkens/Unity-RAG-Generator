@@ -96,6 +96,16 @@ class SemanticScopeTests(unittest.TestCase):
         self.assertEqual(rank(self.workspace, 'question', self.provider), {})
         self.assertEqual((self.provider.passage_calls, self.provider.query_calls), (0, 0))
 
+    def test_literal_asset_kind_can_be_selected_for_embedding(self):
+        item = {'id': 'yaml', 'kind': 'asset_source', 'title': 'Enemy.prefab / MonoBehaviour',
+                'text': 'MonoBehaviour:\n  attackDelay: 2\n'}
+        with closing(sqlite3.connect(self.database)) as db, db:
+            db.execute('INSERT INTO evidence VALUES (?,?,?)', ('yaml', 'asset_source', json.dumps(item)))
+        report = build_semantic(self.workspace, self.provider, include_kinds=['asset_source'])
+        self.assertEqual(report['chunks'], 1)
+        self.assertEqual(self.active_chunks(), {'yaml'})
+        self.assertEqual(set(rank(self.workspace, 'attack delay', self.provider)), {'yaml'})
+
 
 if __name__ == '__main__':
     unittest.main()

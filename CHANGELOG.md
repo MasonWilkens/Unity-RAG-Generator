@@ -15,6 +15,11 @@ This version remains an experimental, review-required local tool.
   rebuilt indexes against the same corpus, and retain per-category failure reports
   with explicit denominators and separate unmeasured answer-quality gates.
 - Preserve CLI failure exit codes when launched with `python -m unity_rag`.
+- Retain bounded literal YAML passages alongside parsed asset facts, with a
+  separate keyword index and serialized-query companions that preserve existing
+  scene/object anchors. Refresh adds this evidence to older workspaces.
+- Treat complete identifier lookup requests as exact-name searches across search,
+  semantic and hybrid modes; missing names no longer return shared word fragments.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan

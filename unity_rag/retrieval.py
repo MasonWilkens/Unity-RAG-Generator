@@ -203,6 +203,13 @@ def build_retrieval(workspace, *, chunk_budget=4096, chunk_encoding='utf8-bytes'
 
         title = f"{obj['path']} / {obj['name'] or obj['type']} #{obj['file_id']}"
 
+        # Keep the saved YAML as separate, literal evidence. Parsed facts below
+        # describe resolved relationships; these passages preserve indentation,
+        # lists and scalar spelling without implying effective prefab values.
+        source_chunks(obj['id'], 'asset_source', title, obj['path'],
+                      loc['start_line'], loc['end_line'],
+                      [obj['name'], obj['path'], obj['guid']], obj['asset'])
+
         rows = [f"Object: {obj['type']}; role: {obj['role']}; stripped: {obj['stripped']}"]
 
         rows += [f"{v['property']}: {v['value']}" for v in obj["values"]]
@@ -306,7 +313,9 @@ def build_retrieval(workspace, *, chunk_budget=4096, chunk_encoding='utf8-bytes'
 
         db.execute("CREATE VIRTUAL TABLE IF NOT EXISTS evidence_fts USING fts5(id UNINDEXED, title, body)")
 
-        for table in ("evidence", "evidence_aliases", "evidence_relations", "evidence_fts"):
+        db.execute("CREATE VIRTUAL TABLE IF NOT EXISTS asset_source_fts USING fts5(id UNINDEXED, title, body)")
+
+        for table in ("evidence", "evidence_aliases", "evidence_relations", "evidence_fts", "asset_source_fts"):
 
             db.execute(f"DELETE FROM {table}")
 
@@ -322,7 +331,14 @@ def build_retrieval(workspace, *, chunk_budget=4096, chunk_encoding='utf8-bytes'
 
         db.executemany("INSERT INTO evidence_fts VALUES (?,?,?)",
 
-                       ((c["id"], " ".join(terms(c["title"], False)), " ".join(terms(c["text"], False))) for c in chunks))
+                       ((c["id"], " ".join(terms(c["title"], False)), " ".join(terms(c["text"], False)))
+                        for c in chunks if c['kind'] != 'asset_source'))
+
+        # Literal YAML must not change the document frequencies used to rank
+        # existing code/parsed-fact searches. Its explicit kind has its own FTS.
+        db.executemany("INSERT INTO asset_source_fts VALUES (?,?,?)",
+                       ((c['id'], ' '.join(terms(c['title'], False)), ' '.join(terms(c['text'], False)))
+                        for c in chunks if c['kind'] == 'asset_source'))
 
         db.execute("INSERT OR REPLACE INTO metadata VALUES ('retrieval_report', ?)", (json.dumps(report),))
 
@@ -480,9 +496,13 @@ def _search_terms(query):
 def _keyword_candidates(db, tokens, kind, limit):
     """Bounded, literal FTS candidate stage; exact matches are merged separately."""
     expression = " OR ".join('"' + t + '"' for t in tokens[:64])
+    table = 'asset_source_fts' if kind == 'asset_source' else 'evidence_fts'
+    if table == 'asset_source_fts' and not db.execute(
+            "SELECT 1 FROM sqlite_master WHERE name='asset_source_fts' AND type='table'").fetchone():
+        return []  # Older snapshots remain readable; refresh adds literal YAML.
     rows = db.execute(
-        "SELECT e.data, bm25(evidence_fts,0,5,1) FROM evidence_fts JOIN evidence e ON e.id=evidence_fts.id "
-        "WHERE evidence_fts MATCH ? AND (? IS NULL OR e.kind=?) ORDER BY bm25(evidence_fts,0,5,1),e.id LIMIT ?",
+        f"SELECT e.data, bm25({table},0,5,1) FROM {table} JOIN evidence e ON e.id={table}.id "
+        f"WHERE {table} MATCH ? AND (? IS NULL OR e.kind=?) ORDER BY bm25({table},0,5,1),e.id LIMIT ?",
         (expression, kind, kind, limit))
     return [{**json.loads(raw), "match": "keyword", "score": score} for raw, score in rows]
 
@@ -1028,11 +1048,17 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
 
         raise ValueError("Query is too long (maximum 2000 characters).")
 
+    from .query_ranking import explicit_symbol_lookup
+    requested_mode = mode
+    lookup = explicit_symbol_lookup(query) if mode in ('search', 'semantic', 'hybrid') else None
+    if lookup:
+        mode = 'exact'
+
     db, report = _open(workspace)
 
     try:
 
-        matched = _exact_entities(db, query)
+        matched = _exact_entities(db, lookup or query)
 
         results = []
         prefab_anchor_used = False
@@ -1264,6 +1290,10 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
                     from .behavior_ranking import promote_behavior_methods
                     ordered, behavior_anchor_used = promote_behavior_methods(db, ordered, query, kind)
 
+            if mode in ('search', 'semantic', 'hybrid') and not matched and kind is None:
+                from .asset_evidence import literal_asset_companions
+                ordered = literal_asset_companions(db, ordered, query)
+
             # Identical overlapping source ranges should not consume separate result slots.
 
             seen = set()
@@ -1283,7 +1313,7 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
             results = results[:limit]
 
         from .rig_catalog import lookup as lookup_rigs
-        rig_hits = lookup_rigs(workspace, query, mode, kind, limit)
+        rig_hits = lookup_rigs(workspace, lookup or query, mode, kind, limit)
         if rig_hits:
             from .rig_catalog import check_rig_snapshot
             rig_hits=[r for r in rig_hits if check_rig_snapshot(report["project"],r)["status"]=="current_source_and_meta"]
@@ -1435,7 +1465,9 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
                                    "reserve_related_chars": reserve_related_chars, "reserved_used_chars": reserved_used},
                 "schema_version": 1, "project": report["project"], "snapshot": report["inputs"],
 
-                "git": report["git"], "query": query, "mode": mode, "matched_entities": matched,
+                "git": report["git"], "query": query, "mode": requested_mode, "matched_entities": matched,
+                "lookup": {'name': lookup, 'policy': 'exact_name',
+                           'status': 'matched' if matched or rig_hits else 'no_exact_match'} if lookup else None,
                 "query_terms": query_terms_used,
 
                 "results": results, "context": context, "candidate_count": total,

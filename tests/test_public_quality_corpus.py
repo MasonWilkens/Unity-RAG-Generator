@@ -52,6 +52,38 @@ class PublicQualityCorpusTests(unittest.TestCase):
         self.assertFalse(report['production_gate_passed'])
         self.assertEqual(report['answer_quality']['status'], 'not_evaluated')
 
+    def test_literal_asset_candidate_preserves_frozen_contract_and_comparison(self):
+        root = Path(__file__).resolve().parents[1] / 'benchmarks/quality_v1'
+        baseline_bytes = (root / 'baseline.json').read_bytes()
+        baseline = json.loads(baseline_bytes)
+        report = json.loads((root / 'candidates/literal-assets-v1.json').read_bytes())
+        self.assertEqual(report['comparison']['baseline_sha256'], hashlib.sha256(baseline_bytes).hexdigest())
+        for key in ('lock_sha256', 'manifest_sha256', 'settings', 'targets'):
+            self.assertEqual(report[key], baseline[key])
+        old = {p['name']: p for p in baseline['projects']}
+        improved, regressed = [], []
+        for project in report['projects']:
+            original = old[project['name']]
+            for key in ('repository', 'revision', 'split', 'source_sha256', 'dataset_sha256', 'label_review'):
+                self.assertEqual(project[key], original[key])
+            old_cases = {c['id']: c for c in original['cases']}
+            self.assertEqual(set(old_cases), {c['id'] for c in project['cases']})
+            for case in project['cases']:
+                previous = old_cases[case['id']]
+                for key in ('question', 'expected_outcome', 'category'):
+                    self.assertEqual(case[key], previous[key])
+                identity = [project['name'], case['id']]
+                if previous['failures'] and not case['failures']:
+                    improved.append(identity)
+                if not previous['failures'] and case['failures']:
+                    regressed.append(identity)
+        self.assertEqual(report['comparison']['improved_cases'], improved)
+        self.assertEqual(report['comparison']['regressed_cases'], regressed)
+        self.assertEqual(report['status'], 'completed')
+        self.assertEqual(report['validation_errors'], [])
+        self.assertFalse(report['production_gate_passed'])
+        self.assertEqual(report['answer_quality']['status'], 'not_evaluated')
+
 
 if __name__ == '__main__':
     unittest.main()

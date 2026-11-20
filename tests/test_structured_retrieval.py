@@ -72,6 +72,36 @@ class StructuredRetrievalTests(unittest.TestCase):
         after = retrieve(self.workspace, 'Game.Enemy.CanAttack', mode='references')['results']
         self.assertEqual(before, after)
 
+    def test_explicit_symbol_lookup_keeps_overloads_and_mode(self):
+        for mode in ('search', 'semantic', 'hybrid'):
+            result = retrieve(self.workspace, 'Locate Game.Targeting.FindTarget.', mode=mode)
+            self.assertEqual(result['mode'], mode)
+            self.assertEqual(result['lookup']['status'], 'matched')
+            self.assertEqual({r['entity_id'] for r in result['results']}, {
+                'Assembly-CSharp::M:Game.Targeting.FindTarget(System.Int32)',
+                'Assembly-CSharp::M:Game.Targeting.FindTarget(System.String)'})
+            self.assertTrue(all(r['match'] == 'exact_alias' for r in result['results']))
+
+    def test_missing_lookup_does_not_return_shared_identifier_parts(self):
+        for mode in ('search', 'semantic', 'hybrid'):
+            result = retrieve(self.workspace, 'Locate MissingAttackNetwork.', mode=mode, expand=3)
+            self.assertEqual(result['results'], [])
+            self.assertEqual(result['context'], [])
+            self.assertEqual(result['candidate_count'], 0)
+            self.assertEqual(result['lookup']['status'], 'no_exact_match')
+
+    def test_missing_lookup_yields_no_extractive_answer(self):
+        from unity_rag.answers import ask
+        result = ask(self.workspace, 'Locate MissingAttackNetwork.', mode='search',
+                     style='extractive', followups=0)
+        self.assertEqual(result['status'], 'insufficient_evidence')
+        self.assertEqual(result['evidence'], {})
+
+    def test_behavior_question_with_missing_identifier_still_searches(self):
+        result = retrieve(self.workspace, 'How does MissingAttackNetwork handle attack cooldown?')
+        self.assertIsNone(result['lookup'])
+        self.assertTrue(result['results'])
+
     def test_structured_relations_preserve_uncertainty(self):
         result = retrieve(self.workspace, "Assets/Enemy.cs", mode="used-by")
         self.assertTrue(any(e["kind"] == "uses_script" for e in result["results"]))

@@ -12,7 +12,7 @@ from pathlib import Path
 from .asset_map import fingerprint
 from .embeddings import FastEmbedProvider, DEFAULT_MODEL, DEFAULT_BATCH_SIZE, validate_batch_size
 
-SEMANTIC_KINDS = ('asset', 'asset_object', 'code_member', 'code_type',
+SEMANTIC_KINDS = ('asset', 'asset_object', 'asset_source', 'code_member', 'code_type',
                   'documentation', 'prefab_override', 'shader_source', 'ui_source', 'configuration_source')
 
 

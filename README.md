@@ -39,6 +39,11 @@ Use `python -m unity_rag` in place of `unity-rag` when preferred.
 - YAML parsing maps asset GUIDs, serialized objects, component/script links and a
   conservative subset of prefab overrides. Inferred and unsupported relationships
   remain labeled rather than being promoted to confirmed Unity behavior.
+- Parsed Unity objects also retain literal YAML passages (`asset_source`) with
+  physical line citations and the configured chunk budget. Serialized/saved-value
+  queries can pair these with mapped facts. Their separate keyword index keeps
+  YAML volume from changing code-search term statistics. Binary/unparsed assets
+  do not receive fabricated source passages.
 - Structured source records preserve entity IDs and literal citations. Bounded,
   overlapping chunks retain parent identity; optional token-based chunk policies
   are available. Semantic inputs use overlapping passage windows. Final answer
@@ -46,6 +51,15 @@ Use `python -m unity_rag` in place of `unity-rag` when preferred.
 - Lexical search uses SQLite FTS5; exact lookup supports paths, GUIDs and qualified
   symbols. Semantic search uses optional local embeddings. Hybrid ranking combines
   available signals while preserving source provenance.
+
+Complete requests such as `Locate Game.Enemy.CanAttack.` use exact name lookup,
+including overloads, in search, semantic and hybrid modes. Missing names yield no
+loosely related fallback. This means no exact indexed name was found, not that
+every unsupported file was searched. General behavior questions retain normal
+retrieval. Quote a lowercase identifier to request this behavior explicitly.
+
+Refresh existing workspaces to add literal asset passages. Older indexes remain
+readable; their existing parsed asset facts remain available until rebuilt.
 
 ```sh
 unity-rag retrieve "Game.Enemy.CanAttack" --workspace ../UnityKnowledge/YourGame --mode exact --json
