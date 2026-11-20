@@ -1,4 +1,5 @@
 """Isolated script-or-null asset additions equal clean maps or rebuild fully."""
+from contextlib import closing
 from pathlib import Path
 import shutil
 import sqlite3
@@ -36,7 +37,7 @@ class AssetAdditionReuseTests(unittest.TestCase):
         for data in (code,assets):
             for key in ('discovery_scanned_at','code_fingerprint'):
                 data.pop(key,None)
-        with sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3')) as db, db:
             # SQLite rows are unordered; compare every raw row as a multiset.
             tables={n:sorted(db.execute(f'SELECT * FROM {n}').fetchall(),key=repr)
                     for n in ('unity_assets','unity_objects','unity_edges')}
@@ -119,10 +120,10 @@ class AssetAdditionReuseTests(unittest.TestCase):
         self.assertEqual(result['refresh_mode'],'asset_add')
         self.assertGreater(result['semantic']['cache_hits'],0);self.assertGreater(result['semantic']['embedded'],0)
         active=resolve_workspace(self.workspace)
-        with sqlite3.connect(active/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(active/'inventory.sqlite3')) as db, db:
             evidence={r[0] for r in db.execute('SELECT id FROM evidence')}
             added={r[0] for r in db.execute("SELECT id FROM evidence WHERE entity LIKE 'asset:Assets/Added.asset%'")}
-        with sqlite3.connect(active/'semantic.sqlite3') as db:
+        with closing(sqlite3.connect(active/'semantic.sqlite3')) as db, db:
             vectors={r[0] for r in db.execute('SELECT chunk FROM vectors')}
         self.assertTrue(added & vectors);self.assertTrue(vectors <= evidence)
 

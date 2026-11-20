@@ -1,3 +1,4 @@
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -33,7 +34,7 @@ class WorkspaceTests(unittest.TestCase):
         return refresh(self.work, self.project, provider=self.provider, **kwargs)
 
     def evidence(self, workspace):
-        with sqlite3.connect(resolve_workspace(workspace) / 'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(workspace) / 'inventory.sqlite3')) as db, db:
             return db.execute('SELECT * FROM evidence ORDER BY id').fetchall()
 
     def test_changes_cache_and_clean_rebuild_equivalence(self):
@@ -162,7 +163,7 @@ class WorkspaceTests(unittest.TestCase):
             self.assertEqual(result['refresh_mode'], 'script')
             evidence = self.evidence(self.work)
             left_code, left_assets = code_report(self.work), asset_report(self.work)
-            with sqlite3.connect(resolve_workspace(self.work) / 'inventory.sqlite3') as db:
+            with closing(sqlite3.connect(resolve_workspace(self.work) / 'inventory.sqlite3')) as db, db:
                 left_edges = db.execute('SELECT * FROM code_edges ORDER BY data').fetchall()
             started = time.perf_counter()
             self.build(rebuild=True)
@@ -173,7 +174,7 @@ class WorkspaceTests(unittest.TestCase):
                 for key in ('discovery_scanned_at','code_fingerprint'):
                     left.pop(key,None);right.pop(key,None)
                 self.assertEqual(left,right)
-            with sqlite3.connect(resolve_workspace(self.work) / 'inventory.sqlite3') as db:
+            with closing(sqlite3.connect(resolve_workspace(self.work) / 'inventory.sqlite3')) as db, db:
                 self.assertEqual(left_edges, db.execute('SELECT * FROM code_edges ORDER BY data').fetchall())
         print('Script fixture timings (operation, reuse assets, full):', timings)
 
@@ -356,7 +357,7 @@ class WorkspaceTests(unittest.TestCase):
     def test_sealed_generation_detects_modified_map_record(self):
         self.build()
         active = resolve_workspace(self.work)
-        with sqlite3.connect(active / 'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(active / 'inventory.sqlite3')) as db, db:
             raw = db.execute("SELECT value FROM metadata WHERE key='asset_report'").fetchone()[0]
             altered = json.loads(raw)
             altered['coverage_note'] += ' modified'

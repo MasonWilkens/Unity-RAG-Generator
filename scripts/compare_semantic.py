@@ -1,4 +1,5 @@
 """Compare modes on completed isolated semantic profiles and frozen development labels."""
+from contextlib import closing
 import argparse
 import hashlib
 import json
@@ -16,7 +17,7 @@ from unity_rag.workspace import cache_workspace
 
 def evidence_hash(workspace):
     digest=hashlib.sha256()
-    with sqlite3.connect((workspace/'inventory.sqlite3').as_uri()+'?mode=ro',uri=True) as db:
+    with closing(sqlite3.connect((workspace/'inventory.sqlite3').as_uri()+'?mode=ro',uri=True)) as db, db:
         for table in ('evidence','evidence_aliases','evidence_relations'):
             digest.update(table.encode())
             width=len(db.execute('PRAGMA table_info('+table+')').fetchall())

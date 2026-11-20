@@ -1,4 +1,5 @@
 """Structured evidence retrieval over versioned code and Unity asset maps."""
+from contextlib import closing
 
 from .workspace import resolve_workspace, require_writable
 from collections import defaultdict
@@ -283,7 +284,7 @@ def build_retrieval(workspace, *, chunk_budget=4096, chunk_encoding='utf8-bytes'
     del source_chunks, citation, add, inventory, code, assets, text_lines, entries
     del entities, children, declarations, edges_by_source, edges
 
-    with sqlite3.connect(Path(workspace) / "inventory.sqlite3") as db:
+    with closing(sqlite3.connect(Path(workspace) / "inventory.sqlite3")) as db, db:
 
         db.execute("BEGIN IMMEDIATE")
 
@@ -428,34 +429,18 @@ def _open(workspace):
 
     db = sqlite3.connect(path.as_uri() + "?mode=ro", uri=True)
 
-    db.execute("BEGIN")
-
     try:
-
+        db.execute("BEGIN")
         stamp = _database_stamp(db, _trusted_seal(workspace))
-
-    except Exception:
-
+        row = db.execute("SELECT value FROM metadata WHERE key='retrieval_report'").fetchone()
+        if row is None:
+            raise ValueError("No retrieval index. Run build-retrieval first.")
+        report = json.loads(row[0])
+        if report["inputs"] != stamp:
+            raise ValueError("Retrieval index is stale. Run build-retrieval again.")
+    except BaseException:
         db.close()
-
         raise
-
-    row = db.execute("SELECT value FROM metadata WHERE key='retrieval_report'").fetchone()
-
-    if row is None:
-
-        db.close()
-
-        raise ValueError("No retrieval index. Run build-retrieval first.")
-
-    report = json.loads(row[0])
-
-    if report["inputs"] != stamp:
-
-        db.close()
-
-        raise ValueError("Retrieval index is stale. Run build-retrieval again.")
-
     return db, report
 
 

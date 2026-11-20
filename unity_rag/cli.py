@@ -64,8 +64,12 @@ def connect(database):
     database = Path(database)
     database.parent.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(database)
-    connection.execute("CREATE VIRTUAL TABLE IF NOT EXISTS chunks USING fts5(path UNINDEXED, start UNINDEXED, end UNINDEXED, body, tokenize='unicode61')")
-    connection.execute("CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT)")
+    try:
+        connection.execute("CREATE VIRTUAL TABLE IF NOT EXISTS chunks USING fts5(path UNINDEXED, start UNINDEXED, end UNINDEXED, body, tokenize='unicode61')")
+        connection.execute("CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT)")
+    except BaseException:
+        connection.close()
+        raise
     return connection
 
 

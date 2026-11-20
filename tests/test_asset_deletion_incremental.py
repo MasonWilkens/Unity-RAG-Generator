@@ -1,4 +1,5 @@
 """An isolated source-asset deletion may only update the staged index copy."""
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -30,7 +31,7 @@ class AssetDeletionReuseTests(unittest.TestCase):
         for data in (code,assets):
             for key in ('discovery_scanned_at','code_fingerprint'):
                 data.pop(key,None)
-        with sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3')) as db, db:
             tables={n:db.execute(f'SELECT * FROM {n} ORDER BY rowid').fetchall()
                     for n in ('unity_assets','unity_objects','unity_edges','evidence_relations')}
             tables['evidence']=db.execute('SELECT * FROM evidence ORDER BY id').fetchall()
@@ -54,7 +55,7 @@ class AssetDeletionReuseTests(unittest.TestCase):
         report=asset_report(self.workspace)
         self.assertFalse(any(a['path']=='Assets/Independent.asset' for a in report['assets']))
         self.assertFalse(any(e['source'].startswith('asset:Assets/Independent.asset#') for e in report['edges']))
-        with sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3')) as db, db:
             self.assertEqual(db.execute("SELECT COUNT(*) FROM evidence WHERE entity LIKE 'asset:Assets/Independent.asset%'").fetchone()[0],0)
             self.assertEqual(db.execute("SELECT COUNT(*) FROM evidence_relations WHERE source LIKE 'asset:Assets/Independent.asset%'").fetchone()[0],0)
         self.assert_clean_equivalent()
@@ -116,7 +117,7 @@ class AssetDeletionReuseTests(unittest.TestCase):
         def corrupt(source,destination):
             original(source,destination)
             if Path(destination).name=='reused-inventory.sqlite3':
-                with sqlite3.connect(destination) as db:
+                with closing(sqlite3.connect(destination)) as db, db:
                     db.execute('DELETE FROM unity_objects WHERE asset=?',('asset:Assets/Independent.asset',))
         with patch.object(workspace_module,'_backup',side_effect=corrupt), \
              patch('unity_rag.asset_map.map_assets',wraps=map_assets) as mapper:
@@ -132,7 +133,7 @@ class AssetDeletionReuseTests(unittest.TestCase):
         provider=FixtureProvider()
         refresh(self.workspace,semantic=True,provider=provider)
         before=resolve_workspace(self.workspace)
-        with sqlite3.connect(before/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(before/'inventory.sqlite3')) as db, db:
             removed={r[0] for r in db.execute("SELECT id FROM evidence WHERE entity LIKE 'asset:Assets/Independent.asset%'")}
         self.assertTrue(removed)
         self.asset.unlink();self.meta.unlink()
@@ -140,6 +141,6 @@ class AssetDeletionReuseTests(unittest.TestCase):
         self.assertEqual(result['refresh_mode'],'asset_delete')
         self.assertGreater(result['semantic']['cache_hits'],0)
         after=resolve_workspace(self.workspace)
-        with sqlite3.connect(after/'semantic.sqlite3') as db:
+        with closing(sqlite3.connect(after/'semantic.sqlite3')) as db, db:
             active={r[0] for r in db.execute('SELECT chunk FROM vectors')}
         self.assertTrue(removed.isdisjoint(active))

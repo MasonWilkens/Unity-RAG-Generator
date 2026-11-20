@@ -1,4 +1,5 @@
 """Equivalence and conservative boundaries for simple declared assembly groups."""
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -39,7 +40,7 @@ class AsmdefReuseTests(unittest.TestCase):
         return result,calls
 
     def evidence(self):
-        with sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3')) as db, db:
             return db.execute('SELECT * FROM evidence ORDER BY id').fetchall()
 
     def assert_clean_equivalent(self):

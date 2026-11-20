@@ -1,4 +1,5 @@
 """Reference updates preserve resolved graph and evidence or rebuild fully."""
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -31,7 +32,7 @@ class AssetReferenceReuseTests(unittest.TestCase):
         for data in (code,assets):
             for key in ('discovery_scanned_at','code_fingerprint'):
                 data.pop(key,None)
-        with sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3')) as db, db:
             tables={name:db.execute(f'SELECT * FROM {name} ORDER BY rowid').fetchall()
                     for name in ('unity_assets','unity_objects','unity_edges','evidence_relations')}
             tables['evidence']=db.execute('SELECT * FROM evidence ORDER BY id').fetchall()
@@ -59,7 +60,7 @@ class AssetReferenceReuseTests(unittest.TestCase):
             edges=[e for e in asset_report(self.workspace)['edges'] if e['source']==source and e['property']=='linkedConfig']
             self.assertEqual(len(edges),1);self.assertEqual(edges[0]['target_asset'],expected)
             self.assertEqual(edges[0]['resolution'],'null' if expected is None else 'resolved_object')
-            with sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3') as db:
+            with closing(sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3')) as db, db:
                 relations=[json.loads(r[0]) for r in db.execute('SELECT data FROM evidence_relations WHERE source=?',(source,))]
             links=[r for r in relations if r.get('property')=='linkedConfig']
             self.assertEqual([r.get('target_asset') for r in links],[] if expected is None else [expected])
@@ -107,7 +108,7 @@ class AssetReferenceReuseTests(unittest.TestCase):
         self.asset.write_text(self.initial.replace(self.d,self.e),encoding='utf-8')
         def corrupt(previous,destination,inventory,delta):
             original(previous,destination,inventory,delta)
-            with sqlite3.connect(destination/'inventory.sqlite3') as db:
+            with closing(sqlite3.connect(destination/'inventory.sqlite3')) as db, db:
                 rows=db.execute('SELECT rowid,data FROM unity_edges WHERE source=?',
                                 ('asset:Assets/Armor.asset#11400000',)).fetchall()
                 rowid=next(rowid for rowid,data in rows if json.loads(data).get('property')=='linkedConfig')

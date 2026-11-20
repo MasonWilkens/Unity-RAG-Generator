@@ -1,4 +1,5 @@
 """Compare exact vector scans on fixed indexes without changing ranking inputs."""
+from contextlib import closing
 import argparse
 import json
 import os
@@ -24,7 +25,7 @@ def original_scan(workspace, query, provider):
         return {}
     vector = normalized(provider.query(query), report['dimension'])
     scores = {}
-    with sqlite3.connect((workspace/'semantic.sqlite3').as_uri()+'?mode=ro', uri=True) as db:
+    with closing(sqlite3.connect((workspace/'semantic.sqlite3').as_uri()+'?mode=ro', uri=True)) as db, db:
         for chunk, raw in db.execute('SELECT v.chunk,c.vector FROM vectors v JOIN cache c ON c.hash=v.hash WHERE c.config=?',
                                      (report['config_id'],)):
             passage = normalized(json.loads(raw), len(vector))

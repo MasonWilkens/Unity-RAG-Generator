@@ -1,5 +1,5 @@
 """Opt-in conditional coverage is bounded, snapshot-consistent, and read-only."""
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, closing
 import hashlib
 import importlib
 import io
@@ -30,7 +30,7 @@ class ConditionalCoverageTests(unittest.TestCase):
         self.database = self.work / 'inventory.sqlite3'
 
     def save(self, value):
-        with sqlite3.connect(self.database) as db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             db.execute("INSERT OR REPLACE INTO metadata(key,value) VALUES ('code_report',?)", (value,))
 
     def report(self):
@@ -75,13 +75,13 @@ class ConditionalCoverageTests(unittest.TestCase):
         module = importlib.import_module('unity_rag.coverage')
         original = module._conditional_coverage
         self.save(json.dumps(self.report()))
-        with sqlite3.connect(self.database) as writer:
+        with closing(sqlite3.connect(self.database)) as writer, writer:
             writer.execute('PRAGMA journal_mode=WAL')
         def replace_during_read(db, *args):
             updated = self.report()
             updated['defines'] = ['NEW_DEFINE']
             updated['conditions'] = []
-            with sqlite3.connect(self.database) as writer:
+            with closing(sqlite3.connect(self.database)) as writer, writer:
                 writer.execute("UPDATE metadata SET value=? WHERE key='code_report'", (json.dumps(updated),))
             return original(db, *args)
         with patch('unity_rag.coverage._conditional_coverage', side_effect=replace_during_read):

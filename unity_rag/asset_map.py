@@ -1,4 +1,5 @@
 """Map saved Unity assets and connect their script references to C# evidence."""
+from contextlib import closing
 from .workspace import resolve_workspace, require_writable
 from collections import Counter, defaultdict
 import hashlib
@@ -71,7 +72,7 @@ def fingerprint(value):
 
 def _saved_code(workspace, inventory):
     database = Path(workspace).resolve() / "inventory.sqlite3"
-    with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
+    with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)) as db, db:
         row = db.execute("SELECT value FROM metadata WHERE key='code_report'").fetchone()
     if row is None:
         return None
@@ -328,7 +329,7 @@ def map_assets(workspace, *, compress_report=False):
         raise ValueError("Discovery changed during asset mapping. Retry.")
     if fingerprint(_saved_code(workspace, inventory)) != fingerprint(code):
         raise ValueError("Code map changed during asset mapping. Retry.")
-    with sqlite3.connect(destination / "inventory.sqlite3") as db:
+    with closing(sqlite3.connect(destination / "inventory.sqlite3")) as db, db:
         db.execute("CREATE TABLE IF NOT EXISTS unity_assets (id TEXT PRIMARY KEY, path TEXT, guid TEXT, data TEXT)")
         db.execute("CREATE INDEX IF NOT EXISTS unity_guids ON unity_assets(guid)")
         db.execute("CREATE TABLE IF NOT EXISTS unity_objects (id TEXT PRIMARY KEY, asset TEXT, data TEXT)")
@@ -350,7 +351,7 @@ def asset_report(workspace):
     workspace = resolve_workspace(workspace)
     inventory = status(workspace)
     database = Path(workspace).resolve() / "inventory.sqlite3"
-    with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
+    with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)) as db, db:
         row = db.execute("SELECT value FROM metadata WHERE key='asset_report'").fetchone()
     if not row:
         raise ValueError("No asset map found. Run map-assets first.")

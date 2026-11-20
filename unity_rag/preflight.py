@@ -1,4 +1,5 @@
 """Read-only readiness checks for creating a local Unity RAG workspace."""
+from contextlib import closing
 import importlib.util
 from pathlib import Path
 import shutil
@@ -51,7 +52,7 @@ def creation_preflight(project, workspace, *, semantic=False):
     check('dotnet_on_path', shutil.which('dotnet') is not None,
           'A .NET SDK is required for code mapping; this only checks PATH, not SDK compatibility.')
     try:
-        with sqlite3.connect(':memory:') as db:
+        with closing(sqlite3.connect(':memory:')) as db, db:
             db.execute('CREATE VIRTUAL TABLE fts_probe USING fts5(content)')
         fts_ok = True
     except sqlite3.Error:

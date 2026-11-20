@@ -231,7 +231,7 @@ def semantic_status(workspace):
     path = (Path(workspace)/'semantic.sqlite3').resolve()
     if not path.exists():
         raise ValueError('No semantic index. Run build-semantic first.')
-    with sqlite3.connect(path.as_uri()+'?mode=ro', uri=True) as db:
+    with closing(sqlite3.connect(path.as_uri()+'?mode=ro', uri=True)) as db, db:
         row = db.execute('SELECT data FROM active WHERE id=1').fetchone()
     if not row:
         raise ValueError('No completed semantic index. Run build-semantic first.')
@@ -257,7 +257,7 @@ def rank(workspace, query, provider=None):
     scan_started = time.perf_counter()
     scanned = decoded = 0
     path = (Path(workspace)/'semantic.sqlite3').resolve()
-    with sqlite3.connect(path.as_uri()+'?mode=ro', uri=True) as db:
+    with closing(sqlite3.connect(path.as_uri()+'?mode=ro', uri=True)) as db, db:
         # Keep the streaming exact scan: grouping by hash added a SQLite sort
         # without reuse on the measured corpora. Retain winning identities,
         # but do not retain decoded vectors or assume a speed improvement.

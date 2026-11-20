@@ -1,4 +1,5 @@
 """Managed refresh retains semantic scope without dropping lexical evidence."""
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -29,11 +30,11 @@ class WorkspaceSemanticScopeTests(unittest.TestCase):
         return result
 
     def evidence(self):
-        with sqlite3.connect(resolve_workspace(self.workspace) / 'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace) / 'inventory.sqlite3')) as db, db:
             return dict(db.execute('SELECT id,kind FROM evidence'))
 
     def vector_ids(self):
-        with sqlite3.connect(resolve_workspace(self.workspace) / 'semantic.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace) / 'semantic.sqlite3')) as db, db:
             return {row[0] for row in db.execute('SELECT DISTINCT chunk FROM vectors')}
 
     def test_scope_survives_unchanged_and_changed_refresh_without_explicit_kinds(self):

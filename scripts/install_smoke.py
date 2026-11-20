@@ -1,4 +1,5 @@
 """Installed-package acceptance probe. Run only from verify_distribution.py."""
+from contextlib import closing
 import argparse
 import hashlib
 import importlib.metadata
@@ -41,7 +42,7 @@ def main():
     if not args.extras:
         require(importlib.util.find_spec('fastembed') is None, 'Base install unexpectedly needs FastEmbed')
         require(importlib.util.find_spec('tiktoken') is None, 'Base install unexpectedly needs tiktoken')
-    with sqlite3.connect(':memory:') as db:
+    with closing(sqlite3.connect(':memory:')) as db, db:
         db.execute('CREATE VIRTUAL TABLE probe USING fts5(text)')
 
     executable = Path(sys.executable).parent / ('unity-rag.exe' if sys.platform == 'win32' else 'unity-rag')

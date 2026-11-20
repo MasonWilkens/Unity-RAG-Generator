@@ -1,3 +1,4 @@
+from contextlib import closing
 import json
 from pathlib import Path
 import sqlite3
@@ -25,7 +26,7 @@ class StreamingSemanticTests(unittest.TestCase):
         self.database=self.workspace/'inventory.sqlite3'
         self.report={'snapshot':'fixed'}
         self.provider=Provider()
-        with sqlite3.connect(self.database) as db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             db.execute('CREATE TABLE evidence (id TEXT PRIMARY KEY, kind TEXT, data TEXT)')
             for i in range(23):
                 item={'id':str(i),'kind':'code_member','title':'Method','text':'value '+str(i)}
@@ -39,7 +40,7 @@ class StreamingSemanticTests(unittest.TestCase):
         return build_semantic(self.workspace,self.provider,**options)
 
     def active(self):
-        with sqlite3.connect(self.workspace/'semantic.sqlite3') as db:
+        with closing(sqlite3.connect(self.workspace/'semantic.sqlite3')) as db, db:
             return (db.execute('SELECT * FROM active').fetchall(),db.execute('SELECT * FROM vectors ORDER BY chunk,hash').fetchall(),
                     db.execute('SELECT * FROM cache ORDER BY config,hash').fetchall())
 
@@ -80,7 +81,7 @@ class StreamingSemanticTests(unittest.TestCase):
 
     def test_corrupt_checkpoint_is_recomputed(self):
         self.cancel(batch_size=3)
-        with sqlite3.connect(self.workspace/'embedding-checkpoints.sqlite3') as db:
+        with closing(sqlite3.connect(self.workspace/'embedding-checkpoints.sqlite3')) as db, db:
             digest=db.execute('SELECT hash FROM embeddings ORDER BY hash LIMIT 1').fetchone()[0]
             db.execute('UPDATE embeddings SET vector=? WHERE hash=?',('[null]',digest))
         result=self.build()
@@ -91,7 +92,7 @@ class StreamingSemanticTests(unittest.TestCase):
         self.cancel(batch_size=3)
         self.provider.config={**self.provider.config,'model':'different'}
         self.assertEqual(self.build()['cache_hits'],0)
-        with sqlite3.connect(self.database) as db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             item=json.loads(db.execute("SELECT data FROM evidence WHERE id='0'").fetchone()[0])
             item['text']='changed text'
             db.execute("UPDATE evidence SET data=? WHERE id='0'",(json.dumps(item),))
@@ -111,7 +112,7 @@ class StreamingSemanticTests(unittest.TestCase):
         self.provider.passages=lambda texts:[[1,0], [float('nan'),1]]
         with self.assertRaisesRegex(ValueError,'non-finite'):
             self.build(batch_size=2)
-        with sqlite3.connect(self.workspace/'embedding-checkpoints.sqlite3') as db:
+        with closing(sqlite3.connect(self.workspace/'embedding-checkpoints.sqlite3')) as db, db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM embeddings').fetchone()[0],0)
         self.assertEqual(self.active(),([],[],[]))
 
@@ -124,7 +125,7 @@ class StreamingSemanticTests(unittest.TestCase):
 
     def test_python_vector_memory_does_not_retain_full_corpus(self):
         import tracemalloc
-        with sqlite3.connect(self.database) as db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             db.execute('DELETE FROM evidence')
             for i in range(2000):
                 item={'id':str(i),'kind':'code_member','title':str(i),'text':'code '+str(i)}

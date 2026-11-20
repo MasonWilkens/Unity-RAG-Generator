@@ -1,5 +1,5 @@
 """Immutable index generations and crash-safe publication for maintained workspaces."""
-from contextlib import contextmanager
+from contextlib import contextmanager, closing
 from datetime import datetime, timezone
 import json
 import hashlib
@@ -215,8 +215,8 @@ def refresh_plan(before, after, *, pipeline_compatible=True, references_changed=
 
 
 def _backup(source, destination):
-    with sqlite3.connect(source.resolve().as_uri() + '?mode=ro', uri=True) as src:
-        with sqlite3.connect(destination) as dst:
+    with closing(sqlite3.connect(source.resolve().as_uri() + '?mode=ro', uri=True)) as src, src:
+        with closing(sqlite3.connect(destination)) as dst, dst:
             src.backup(dst)
 
 
@@ -224,7 +224,7 @@ def _create_metadata_seal(workspace):
     """Validate canonical map stamps and bind them to exact serialized bytes."""
     from .retrieval import _database_stamp
     database = (Path(workspace) / 'inventory.sqlite3').resolve()
-    with sqlite3.connect(database.as_uri() + '?mode=ro', uri=True) as db:
+    with closing(sqlite3.connect(database.as_uri() + '?mode=ro', uri=True)) as db, db:
         db.execute('BEGIN')
         stamp, code_raw, asset_raw = _database_stamp(db, include_hashes=True)
         row = db.execute("SELECT value FROM metadata WHERE key='retrieval_report'").fetchone()
@@ -304,7 +304,7 @@ def _reuse_maps_for_documents(previous, destination, inventory, delta):
     copied = destination / 'reused-inventory.sqlite3'
     _backup(previous / 'inventory.sqlite3', copied)
     os.replace(copied, database)
-    with sqlite3.connect(database) as db:
+    with closing(sqlite3.connect(database)) as db, db:
         db.execute('BEGIN IMMEDIATE')
         records = {k: _metadata_json(k, v) for k, v in db.execute(
             "SELECT key,value FROM metadata WHERE key IN ('code_report','asset_report')")}
@@ -358,7 +358,7 @@ def _remap_code_reuse_assets(previous, destination, inventory, delta, options, a
     from .asset_map import fingerprint
     from .code_map import map_code
     _reuse_maps_for_documents(previous, destination, inventory, delta)
-    with sqlite3.connect(destination / 'inventory.sqlite3') as db:
+    with closing(sqlite3.connect(destination / 'inventory.sqlite3')) as db, db:
         rows = {k: _metadata_json(k, v) for k, v in db.execute(
             "SELECT key,value FROM metadata WHERE key IN ('code_report','asset_report')")}
     old_code, assets = rows['code_report'], rows['asset_report']
@@ -378,7 +378,7 @@ def _remap_code_reuse_assets(previous, destination, inventory, delta, options, a
     if class_inputs(old_code) != class_inputs(new_code):
         raise ValueError('Serialized script dependencies changed; full asset mapping required.')
     assets['code_fingerprint'] = fingerprint(new_code)
-    with sqlite3.connect(destination / 'inventory.sqlite3') as db:
+    with closing(sqlite3.connect(destination / 'inventory.sqlite3')) as db, db:
         db.execute("INSERT OR REPLACE INTO metadata VALUES ('asset_report', ?)", (_encoded_assets(assets, db),))
 
 
@@ -407,7 +407,7 @@ def _reuse_maps_for_scalar_assets(previous, destination, inventory, delta, analy
     entries = {e['path']:e for e in inventory['entries']}
     project = Path(inventory['project']).resolve()
     database = destination/'inventory.sqlite3'
-    with sqlite3.connect(database) as db:
+    with closing(sqlite3.connect(database)) as db, db:
         db.execute('BEGIN IMMEDIATE')
         row = db.execute("SELECT value FROM metadata WHERE key='asset_report'").fetchone()
         if row is None:
@@ -532,7 +532,7 @@ def _reuse_maps_for_unreferenced_asset_deletion(previous, destination, inventory
     path = next(p for p in delta['deleted'] if p.lower().endswith('.asset'))
     database = destination/'inventory.sqlite3'; copied = destination/'reused-inventory.sqlite3'
     _backup(previous/'inventory.sqlite3',copied);os.replace(copied,database)
-    with sqlite3.connect(database) as db:
+    with closing(sqlite3.connect(database)) as db, db:
         db.execute('BEGIN IMMEDIATE')
         records = {k:_metadata_json(k,v) for k,v in db.execute(
             "SELECT key,value FROM metadata WHERE key IN ('code_report','asset_report')")}
@@ -617,7 +617,7 @@ def _reuse_maps_for_isolated_asset_addition(previous, destination, inventory, de
         raise ValueError('Added asset structure requires full mapping.')
     database=destination/'inventory.sqlite3';copied=destination/'reused-inventory.sqlite3'
     _backup(previous/'inventory.sqlite3',copied);os.replace(copied,database)
-    with sqlite3.connect(database) as db:
+    with closing(sqlite3.connect(database)) as db, db:
         db.execute('BEGIN IMMEDIATE')
         records={k:_metadata_json(k,v) for k,v in db.execute("SELECT key,value FROM metadata WHERE key IN ('code_report','asset_report')")}
         if set(records) != {'code_report','asset_report'}:
@@ -792,7 +792,7 @@ def refresh(workspace, project=None, config_path=None, *, rebuild=False,
         old_semantic = None
         if (previous / 'semantic.sqlite3').exists():
             # Only reuse configuration/cache here: legacy derived maps may be stale.
-            with sqlite3.connect((previous / 'semantic.sqlite3').as_uri() + '?mode=ro', uri=True) as db:
+            with closing(sqlite3.connect((previous / 'semantic.sqlite3').as_uri() + '?mode=ro', uri=True)) as db, db:
                 row = db.execute('SELECT data FROM active WHERE id=1').fetchone()
                 old_semantic = json.loads(row[0]) if row else None
         selected_batch_size = semantic_batch_size if semantic_batch_size is not None else (old_semantic or {}).get('batch_size', DEFAULT_BATCH_SIZE)
@@ -958,7 +958,7 @@ def refresh(workspace, project=None, config_path=None, *, rebuild=False,
 
 
 def _metadata(workspace, key):
-    with sqlite3.connect((workspace / 'inventory.sqlite3').as_uri() + '?mode=ro', uri=True) as db:
+    with closing(sqlite3.connect((workspace / 'inventory.sqlite3').as_uri() + '?mode=ro', uri=True)) as db, db:
         row = db.execute('SELECT value FROM metadata WHERE key=?', (key,)).fetchone()
         return json.loads(row[0]) if row else {}
 

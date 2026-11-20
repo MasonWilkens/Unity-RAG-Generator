@@ -1,3 +1,4 @@
+from contextlib import closing
 import json,sqlite3,tempfile,unittest
 from pathlib import Path
 from unity_rag.rig_catalog import lookup,label,family
@@ -10,7 +11,7 @@ class RigPriority(unittest.TestCase):
         for i,name,human,bones,imp in [(1,"Knight",True,30,"Human"),(2,"Crawler",False,12,"Generic"),(3,"RunClip",True,0,"Human"),(4,"KnightIncomplete",False,30,"Human")]:
             rows.append(dict(guid=str(i),path="Assets/"+name+".fbx",kind="model",bones=bones,binds=bones,meshes=int(bones>0),validHuman=human,assignedHuman=human,validGeneric=imp=="Generic",invalidAvatar=False,importer=imp,source_sha256="0"*64,line=i,report=dict(path="Docs/Catalog/RigEvidence-20261118.md",sha256="a"*64,size=90)))
         self.rows=rows
-        with sqlite3.connect(root/"rig-catalog-v1.sqlite3") as db:
+        with closing(sqlite3.connect(root/"rig-catalog-v1.sqlite3")) as db, db:
             db.execute("create table rigs(data)");db.executemany("insert into rigs values(?)",[(json.dumps(r),) for r in rows])
     def names(self,q):return [r["title"] for r in lookup(self.gen,q,"search",None,5)]
     def test_compat(self):

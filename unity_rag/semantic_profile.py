@@ -1,4 +1,5 @@
 """Bounded semantic-build experiments on copies; no downloads or hosted inference."""
+from contextlib import closing
 import argparse
 import ctypes
 from ctypes import wintypes
@@ -56,7 +57,7 @@ def semantic_state(workspace):
     if not path.exists():
         return {'exists':False, 'active_sha256':None, 'cache_entries':0, 'vectors':0}
     # The isolated copy can recover its own SQLite rollback journal after a kill.
-    with sqlite3.connect(path) as db:
+    with closing(sqlite3.connect(path)) as db, db:
         tables = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         active = db.execute('SELECT data FROM active WHERE id=1').fetchone() if 'active' in tables else None
         return {'exists':True, 'integrity':db.execute('PRAGMA integrity_check').fetchone()[0],
@@ -137,13 +138,13 @@ def profile_semantic(workspace, output, *, provider='control', cancel_after_batc
     for name in ('inventory.sqlite3','semantic.sqlite3'):
         if name not in expected:
             continue
-        with sqlite3.connect((source/name).as_uri()+'?mode=ro',uri=True) as src:
-            with sqlite3.connect(isolated/name) as dst:
+        with closing(sqlite3.connect((source/name).as_uri()+'?mode=ro',uri=True)) as src, src:
+            with closing(sqlite3.connect(isolated/name)) as dst, dst:
                 src.backup(dst)
     if resume_from:
         prior = Path(resume_from).resolve()/'embedding-checkpoints.sqlite3'
-        with sqlite3.connect(prior.as_uri()+'?mode=ro',uri=True) as src:
-            with sqlite3.connect(isolated/'embedding-checkpoints.sqlite3') as dst:
+        with closing(sqlite3.connect(prior.as_uri()+'?mode=ro',uri=True)) as src, src:
+            with closing(sqlite3.connect(isolated/'embedding-checkpoints.sqlite3')) as dst, dst:
                 src.backup(dst)
     before = semantic_state(isolated)
     events, result_path = base/'events.jsonl', base/'worker.json'
@@ -207,7 +208,7 @@ def _checkpoint_count(workspace):
     path = Path(workspace)/'embedding-checkpoints.sqlite3'
     if not path.exists():
         return 0
-    with sqlite3.connect(path) as db:
+    with closing(sqlite3.connect(path)) as db, db:
         exists = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='embeddings'").fetchone()
         return db.execute('SELECT COUNT(*) FROM embeddings').fetchone()[0] if exists else 0
 

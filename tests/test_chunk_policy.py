@@ -1,3 +1,4 @@
+from contextlib import closing
 import importlib.util
 import json
 from pathlib import Path
@@ -75,6 +76,6 @@ class ChunkBuildTests(unittest.TestCase):
         self.assertEqual(resolve_workspace(self.work), before)
         manifest = json.loads((before/'complete.json').read_text())
         self.assertEqual(manifest['settings']['chunking']['budget'], 1024)
-        with sqlite3.connect(before/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(before/'inventory.sqlite3')) as db, db:
             report = json.loads(db.execute("SELECT value FROM metadata WHERE key='retrieval_report'").fetchone()[0])
         self.assertEqual(report['chunking']['budget'], 1024)

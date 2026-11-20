@@ -1,4 +1,5 @@
 """Run the complete test suite with prerequisites, no skipped tests, and saved reports."""
+from contextlib import closing
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
@@ -58,7 +59,7 @@ def main():
             raise RuntimeError('Python 3.10 or newer is required')
         report['python'] = sys.version.split()[0]
         report['sqlite'] = sqlite3.sqlite_version
-        with sqlite3.connect(':memory:') as db:
+        with closing(sqlite3.connect(':memory:')) as db, db:
             db.execute('CREATE VIRTUAL TABLE probe USING fts5(text)')
         sdk = subprocess.check_output(['dotnet', '--version'], cwd=ROOT / 'unity_rag/roslyn', text=True).strip()
         if int(sdk.split('.')[0]) < 6 or (args.dotnet_major and not sdk.startswith(f'{args.dotnet_major}.')):
@@ -93,7 +94,15 @@ def main():
         with ThreadPoolExecutor(max_workers=args.jobs) as pool:
             futures = [pool.submit(run, i, modules[i::args.jobs]) for i in range(min(args.jobs, len(modules)))]
             for future in as_completed(futures):
-                report['shards'].append(future.result())
+                row = future.result()
+                report['shards'].append(row)
+                if not row['passed'] or row['exit_code']:
+                    # Keep successful logs quiet; show tracebacks directly in CI.
+                    lines = (args.output / row['log']).read_text(encoding='utf-8').splitlines()
+                    first = next((i for i, line in enumerate(lines)
+                                  if line.startswith(('ERROR:', 'FAIL:', 'Traceback '))), 0)
+                    print(f"--- Shard {row['index']} failure details ---", flush=True)
+                    print('\n'.join(lines[first:]), flush=True)
         report['tests'] = sum(r.get('tests', 0) for r in report['shards'])
         if fingerprint() != report['source_sha256']:
             raise RuntimeError('Source or tests changed during validation; rerun against fixed files')

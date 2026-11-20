@@ -1,3 +1,4 @@
+from contextlib import closing
 import hashlib
 import json
 from pathlib import Path
@@ -76,7 +77,7 @@ class DiscoveryTests(unittest.TestCase):
         (self.project / "Assets/Stats.asset").unlink()
         self.write("Assets/Player.cs", "class Changed {}")
         scan(self.project, self.workspace)
-        with sqlite3.connect(self.workspace / "inventory.sqlite3") as db:
+        with closing(sqlite3.connect(self.workspace / "inventory.sqlite3")) as db, db:
             self.assertIsNone(db.execute("SELECT path FROM files WHERE path='Assets/Stats.asset'").fetchone())
             digest = db.execute("SELECT sha256 FROM files WHERE path='Assets/Player.cs'").fetchone()[0]
         self.assertEqual(digest, hashlib.sha256(b"class Changed {}").hexdigest())

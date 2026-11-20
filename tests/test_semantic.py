@@ -1,3 +1,4 @@
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -101,7 +102,7 @@ class SemanticTests(unittest.TestCase):
         self.assertIn('evidence_loaded', events)
         self.assertIn('passages_prepared', events)
         self.assertEqual(semantic_status(self.work), before)
-        with sqlite3.connect(self.work/'semantic.sqlite3') as db:
+        with closing(sqlite3.connect(self.work/'semantic.sqlite3')) as db, db:
             configs = [json.loads(r[0])['config'] for r in db.execute('SELECT data FROM active')]
             self.assertEqual(configs, [before['config']])
             count = db.execute('SELECT COUNT(*) FROM cache WHERE config!=?', (before['config_id'],)).fetchone()[0]
@@ -124,7 +125,7 @@ class SemanticTests(unittest.TestCase):
 
     def test_changed_snapshot_rejected(self):
         build_semantic(self.work, self.provider)
-        with sqlite3.connect(self.work/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(self.work/'inventory.sqlite3')) as db, db:
             raw = db.execute("SELECT value FROM metadata WHERE key='retrieval_report'").fetchone()[0]
             report = json.loads(raw)
             report['limits'].append('changed')

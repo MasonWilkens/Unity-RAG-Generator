@@ -1,4 +1,5 @@
 """Scalar asset reuse must equal full mapping and fail closed on graph changes."""
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -27,7 +28,7 @@ class ScalarAssetReuseTests(unittest.TestCase):
         for data in (code,assets):
             for key in ('discovery_scanned_at','code_fingerprint'):
                 data.pop(key,None)
-        with sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(resolve_workspace(self.workspace)/'inventory.sqlite3')) as db, db:
             tables={name:db.execute(f'SELECT * FROM {name} ORDER BY rowid').fetchall()
                     for name in ('unity_assets','unity_objects','unity_edges')}
             tables['evidence']=db.execute('SELECT * FROM evidence ORDER BY id').fetchall()

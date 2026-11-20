@@ -1,4 +1,5 @@
 """Read-only Unity project discovery and persistent inventory."""
+from contextlib import closing
 from .workspace import resolve_workspace, require_writable
 from collections import Counter
 from datetime import datetime, timezone
@@ -148,7 +149,7 @@ def scan(project, workspace, config_path=None):
     exclude_match = _compile_excludes(config['exclude'])
     database = destination / "inventory.sqlite3"
     if database.exists():
-        with sqlite3.connect(database) as db:
+        with closing(sqlite3.connect(database)) as db, db:
             previous = db.execute("SELECT value FROM metadata WHERE key='report'").fetchone()
             if previous and json.loads(previous[0])["project"] != str(root):
                 raise ValueError("This workspace belongs to a different project.")
@@ -274,7 +275,7 @@ def scan(project, workspace, config_path=None):
         "coverage_note": "Counts cover visited entries. Excluded directories represent whole unvisited subtrees. Supported means UTF-8 text with a recognized extension, not parsed Unity semantics. Git LFS pointers are reported separately and are not indexed as source content. Asset subtypes and package contents are not resolved."
     }
     destination.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(database) as db:
+    with closing(sqlite3.connect(database)) as db, db:
         db.execute("CREATE TABLE IF NOT EXISTS metadata (key TEXT PRIMARY KEY, value TEXT NOT NULL)")
         db.execute("CREATE TABLE IF NOT EXISTS files (path TEXT PRIMARY KEY, kind TEXT, status TEXT, reason TEXT, size INTEGER, sha256 TEXT)")
         db.execute("DELETE FROM files")
@@ -288,7 +289,7 @@ def status(workspace):
     database = Path(workspace).resolve() / "inventory.sqlite3"
     if not database.is_file():
         raise ValueError("No saved inventory found. Run scan first.")
-    with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
+    with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)) as db, db:
         result = db.execute("SELECT value FROM metadata WHERE key='report'").fetchone()
     if not result:
         raise ValueError("Inventory has no completed scan.")

@@ -1,4 +1,5 @@
 """Semantic corpus selection retains the complete lexical index and embedding cache."""
+from contextlib import closing
 import json
 from pathlib import Path
 import sqlite3
@@ -33,7 +34,7 @@ class SemanticScopeTests(unittest.TestCase):
         self.database = self.workspace / 'inventory.sqlite3'
         self.report = {'snapshot': 'unchanged-test-fixture'}
         self.provider = CountingProvider()
-        with sqlite3.connect(self.database) as db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             db.execute('CREATE TABLE evidence (id TEXT PRIMARY KEY, kind TEXT, data TEXT)')
             for identity, kind, text in [('code', 'code_member', 'void Fire() {}'),
                                          ('doc', 'documentation', '# Projectile selection'),
@@ -49,7 +50,7 @@ class SemanticScopeTests(unittest.TestCase):
         self.addCleanup(self.status_patch.stop)
 
     def active_chunks(self):
-        with sqlite3.connect(self.workspace / 'semantic.sqlite3') as db:
+        with closing(sqlite3.connect(self.workspace / 'semantic.sqlite3')) as db, db:
             return {row[0] for row in db.execute('SELECT DISTINCT chunk FROM vectors')}
 
     def test_subset_filters_embeddings_without_removing_lexical_evidence(self):
@@ -58,7 +59,7 @@ class SemanticScopeTests(unittest.TestCase):
         self.assertEqual(result['include_kinds'], ['code_member', 'documentation'])
         self.assertEqual((result['chunks'], result['excluded_chunks']), (2, 1))
         self.assertEqual(self.active_chunks(), {'code', 'doc'})
-        with sqlite3.connect(self.database) as db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0], 3)
         self.assertEqual(set(rank(self.workspace, 'question', self.provider)), {'code', 'doc'})
 

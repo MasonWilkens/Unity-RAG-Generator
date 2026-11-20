@@ -1,4 +1,5 @@
 """Opt-in OpenAI Responses adapter with persistent, conservative spend reservations."""
+from contextlib import closing
 from datetime import date
 from decimal import Decimal, InvalidOperation
 import json
@@ -69,7 +70,7 @@ class SpendLedger:
         self.path = Path(path).absolute()
         cap = _nanodollars(budget_usd)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        with sqlite3.connect(self.path, timeout=10) as db:
+        with closing(sqlite3.connect(self.path, timeout=10)) as db, db:
             db.execute('BEGIN IMMEDIATE')
             db.execute('CREATE TABLE IF NOT EXISTS budget (id INTEGER PRIMARY KEY CHECK(id=1), cap INTEGER NOT NULL, reserved INTEGER NOT NULL, blocked INTEGER NOT NULL)')
             db.execute('CREATE TABLE IF NOT EXISTS attempts (id INTEGER PRIMARY KEY, reserved INTEGER NOT NULL, input_tokens INTEGER, output_tokens INTEGER)')
@@ -80,7 +81,7 @@ class SpendLedger:
     def reserve(self, amount):
         if type(amount) is not int or amount <= 0:
             raise ValueError('Reservation must be a positive integer number of nanodollars.')
-        with sqlite3.connect(self.path, timeout=10) as db:
+        with closing(sqlite3.connect(self.path, timeout=10)) as db, db:
             db.execute('BEGIN IMMEDIATE')
             cap, used, blocked = db.execute('SELECT cap,reserved,blocked FROM budget WHERE id=1').fetchone()
             pending = db.execute('SELECT COUNT(*) FROM attempts WHERE input_tokens IS NULL OR output_tokens IS NULL').fetchone()[0]
@@ -92,18 +93,18 @@ class SpendLedger:
     def record(self, attempt, input_tokens, output_tokens):
         if any(type(value) is not int or value < 0 for value in (input_tokens, output_tokens)):
             raise ValueError('Measured token counts must be nonnegative integers.')
-        with sqlite3.connect(self.path, timeout=10) as db:
+        with closing(sqlite3.connect(self.path, timeout=10)) as db, db:
             updated = db.execute('UPDATE attempts SET input_tokens=?,output_tokens=? WHERE id=? AND input_tokens IS NULL AND output_tokens IS NULL',
                                  (input_tokens, output_tokens, attempt))
             if updated.rowcount != 1:
                 raise ValueError('Usage can only be recorded once for an existing pending attempt.')
 
     def block(self):
-        with sqlite3.connect(self.path, timeout=10) as db:
+        with closing(sqlite3.connect(self.path, timeout=10)) as db, db:
             db.execute('UPDATE budget SET blocked=1 WHERE id=1')
 
     def summary(self):
-        with sqlite3.connect(self.path, timeout=10) as db:
+        with closing(sqlite3.connect(self.path, timeout=10)) as db, db:
             cap, reserved, blocked = db.execute('SELECT cap,reserved,blocked FROM budget WHERE id=1').fetchone()
             attempts, measured, inputs, outputs = db.execute('SELECT COUNT(*),COUNT(input_tokens),COALESCE(SUM(input_tokens),0),COALESCE(SUM(output_tokens),0) FROM attempts').fetchone()
         return {'budget_usd': cap / 1e9, 'reserved_upper_usd': reserved / 1e9,

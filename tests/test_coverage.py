@@ -6,7 +6,7 @@ import sqlite3
 import shutil
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, closing
 from unittest.mock import patch
 
 from unity_rag import cli
@@ -30,7 +30,7 @@ class CoverageTests(unittest.TestCase):
         self.database = self.work / 'inventory.sqlite3'
 
     def evidence(self):
-        with sqlite3.connect(self.database) as db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             db.execute('CREATE TABLE evidence (id TEXT, entity TEXT, kind TEXT, data TEXT)')
             data = json.dumps({'sources': [{'path': 'Assets/Guide.md'}]})
             db.execute('INSERT INTO evidence VALUES (?, ?, ?, ?)', ('1', '1', 'documentation', data))

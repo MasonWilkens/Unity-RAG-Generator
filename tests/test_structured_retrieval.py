@@ -1,3 +1,4 @@
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -114,7 +115,7 @@ class StructuredRetrievalTests(unittest.TestCase):
         clone = self.base / "Stale"
         clone.mkdir(exist_ok=True)
         shutil.copyfile(self.workspace / "inventory.sqlite3", clone / "inventory.sqlite3")
-        with sqlite3.connect(clone / "inventory.sqlite3") as db:
+        with closing(sqlite3.connect(clone / "inventory.sqlite3")) as db, db:
             value = json.loads(db.execute("SELECT value FROM metadata WHERE key='report'").fetchone()[0])
             value["scanned_at"] = "changed"
             db.execute("UPDATE metadata SET value=? WHERE key='report'", (json.dumps(value),))

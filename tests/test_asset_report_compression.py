@@ -1,3 +1,4 @@
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -58,7 +59,7 @@ class AssetReportStorageTests(unittest.TestCase):
 
     def raw_report(self, generation=None):
         generation = generation or resolve_workspace(self.work)
-        with sqlite3.connect(generation / 'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(generation / 'inventory.sqlite3')) as db, db:
             return db.execute("SELECT typeof(value), value FROM metadata WHERE key='asset_report'").fetchone()
 
     def test_default_is_legacy_text(self):
@@ -126,7 +127,7 @@ class AssetReportStorageTests(unittest.TestCase):
     def test_corrupted_blob_fails_closed(self):
         refresh(self.work, self.project, semantic=False, compress_asset_report=True)
         generation = resolve_workspace(self.work)
-        with sqlite3.connect(generation / 'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(generation / 'inventory.sqlite3')) as db, db:
             blob = db.execute("SELECT value FROM metadata WHERE key='asset_report'").fetchone()[0]
             db.execute("UPDATE metadata SET value=? WHERE key='asset_report'", (blob[:-1],))
         with self.assertRaisesRegex(ValueError, 'Compressed asset report'):
@@ -135,7 +136,7 @@ class AssetReportStorageTests(unittest.TestCase):
     def test_text_and_compressed_have_identical_canonical_stamp(self):
         refresh(self.work, self.project, semantic=False, compress_asset_report=True)
         generation = resolve_workspace(self.work)
-        with sqlite3.connect(generation / 'inventory.sqlite3') as db:
+        with closing(sqlite3.connect(generation / 'inventory.sqlite3')) as db, db:
             before = _database_stamp(db, include_hashes=True)
             raw = decode_asset_report(db.execute("SELECT value FROM metadata WHERE key='asset_report'").fetchone()[0])
             db.execute("UPDATE metadata SET value=? WHERE key='asset_report'", (raw,))

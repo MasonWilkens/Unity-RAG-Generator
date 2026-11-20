@@ -1,4 +1,5 @@
 """Run the bundled Roslyn helper against the discovery snapshot, never project builds."""
+from contextlib import closing
 from .workspace import resolve_workspace, require_writable
 import hashlib
 import json
@@ -247,7 +248,7 @@ def map_code(workspace, defines=(), references=(), language_version="10", analyz
     # Recheck the inventory marker before replacing the saved map.
     if status(workspace)["scanned_at"] != inventory["scanned_at"]:
         raise ValueError("Discovery changed during code mapping. Retry the command.")
-    with sqlite3.connect(destination / "inventory.sqlite3") as db:
+    with closing(sqlite3.connect(destination / "inventory.sqlite3")) as db, db:
         db.execute("CREATE TABLE IF NOT EXISTS code_declarations (id TEXT, path TEXT, start INTEGER, name TEXT, qualified_name TEXT, data TEXT, PRIMARY KEY(id,path,start))")
         db.execute("CREATE INDEX IF NOT EXISTS code_names ON code_declarations(name)")
         db.execute("CREATE TABLE IF NOT EXISTS code_edges (target TEXT, source TEXT, resolution TEXT, data TEXT)")
@@ -267,7 +268,7 @@ def code_report(workspace):
     workspace = resolve_workspace(workspace)
     inventory = status(workspace)
     database = Path(workspace).resolve() / "inventory.sqlite3"
-    with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
+    with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)) as db, db:
         row = db.execute("SELECT value FROM metadata WHERE key='code_report'").fetchone()
     if not row:
         raise ValueError("No code map found. Run map-code first.")

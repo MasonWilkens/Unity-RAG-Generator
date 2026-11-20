@@ -1,4 +1,5 @@
 """Reusable, explicitly budgeted source-backed draft batches; no auto-acceptance."""
+from contextlib import closing
 import argparse
 from datetime import datetime, timezone
 import json
@@ -78,7 +79,7 @@ def _verify_authority(parent, budget):
     if q.read_json(authority).get('budget_nanodollars') != _nanodollars(budget):
         raise ValueError('The shared backlog budget is fixed; no alternate cap.')
     try:
-        with sqlite3.connect(ledger.resolve().as_uri()+'?mode=ro', uri=True) as db:
+        with closing(sqlite3.connect(ledger.resolve().as_uri()+'?mode=ro', uri=True)) as db, db:
             db.execute('BEGIN')
             cap, reserved, blocked = db.execute('SELECT cap,reserved,blocked FROM budget WHERE id=1').fetchone()
             total = db.execute('SELECT COALESCE(SUM(reserved),0) FROM attempts').fetchone()[0]
