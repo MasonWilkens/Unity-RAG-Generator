@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "split": "development",
+  "scope": "Authored contract fixture; not independent real-project acceptance.",
+  "cases": [
+    {
+      "id": "minimum",
+      "question": "What is GreenhouseHeat SafeMinimum?",
+      "expected_sources": [
+        "Assets/Heat/GreenhouseHeat.cs"
+      ],
+      "reviewed_source_sha256": {
+        "Assets/Heat/GreenhouseHeat.cs": "bbfa8ca5b7ac5a9f9ddd5b38d31a330723b2ce5bf32af9535ec6dca210ef408a"
+      },
+      "required_passages": [
+        {
+          "path": "Assets/Heat/GreenhouseHeat.cs",
+          "start_line": 5,
+          "end_line": 5,
+          "quote": "public const int SafeMinimum = 12;"
+        }
+      ]
+    }
+  ]
+}

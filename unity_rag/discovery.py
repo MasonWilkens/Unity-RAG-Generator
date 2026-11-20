@@ -1,4 +1,5 @@
 """Read-only Unity project discovery and persistent inventory."""
+from .workspace import resolve_workspace, require_writable
 from collections import Counter
 from datetime import datetime, timezone
 import fnmatch
@@ -19,6 +20,29 @@ DEFAULT_CONFIG = {
     "max_file_bytes": 2_000_000,
     "external_packages": "report_only",
 }
+# These protections cannot be removed by a custom discovery configuration.
+# Match credential words at filename boundaries rather than excluding game code
+# such as KeyBindings.cs or SecretDoor.cs. Dot-prefixed paths are always pruned.
+SENSITIVE_SUFFIXES = {".secret", ".pem", ".key", ".p12", ".pfx", ".jks", ".keystore"}
+SENSITIVE_NAME = re.compile(r"(?:^|[._-])(?:secrets?|credentials?|creds)(?:$|[._-])", re.I)
+
+
+def sensitive_path_name(path):
+    name = path.name.lower()
+    return (name.startswith(".") or Path(name).suffix in SENSITIVE_SUFFIXES or
+            bool(SENSITIVE_NAME.search(name)) or
+            fnmatch.fnmatchcase(name, "*.env") or fnmatch.fnmatchcase(name, "*.env.*"))
+
+
+def hidden_directory(path):
+    # Native Windows hidden directories need the same protection as dot paths.
+    try:
+        info = path.lstat()
+    except FileNotFoundError:
+        return False
+    return stat.S_ISDIR(info.st_mode) and bool(getattr(info, "st_file_attributes", 0) & 0x2)
+
+
 KINDS = {
     ".cs": "script", ".unity": "scene", ".prefab": "prefab",
     ".asset": "serialized_asset", ".mat": "material", ".meta": "metadata",
@@ -31,6 +55,26 @@ KINDS = {
     ".overridecontroller": "animation",
 }
 
+
+
+def is_git_lfs_pointer(content):
+    """Identify a complete LFS pointer, not a source file that merely mentions LFS."""
+    if len(content) > 4096:
+        return False
+    lines = content.splitlines()
+    if len(lines) < 3 or lines[0] != "version https://git-lfs.github.com/spec/v1":
+        return False
+    oid = size = False
+    for line in lines[1:]:
+        if re.fullmatch(r"oid sha256:[0-9a-fA-F]{64}", line) and not oid:
+            oid = True
+        elif re.fullmatch(r"size [0-9]+", line) and not size:
+            size = True
+        elif re.fullmatch(r"ext-[0-9]+-[A-Za-z0-9._-]+ [!-~]+", line):
+            continue
+        else:
+            return False
+    return oid and size
 
 def load_config(path=None):
     config = dict(DEFAULT_CONFIG)
@@ -84,7 +128,16 @@ def is_link(path):
     return path.is_symlink() or bool(getattr(info, "st_file_attributes", 0) & 0x400)
 
 
+def _compile_excludes(patterns):
+    """Compile the same case-normalized fnmatch patterns once per scan."""
+    if not patterns:
+        return lambda text: False
+    combined = re.compile('|'.join('(?:' + fnmatch.translate(pattern.lower()) + ')' for pattern in patterns))
+    return combined.match
+
+
 def scan(project, workspace, config_path=None):
+    workspace = require_writable(workspace)
     root = Path(project).resolve(strict=True)
     if not root.is_dir() or not (root / "Assets").is_dir() or not (root / "ProjectSettings").is_dir():
         raise ValueError("Choose a Unity project containing Assets and ProjectSettings directories.")
@@ -92,6 +145,7 @@ def scan(project, workspace, config_path=None):
     if destination == root or destination.is_relative_to(root):
         raise ValueError("The discovery workspace must be outside the target Unity project.")
     config = load_config(config_path)
+    exclude_match = _compile_excludes(config['exclude'])
     database = destination / "inventory.sqlite3"
     if database.exists():
         with sqlite3.connect(database) as db:
@@ -111,9 +165,13 @@ def scan(project, workspace, config_path=None):
 
     def excluded(path):
         relative = path.relative_to(root).as_posix().lower()
-        return any(fnmatch.fnmatchcase(relative, pattern.lower()) or
-                   fnmatch.fnmatchcase(path.name.lower(), pattern.lower())
-                   for pattern in config["exclude"])
+        if exclude_match(relative) or exclude_match(path.name.lower()):
+            return "configured_exclusion"
+        if sensitive_path_name(path):
+            return "sensitive_path"
+        if hidden_directory(path):
+            return "hidden_directory"
+        return None
 
     def visit(path):
         key = str(path)
@@ -121,8 +179,9 @@ def scan(project, workspace, config_path=None):
             return
         visited.add(key)
         try:
-            if excluded(path):
-                record(path, "excluded", "configured_exclusion")
+            reason = excluded(path)
+            if reason:
+                record(path, "excluded", reason)
                 return
             if is_link(path) or not path.resolve().is_relative_to(root):
                 record(path, "excluded", "link_or_external_path")
@@ -153,6 +212,9 @@ def scan(project, workspace, config_path=None):
                 return
             if row["kind"] == "other":
                 row.update(status="unsupported", reason="unsupported_extension")
+                return
+            if is_git_lfs_pointer(content):
+                row.update(status="lfs_pointer", reason="unmaterialized_git_lfs_pointer")
                 return
             relative = row["path"]
             if relative in ("ProjectSettings/ProjectVersion.txt", "Packages/manifest.json", "Packages/packages-lock.json") or path.suffix.lower() in (".asmdef", ".asmref"):
@@ -209,7 +271,7 @@ def scan(project, workspace, config_path=None):
         "counts": dict(sorted(Counter(r["status"] for r in records).items())),
         "kinds": dict(sorted(Counter(r["kind"] for r in records if r["size"] is not None).items())),
         "diagnostics": diagnostics, "entries": sorted(records, key=lambda r: r["path"]),
-        "coverage_note": "Counts cover visited entries. Excluded directories represent whole unvisited subtrees. Supported means UTF-8 text with a recognized extension, not parsed Unity semantics. Asset subtypes and package contents are not resolved."
+        "coverage_note": "Counts cover visited entries. Excluded directories represent whole unvisited subtrees. Supported means UTF-8 text with a recognized extension, not parsed Unity semantics. Git LFS pointers are reported separately and are not indexed as source content. Asset subtypes and package contents are not resolved."
     }
     destination.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(database) as db:
@@ -222,6 +284,7 @@ def scan(project, workspace, config_path=None):
 
 
 def status(workspace):
+    workspace = resolve_workspace(workspace)
     database = Path(workspace).resolve() / "inventory.sqlite3"
     if not database.is_file():
         raise ValueError("No saved inventory found. Run scan first.")

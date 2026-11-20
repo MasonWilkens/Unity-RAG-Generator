@@ -1,0 +1,155 @@
+{
+  "schema_version": 2,
+  "split": "synthetic-development",
+  "scope": "Authored mechanism controls, not independent real-project acceptance. Frozen before the paired evaluation.",
+  "cases": [
+    {
+      "id": "cooling-tail",
+      "question": "How does ThermalController AdvanceHeat reduce heat using CoolingPerSecond?",
+      "category": "synthetic-development",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/ThermalController.cs",
+            "quote": "heat = System.Math.Max(0, heat - CoolingPerSecond * elapsed);",
+            "start_line": 99,
+            "end_line": 99
+          }
+        ]
+      ],
+      "negative_passages": [
+        {
+          "path": "Assets/ThermalController.cs",
+          "quote": "return \"Old documentation says cooling increases heat; this is a string, not the calculation.\";",
+          "start_line": 112,
+          "end_line": 112
+        }
+      ],
+      "reviewed_source_sha256": {
+        "Assets/ThermalController.cs": "16f3c7e12e6c55f77bd23e5a862115fda64b8e32638ea6d07933a48fef3e007b"
+      }
+    },
+    {
+      "id": "venting-tail",
+      "question": "How does ThermalController AdvanceHeat stop venting when heat reaches zero?",
+      "category": "synthetic-development",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/ThermalController.cs",
+            "quote": "if (heat <= 0f)",
+            "start_line": 100,
+            "end_line": 100
+          }
+        ],
+        [
+          {
+            "path": "Assets/ThermalController.cs",
+            "quote": "venting = false;",
+            "start_line": 102,
+            "end_line": 102
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/ThermalController.cs": "16f3c7e12e6c55f77bd23e5a862115fda64b8e32638ea6d07933a48fef3e007b"
+      }
+    },
+    {
+      "id": "cooldown",
+      "question": "How does ThermalController GetCooldown scale baseDelay with heat?",
+      "category": "synthetic-development",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/ThermalController.cs",
+            "quote": "return baseDelay * (1f + heat / 100f);",
+            "start_line": 108,
+            "end_line": 108
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/ThermalController.cs": "16f3c7e12e6c55f77bd23e5a862115fda64b8e32638ea6d07933a48fef3e007b"
+      }
+    },
+    {
+      "id": "compute",
+      "question": "How does CoolBuffer subtract CoolingStep from Heat?",
+      "category": "synthetic-development",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Effects/Cooling.compute",
+            "quote": "Heat[id.x] = max(0.0, Heat[id.x] - CoolingStep);",
+            "start_line": 7,
+            "end_line": 7
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Effects/Cooling.compute": "0b5c6c5819252ef4a0406df8e933481b200e202800789b99c1cd9a875c3c7fe6"
+      }
+    },
+    {
+      "id": "panel",
+      "question": "Where does venting-status show Cooling in HeatPanel.uxml?",
+      "category": "synthetic-development",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UI/HeatPanel.uxml",
+            "quote": "<ui:Label name=\"venting-status\" text=\"Cooling\" />",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UI/HeatPanel.uxml": "36edd574ed762b2abaf9fcc306c91d4706ec2b5607810f45eb5c79448bd7a1e4"
+      }
+    },
+    {
+      "id": "style",
+      "question": "What font-size is assigned to venting-status?",
+      "category": "synthetic-development",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UI/HeatPanel.uss",
+            "quote": "font-size: 18px;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UI/HeatPanel.uss": "9267ded8ee3b24bc5ced4dc093bb96e62f48de089b1cb323abd1a467e463ba0e"
+      }
+    },
+    {
+      "id": "settings",
+      "question": "What is the configured maximumHeat?",
+      "category": "synthetic-development",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Config/Heat.json",
+            "quote": "\"maximumHeat\": 120",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Config/Heat.json": "fd2086313be45892caa2d534ed675f299b04eb82ca6122938df7ff511800117c"
+      }
+    }
+  ]
+}

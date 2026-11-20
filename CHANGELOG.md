@@ -1,0 +1,17 @@
+# Changelog
+
+## 0.1.0 — unreleased
+
+This version remains an experimental, review-required local tool.
+
+- Discover Unity source and serialized assets; map C# declarations, GUIDs,
+  prefab references and supported overrides.
+- Build maintained workspace generations with lexical, structured and optional
+  local semantic retrieval, bounded source evidence and refresh recovery.
+- Return literal source excerpts or optional model-generated draft explanations.
+- Prepare wheel and source distributions with the bundled Roslyn analyzer,
+  package metadata, a version command, isolated installation verification and CI.
+
+Generated explanations require source review. Synthetic tests and development
+benchmarks do not establish production answer quality. See the production plan
+for the remaining release gates.
