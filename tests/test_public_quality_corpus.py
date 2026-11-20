@@ -11,11 +11,13 @@ from unity_rag.passage_evaluation import passage_labels
 class PublicQualityCorpusTests(unittest.TestCase):
     def test_published_questions_preserve_splits_review_identity_and_provenance(self):
         root = Path(__file__).resolve().parents[1] / 'benchmarks/quality_v1'
+        self.assertNotIn(b'\r\n', (root / 'manifest.json').read_bytes(), 'Freeze published manifests with LF bytes.')
         manifest = json.loads((root / 'manifest.json').read_text(encoding='utf-8'))
         _plan(manifest, 'quality-benchmark')
         total, held_out = 0, 0
         for project in manifest['projects']:
             self.assertRegex(project['revision'], r'^[0-9a-f]{40}$')
+            self.assertNotIn(b'\r\n', (root / project['dataset']).read_bytes(), 'Freeze published labels with LF bytes.')
             dataset = json.loads((root / project['dataset']).read_text(encoding='utf-8'))
             self.assertEqual(dataset['repository'], project['repository'])
             self.assertEqual(dataset['revision'], project['revision'])

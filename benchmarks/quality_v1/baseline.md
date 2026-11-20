@@ -1,7 +1,7 @@
 # Quality benchmark: Public Unity evidence baseline v1
 
 Input status: **completed**. Scope: **independent-candidate**.
-Frozen input SHA-256: `a569e70b17a221df7edbb20fc4b13a2256ba35f500db29127ec8e0475aec18b4`.
+Frozen input SHA-256: `2bb402c51a5d368b026253d3aea22d5fb6e9c6678f350d8d2e4535d8068d5bfd`.
 Implementation SHA-256: `baefbb7c3cb15eaf71b195e67fc73cc8c69ebab6c1f03ca3a08917520e92985e`.
 
 Counts include failed cases. Essential coverage requires every labeled group in the final evidence budget.
