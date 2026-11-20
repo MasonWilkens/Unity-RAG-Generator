@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "task_version": "greenhouse-synthetic-v1",
+  "items": [
+    {
+      "id": "minimum",
+      "kind": "rag_eval",
+      "question": "What is GreenhouseHeat SafeMinimum?",
+      "expected_sources": [
+        "Assets/Heat/GreenhouseHeat.cs"
+      ],
+      "sources": [
+        {
+          "path": "Assets/Heat/GreenhouseHeat.cs",
+          "start_line": 3,
+          "end_line": 8
+        }
+      ],
+      "required_facts": [
+        {
+          "id": "minimum",
+          "statement": "SafeMinimum is 12.",
+          "source_path": "Assets/Heat/GreenhouseHeat.cs",
+          "quote": "public const int SafeMinimum = 12;",
+          "exact_values": [
+            "12"
+          ]
+        }
+      ],
+      "setup_requirements": [],
+      "behavior_assertions": []
+    }
+  ]
+}

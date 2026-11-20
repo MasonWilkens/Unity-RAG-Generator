@@ -1,0 +1,5 @@
+{
+    "coolingProfile": "passive",
+    "maximumHeat": 120,
+    "ventingThreshold": 90
+}

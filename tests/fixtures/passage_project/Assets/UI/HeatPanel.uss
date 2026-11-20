@@ -1,0 +1,4 @@
+.venting-status {
+    color: rgb(40, 160, 240);
+    font-size: 18px;
+}

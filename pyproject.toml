@@ -1,19 +1,44 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools==80.9.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "unity-rag"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Local Unity project retrieval with source citations"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 dependencies = ["PyYAML>=6.0.2,<7"]
+keywords = ["unity", "rag", "retrieval", "csharp"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Documentation",
+]
+
+[project.urls]
+Repository = "https://github.com/MasonWilkens/Unity-RAG-Generator"
+Issues = "https://github.com/MasonWilkens/Unity-RAG-Generator/issues"
+
+[project.optional-dependencies]
+semantic = ["fastembed>=0.7,<1"]
+tokens = ["tiktoken>=0.7,<1"]
 
 [project.scripts]
 unity-rag = "unity_rag.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["unity_rag*"]
+namespaces = false
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.dynamic]
+version = {attr = "unity_rag.__version__"}
 
 [tool.setuptools.package-data]
 unity_rag = ["roslyn/*.cs", "roslyn/*.csproj", "roslyn/NuGet.Config"]

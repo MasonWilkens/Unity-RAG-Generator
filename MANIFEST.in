@@ -1,0 +1,16 @@
+# Explicit source archive: no local workspaces or historical evaluation reports.
+include LICENSE README.md pyproject.toml MANIFEST.in
+include CHANGELOG.md RELEASE.md PRODUCTION_READINESS_PLAN.md
+include DEVELOPMENT_PLAN.md REFINEMENT_PLAN.md BENCHMARK.md SEMANTIC_INDEXING.md OPENAI.md
+include RAG_CREATION_PLAN.md SHEET_INGESTION_DESIGN.md
+recursive-include unity_rag *.py
+include unity_rag/roslyn/Program.cs
+include unity_rag/roslyn/UnityRag.Analyzer.csproj
+include unity_rag/roslyn/NuGet.Config
+include scripts/verify_distribution.py scripts/install_smoke.py
+include requirements/release.txt requirements/test.txt
+prune tests
+graft tests/fixtures/retrieval_project
+global-exclude *.py[cod] .env .env.*
+prune unity_rag/roslyn/obj
+prune unity_rag/roslyn/bin

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "split": "heldout-same-project",
+  "scope": "Authored contract fixture; not independent real-project acceptance.",
+  "cases": [
+    {
+      "id": "heater-call",
+      "question": "How does EnableHeater decide?",
+      "expected_sources": [
+        "Assets/Heat/HeaterController.cs"
+      ],
+      "reviewed_source_sha256": {
+        "Assets/Heat/HeaterController.cs": "a78a2534fb16ad3e8e672346b59c23ff6042b6b16b75628558df1e9dce31961b"
+      },
+      "required_passages": [
+        {
+          "path": "Assets/Heat/HeaterController.cs",
+          "start_line": 8,
+          "end_line": 8,
+          "quote": "return heat.NeedsHeat(temperature);"
+        }
+      ]
+    }
+  ]
+}

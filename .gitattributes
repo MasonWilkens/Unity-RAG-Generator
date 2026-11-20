@@ -1,0 +1,2 @@
+# Reviewed source hashes must survive Windows and Linux checkouts unchanged.
+tests/fixtures/** text eol=lf

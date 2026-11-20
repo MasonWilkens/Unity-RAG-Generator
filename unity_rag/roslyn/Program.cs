@@ -1,10 +1,56 @@
 using System.Text.Json;
+using System.Security.Cryptography;
+using System.Text;
+using System.Globalization;
+using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 static class Program
 {
+    // Fingerprint the actual managed and native runtime/analyzer/reference files.
+    // Any unreadable or changing input disables cache reuse; analysis still runs.
+    static string? EnvironmentFingerprint(JsonElement data)
+    {
+        try
+        {
+            var hostRoot = Path.Combine(Path.GetDirectoryName(Environment.ProcessPath!)!, "host", "fxr");
+            var hostLibraries = Directory.Exists(hostRoot)
+                ? Directory.EnumerateFiles(hostRoot, "*", SearchOption.AllDirectories)
+                    .Where(p => Path.GetFileName(p).Contains("hostfxr", StringComparison.OrdinalIgnoreCase))
+                : Enumerable.Empty<string>();
+            var paths = ((string?)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") ?? "")
+                .Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
+                .Concat(data.GetProperty("references").EnumerateArray().Select(x => x.GetString()!))
+                .Concat(new[] { typeof(Program).Assembly.Location, typeof(Compilation).Assembly.Location,
+                                typeof(CSharpCompilation).Assembly.Location, Environment.ProcessPath! })
+                .Concat(new[] { Path.ChangeExtension(typeof(Program).Assembly.Location, ".deps.json"),
+                                Path.ChangeExtension(typeof(Program).Assembly.Location, ".runtimeconfig.json") }.Where(File.Exists))
+                .Concat(hostLibraries)
+                .Concat(Directory.EnumerateFiles(RuntimeEnvironment.GetRuntimeDirectory())
+                    .Where(p => p.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)
+                             || p.EndsWith(".so", StringComparison.OrdinalIgnoreCase)
+                             || p.EndsWith(".dylib", StringComparison.OrdinalIgnoreCase)))
+                .Select(Path.GetFullPath).Distinct(StringComparer.Ordinal).OrderBy(p => p, StringComparer.Ordinal);
+            using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+            void Add(string value) { var bytes = Encoding.UTF8.GetBytes(value); hash.AppendData(BitConverter.GetBytes(bytes.Length)); hash.AppendData(bytes); }
+            Add("unity-rag-toolchain-v1");
+            Add(RuntimeInformation.FrameworkDescription); Add(RuntimeInformation.OSDescription);
+            Add(RuntimeInformation.OSArchitecture.ToString()); Add(RuntimeInformation.ProcessArchitecture.ToString());
+            Add(CultureInfo.CurrentCulture.Name); Add(CultureInfo.CurrentUICulture.Name);
+            var files = new List<string>();
+            foreach (var path in paths)
+            {
+                using var input = File.OpenRead(path);
+                using var fileHash = SHA256.Create();
+                files.Add(path + ":" + Convert.ToHexString(fileHash.ComputeHash(input)));
+            }
+            foreach (var file in files.OrderBy(p => p, StringComparer.Ordinal)) Add(file);
+            return Convert.ToHexString(hash.GetHashAndReset()).ToLowerInvariant();
+        }
+        catch (Exception) { return null; }
+    }
     static string? Id(ISymbol? symbol)
     {
         if (symbol is null || symbol is ITypeSymbol { TypeKind: TypeKind.Error }) return null;
@@ -57,6 +103,7 @@ static class Program
         {
             using var input = JsonDocument.Parse(Console.In.ReadToEnd());
             var data = input.RootElement;
+            var environmentBefore = EnvironmentFingerprint(data);
             var defines = data.GetProperty("defines").EnumerateArray().Select(x => x.GetString()!).ToArray();
             if (!LanguageVersionFacts.TryParse(data.GetProperty("language_version").GetString(), out var language))
                 throw new ArgumentException("Unsupported C# language version.");
@@ -149,8 +196,10 @@ static class Program
                     }
                 }
             }
+            var environmentAfter = EnvironmentFingerprint(data);
             Console.Write(JsonSerializer.Serialize(new { schema_version = 1,
                 roslyn_version = typeof(CSharpCompilation).Assembly.GetName().Version?.ToString(),
+                environment_fingerprint = environmentBefore == environmentAfter ? environmentBefore : null,
                 declarations, edges, diagnostics, conditions }));
             return 0;
         }

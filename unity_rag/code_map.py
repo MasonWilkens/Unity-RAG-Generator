@@ -1,4 +1,6 @@
 """Run the bundled Roslyn helper against the discovery snapshot, never project builds."""
+from contextlib import closing
+from .workspace import resolve_workspace, require_writable
 import hashlib
 import json
 import os
@@ -62,7 +64,118 @@ def _read_snapshot_file(root, entry):
     return raw.decode("utf-8-sig")
 
 
-def map_code(workspace, defines=(), references=(), language_version="10"):
+def _group_fingerprints(files, defines, references, language_version):
+    groups = {}
+    for f in files:
+        groups.setdefault(f['assembly'], []).append({k:f[k] for k in ('path','assembly','sha256','ownership')})
+    return {group: hashlib.sha256(json.dumps({'files':rows, 'defines':list(defines), 'references':list(references),
+                                             'language_version':language_version}, sort_keys=True).encode()).hexdigest()
+            for group, rows in groups.items()}
+
+
+def _partition_code(report, files):
+    """Fail closed if any cached record cannot be assigned to its source group."""
+    paths = {f['path']:f['assembly'] for f in files}
+    if len(paths) != len(files):
+        return None
+    groups = set(paths.values())
+    result = {g:{k:[] for k in ('declarations','edges','diagnostics','conditions')} for g in groups}
+    try:
+        for key in ('declarations','edges','conditions','diagnostics'):
+            for row in report[key]:
+                if key == 'diagnostics':
+                    group = row['assembly']
+                    if row.get('path') is not None and paths.get(row['path']) != group:
+                        return None
+                else:
+                    path = row['path'] if key == 'conditions' else row['location']['path']
+                    group = paths[path]
+                    if key == 'declarations' and row['assembly'] != group:
+                        return None
+                result[group][key].append(row)
+    except (KeyError, TypeError):
+        return None
+    return result
+
+
+def _supported_assembly_groups(declarations):
+    """Allow only unambiguous asmdefs with default settings and no dependencies."""
+    if not isinstance(declarations, list):
+        return None
+    defaults = {'references':[], 'rootNamespace':'', 'includePlatforms':[], 'excludePlatforms':[],
+                'allowUnsafeCode':False, 'overrideReferences':False, 'precompiledReferences':[],
+                'autoReferenced':True, 'defineConstraints':[], 'versionDefines':[], 'noEngineReferences':False}
+    groups, folded = set(), {'assembly-csharp','assembly-csharp-editor'}
+    for entry in declarations:
+        if not isinstance(entry, dict) or not isinstance(entry.get('path'), str) or not entry['path'].endswith('.asmdef'):
+            return None
+        value = entry.get('declaration')
+        if not isinstance(value, dict) or set(value) - ({'name'} | set(defaults)):
+            return None
+        name = value.get('name')
+        if not isinstance(name, str) or not re.fullmatch(r'[A-Za-z_][A-Za-z_0-9.-]*', name):
+            return None
+        if name.casefold() in folded:
+            return None
+        if any(value.get(key, expected) != expected or type(value.get(key, expected)) is not type(expected)
+               for key, expected in defaults.items()):
+            return None
+        groups.add(name)
+        folded.add(name.casefold())
+    return groups
+
+
+def _reuse_assembly_groups(helper, files, previous, defines, references, language_version, declarations, diagnostics):
+    declared = _supported_assembly_groups(declarations)
+    if (not previous or declared is None or diagnostics or previous.get('assembly_declarations') != declarations
+            or previous.get('mapping_diagnostics') or previous.get('schema_version') != 1
+            or previous.get('defines') != list(defines) or previous.get('references') != list(references)
+            or previous.get('language_version') != language_version):
+        return None
+    allowed = {'Assembly-CSharp','Assembly-CSharp-Editor'} | declared
+    old = previous.get('files')
+    if (not isinstance(old, list) or not old or not files
+            or any(f.get('assembly') not in allowed
+                   or f.get('ownership') != ('declared_boundary' if f.get('assembly') in declared else 'default_approximation')
+                   for f in old + files)):
+        return None
+    try:
+        old_hashes = _group_fingerprints(old, defines, references, language_version)
+        new_hashes = _group_fingerprints(files, defines, references, language_version)
+    except (KeyError, TypeError):
+        return None
+    if old_hashes != previous.get('group_fingerprints'):
+        return None
+    unchanged = {g for g in new_hashes if old_hashes.get(g) == new_hashes[g]}
+    if not unchanged:
+        return None
+    old_parts = _partition_code(previous, old)
+    if old_parts is None:
+        return None
+    fingerprint = previous.get('environment_fingerprint')
+    if not isinstance(fingerprint, str) or not re.fullmatch(r'[0-9a-f]{64}', fingerprint):
+        return None
+    def analyze(selected):
+        request = {'files':selected,'defines':list(defines),'references':list(references),'language_version':language_version}
+        return json.loads(_run(['dotnet',str(helper)], input=json.dumps(request)))
+    # The selected analyzer itself reports the fingerprint of its loaded toolchain.
+    changed_files = [f for f in files if f['assembly'] not in unchanged]
+    partial = analyze(changed_files)
+    if (partial.get('environment_fingerprint') != fingerprint or partial.get('schema_version') != 1
+            or partial.get('roslyn_version') != previous.get('roslyn_version')):
+        return None
+    new_parts = _partition_code(partial, changed_files)
+    if new_parts is None:
+        return None
+    output = {'schema_version':1, 'roslyn_version':partial['roslyn_version'], 'environment_fingerprint':fingerprint}
+    for key in ('declarations','edges','diagnostics','conditions'):
+        output[key] = [item for group in new_hashes for item in
+                       (old_parts[group][key] if group in unchanged else new_parts[group][key])]
+    return output
+
+
+def map_code(workspace, defines=(), references=(), language_version="10", analyzer_workspace=None, reuse_report=None):
+    workspace = require_writable(workspace)
     inventory = status(workspace)
     root = Path(inventory["project"])
     destination = Path(workspace).resolve()
@@ -119,20 +232,23 @@ def map_code(workspace, defines=(), references=(), language_version="10"):
             ownership = "default_approximation"
         files.append({"path": path, "text": texts[path], "assembly": assembly,
                       "sha256": entry["sha256"], "ownership": ownership})
-    helper = _helper(destination)
+    helper = _helper(analyzer_workspace or destination)
     request = {"files": files, "defines": list(defines), "references": references,
                "language_version": language_version}
-    result = json.loads(_run(["dotnet", str(helper)], input=json.dumps(request)))
+    result = _reuse_assembly_groups(helper, files, reuse_report, defines, references, language_version, declarations, diagnostics)
+    if result is None:
+        result = json.loads(_run(["dotnet", str(helper)], input=json.dumps(request)))
     result.update(project=str(root), discovery_scanned_at=inventory["scanned_at"],
                   defines=list(defines), references=references, language_version=language_version,
                   files=[{k: v for k, v in f.items() if k != "text"} for f in files],
                   assembly_declarations=declarations, mapping_diagnostics=diagnostics,
+                  group_fingerprints=_group_fingerprints(files, defines, references, language_version),
                   semantic_scope="Bindings are relative to supplied defines, per-assembly source and host .NET references; Unity compilation is not reproduced. Source assemblies are analyzed separately. Cross-assembly bindings require explicit DLL references.",
                   coverage_note="Inactive preprocessor branches are preserved as text, not declarations. Unity serialized fields are candidates; supported field-type rules are not validated.")
     # Recheck the inventory marker before replacing the saved map.
     if status(workspace)["scanned_at"] != inventory["scanned_at"]:
         raise ValueError("Discovery changed during code mapping. Retry the command.")
-    with sqlite3.connect(destination / "inventory.sqlite3") as db:
+    with closing(sqlite3.connect(destination / "inventory.sqlite3")) as db, db:
         db.execute("CREATE TABLE IF NOT EXISTS code_declarations (id TEXT, path TEXT, start INTEGER, name TEXT, qualified_name TEXT, data TEXT, PRIMARY KEY(id,path,start))")
         db.execute("CREATE INDEX IF NOT EXISTS code_names ON code_declarations(name)")
         db.execute("CREATE TABLE IF NOT EXISTS code_edges (target TEXT, source TEXT, resolution TEXT, data TEXT)")
@@ -149,9 +265,10 @@ def map_code(workspace, defines=(), references=(), language_version="10"):
 
 
 def code_report(workspace):
+    workspace = resolve_workspace(workspace)
     inventory = status(workspace)
     database = Path(workspace).resolve() / "inventory.sqlite3"
-    with sqlite3.connect(database.as_uri() + "?mode=ro", uri=True) as db:
+    with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True)) as db, db:
         row = db.execute("SELECT value FROM metadata WHERE key='code_report'").fetchone()
     if not row:
         raise ValueError("No code map found. Run map-code first.")

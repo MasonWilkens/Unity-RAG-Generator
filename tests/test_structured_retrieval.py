@@ -1,3 +1,4 @@
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -53,6 +54,24 @@ class StructuredRetrievalTests(unittest.TestCase):
         self.assertEqual(len(method), 1)
         self.assertEqual(method[0]["match"], "exact_alias")
 
+    def test_qualified_method_without_signature_preserves_overloads(self):
+        results = retrieve(self.workspace, 'Game.Targeting.FindTarget', mode='exact')['results']
+        self.assertEqual({r['entity_id'] for r in results}, {
+            'Assembly-CSharp::M:Game.Targeting.FindTarget(System.Int32)',
+            'Assembly-CSharp::M:Game.Targeting.FindTarget(System.String)'})
+        explicit = retrieve(self.workspace, 'Game.Targeting.FindTarget(int)', mode='exact')['results']
+        self.assertEqual(len(explicit), 1)
+        self.assertTrue(explicit[0]['entity_id'].endswith('(System.Int32)'))
+        for query in ('Game.Targeting.Find', 'Game.Targeting.FindTarget()',
+                      'Game.Targeting.FindTarget%', 'Assets/Enemy'):
+            self.assertEqual(retrieve(self.workspace, query, mode='exact')['results'], [])
+        upper = retrieve(self.workspace, 'GAME.ENEMY.CANATTACK', mode='exact')['results']
+        self.assertEqual(len(upper), 1)
+        self.assertEqual(upper[0]['entity_id'], 'Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)')
+        before = retrieve(self.workspace, 'Game.Enemy.CanAttack(float)', mode='references')['results']
+        after = retrieve(self.workspace, 'Game.Enemy.CanAttack', mode='references')['results']
+        self.assertEqual(before, after)
+
     def test_structured_relations_preserve_uncertainty(self):
         result = retrieve(self.workspace, "Assets/Enemy.cs", mode="used-by")
         self.assertTrue(any(e["kind"] == "uses_script" for e in result["results"]))
@@ -79,7 +98,10 @@ class StructuredRetrievalTests(unittest.TestCase):
         overrides = retrieve(self.workspace, "damage", kind="prefab_override")["results"]
         self.assertEqual(overrides[0]["evidence_type"], "derived_interpretation")
         self.assertEqual(overrides[0]["detail"]["effective_value"], "40")
-        self.assertEqual(len(overrides[0]["sources"]), 2)
+        direct = [s for s in overrides[0]["sources"] if s.get("role") != "reference_dependency"]
+        dependencies = [s for s in overrides[0]["sources"] if s.get("role") == "reference_dependency"]
+        self.assertEqual(len(direct), 2)
+        self.assertTrue(any(s["path"] == "Assets/Goblin.prefab.meta" for s in dependencies))
 
     def test_query_safety_limits_and_empty_results(self):
         for query in ('"', "!!!", "qzxnonexistenttoken"):
@@ -93,7 +115,7 @@ class StructuredRetrievalTests(unittest.TestCase):
         clone = self.base / "Stale"
         clone.mkdir(exist_ok=True)
         shutil.copyfile(self.workspace / "inventory.sqlite3", clone / "inventory.sqlite3")
-        with sqlite3.connect(clone / "inventory.sqlite3") as db:
+        with closing(sqlite3.connect(clone / "inventory.sqlite3")) as db, db:
             value = json.loads(db.execute("SELECT value FROM metadata WHERE key='report'").fetchone()[0])
             value["scanned_at"] = "changed"
             db.execute("UPDATE metadata SET value=? WHERE key='report'", (json.dumps(value),))

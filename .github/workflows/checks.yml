@@ -1,0 +1,90 @@
+name: Release checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }} / .NET ${{ matrix.dotnet }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            python: '3.10'
+            dotnet: 8
+          - os: ubuntu-22.04
+            python: '3.12'
+            dotnet: 8
+          - os: windows-2022
+            python: '3.12'
+            dotnet: 10
+          - os: ubuntu-24.04
+            python: '3.13'
+            dotnet: 10
+    env:
+      PYTHONUTF8: '1'
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+      DOTNET_MULTILEVEL_LOOKUP: '0'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Configure isolated SDK and tokenizer paths
+        shell: python
+        run: |
+          import os
+          from pathlib import Path
+          temporary = Path(os.environ['RUNNER_TEMP'])
+          values = {'DOTNET_INSTALL_DIR': temporary / 'release-dotnet',
+                    'DOTNET_ROOT': temporary / 'release-dotnet',
+                    'TIKTOKEN_CACHE_DIR': temporary / 'tiktoken-cache'}
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as output:
+              for name, value in values.items():
+                  print(f'{name}={value}', file=output)
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6
+        with:
+          dotnet-version: '${{ matrix.dotnet }}.0.x'
+      - name: Install build and test prerequisites
+        run: python -m pip install -r requirements/release.txt -r requirements/test.txt
+      - name: Run full suite without skipped tests
+        run: python scripts/run_checks.py --jobs 2 --dotnet-major ${{ matrix.dotnet }} --output artifacts/tests
+      - name: Build source archive and wheel from that archive
+        run: python -m build --outdir dist
+      - name: Check distribution metadata
+        run: python -m twine check --strict dist/*
+      - name: Verify clean wheel and source installs
+        run: python scripts/verify_distribution.py --report artifacts/install.json
+      - name: Verify optional dependency installs without downloading models
+        if: matrix.os == 'windows-2022' && matrix.python == '3.12'
+        run: python scripts/verify_distribution.py --extras semantic,tokens --report artifacts/install-extras.json
+      - name: Retain validation reports
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: checks-${{ matrix.os }}-py${{ matrix.python }}-net${{ matrix.dotnet }}
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Retain locally installable release candidates
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: packages-${{ matrix.os }}-py${{ matrix.python }}-net${{ matrix.dotnet }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14

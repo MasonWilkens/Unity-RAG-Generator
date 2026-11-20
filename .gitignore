@@ -4,6 +4,7 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+artifacts/
 .unity-rag/
 .env
 .env.*
@@ -11,3 +12,32 @@ dist/
 
 **/obj/
 **/bin/
+
+# Private pilot material and historical project excerpts stay local.
+pilot/
+# Publish only explicitly selected repository documentation and generic examples.
+/*.md
+!/README.md
+!/DEVELOPMENT_PLAN.md
+!/BENCHMARK.md
+!/CHANGELOG.md
+!/OPENAI.md
+!/PRODUCTION_READINESS_PLAN.md
+!/RELEASE.md
+!/REFINEMENT_PLAN.md
+!/SEMANTIC_INDEXING.md
+!/RAG_CREATION_PLAN.md
+!/SHEET_INGESTION_DESIGN.md
+/*.discovery.example.json
+tests/evaluation/*.json
+tests/evaluation/*.md
+!tests/evaluation/README.md
+!tests/evaluation/baseline_v1.json
+!tests/evaluation/retrieval_v1.json
+!tests/evaluation/greenhouse-synthetic-backlog-v1.json
+!tests/evaluation/greenhouse-synthetic-source-v1.json
+!tests/evaluation/passage-development-v1.json
+!tests/evaluation/grounding_adversarial_v1.json
+!tests/evaluation/stage6_fixture_acceptance_v1.json
+!tests/evaluation/release-ci-*.json
+!tests/evaluation/release-ci-*.md
