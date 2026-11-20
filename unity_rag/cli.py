@@ -227,6 +227,14 @@ def main():
     freeze.add_argument('manifest')
     freeze.add_argument('--baseline', required=True)
     freeze.add_argument('--output', required=True)
+    quality_freeze = commands.add_parser('freeze-quality-benchmark', help='Freeze source-reviewed projects, labels and budgets before evaluation')
+    quality_freeze.add_argument('manifest')
+    quality_freeze.add_argument('--output', required=True)
+    quality = commands.add_parser('evaluate-quality', help='Run frozen evidence quality cases and retain a failure report')
+    quality.add_argument('frozen')
+    quality.add_argument('--output', required=True, help='New JSON report path; existing reports are never replaced')
+    quality.add_argument('--markdown', help='Failure report path; defaults to the JSON path with .md suffix')
+    quality.add_argument('--workspaces', help='Optional JSON mapping of project names to rebuilt candidate workspaces')
     answer = commands.add_parser("ask", help="Answer from verified project evidence using a selected provider")
     answer.add_argument("question")
     answer.add_argument("--workspace", required=True)
@@ -485,6 +493,23 @@ def main():
         elif args.command == 'freeze-benchmark':
             from .benchmark import freeze_benchmark
             print(json.dumps(freeze_benchmark(args.manifest, args.output, args.baseline), indent=2))
+        elif args.command == 'freeze-quality-benchmark':
+            from .quality_benchmark import freeze_quality_benchmark
+            result = freeze_quality_benchmark(args.manifest, args.output)
+            print(json.dumps({'frozen': str(Path(args.output).resolve()), 'projects': len(result['projects']),
+                              'questions': sum(p['questions'] for p in result['projects'])}, indent=2))
+        elif args.command == 'evaluate-quality':
+            from .quality_benchmark import evaluate_quality_benchmark, write_quality_report
+            destination = Path(args.output).resolve()
+            markdown = Path(args.markdown).resolve() if args.markdown else destination.with_suffix('.md')
+            if destination == markdown or destination.exists() or markdown.exists():
+                raise ValueError('Choose distinct, new JSON and Markdown report paths.')
+            result = evaluate_quality_benchmark(args.frozen, workspaces=args.workspaces)
+            output, markdown = write_quality_report(result, destination, markdown)
+            print(json.dumps({'status': result['status'], 'retrieval_gate_passed': result['retrieval_gate_passed'],
+                              'production_gate_passed': result['production_gate_passed'],
+                              'report': str(output), 'failures': str(markdown)}, indent=2))
+            return 2 if result['status'] == 'invalid' else (0 if result['retrieval_gate_passed'] else 1)
         elif args.command == 'benchmark':
             from .benchmark import benchmark as run_benchmark
             print(json.dumps(run_benchmark(args.manifest, mode=args.mode, limit=args.limit, expand=args.expand), indent=2))

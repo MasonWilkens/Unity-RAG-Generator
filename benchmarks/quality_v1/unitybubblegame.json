@@ -1,0 +1,394 @@
+{
+  "schema_version": 2,
+  "split": "held-out",
+  "repository": "https://github.com/superzhan/UnityBubbleGame",
+  "revision": "6232673b440396cab240a49c8b9024d81dac9ff8",
+  "label_review": {
+    "reviewer": "Codex",
+    "kind": "agent",
+    "rationale": "Source-inspected at the pinned revision before retrieval evaluation. Exact physical ranges and unique literal passages checked against file hashes. Convenience sample; not independent human approval."
+  },
+  "cases": [
+    {
+      "id": "recycle-delay",
+      "question": "How long does EffectPool Recycle wait before despawning a particle?",
+      "category": "timing",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/EffectPool.cs",
+            "quote": "\t\tfloat time = particle.duration;\n\t\tyield return new WaitForSeconds(time +0.1f);\n\t\tpool.Despawn (particle.transform);",
+            "start_line": 48,
+            "end_line": 50
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/EffectPool.cs": "42c57cc69d9c7e94938a0c39c1559977bebbb949a1f4902f466ee3db14c07019"
+      }
+    },
+    {
+      "id": "effect-guards",
+      "question": "What missing objects cause EffectPool Play to return before playing a particle?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/EffectPool.cs",
+            "quote": "\t\tTransform particleTran = pool.Spawn (name);\n\t\tif (particleTran == null) {\n\t\t\treturn;\n\t\t}\n\n\t\tParticleSystem particle = particleTran.GetComponent<ParticleSystem> ();\n\t\tif (particle == null) {\n\t\t\treturn;\n\t\t}",
+            "start_line": 31,
+            "end_line": 39
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/EffectPool.cs": "42c57cc69d9c7e94938a0c39c1559977bebbb949a1f4902f466ee3db14c07019"
+      }
+    },
+    {
+      "id": "flow-motion",
+      "question": "Where does IEPlayFlowEffect move its particle and when does it return it to the pool?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/EffectPool.cs",
+            "quote": "\t\tparticleTran.DOMove (new Vector3 (-200, 360, 0f), 0.7f);\n\n\t\tyield return  new WaitForSeconds (1f);\n\n\t\tpool.Despawn (particleTran);",
+            "start_line": 88,
+            "end_line": 92
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/EffectPool.cs": "42c57cc69d9c7e94938a0c39c1559977bebbb949a1f4902f466ee3db14c07019"
+      }
+    },
+    {
+      "id": "game-reset",
+      "question": "How does InitGame reset the score and old bubbles, and how many random bubbles does it create?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\tthis.score = 0;\n\t\tthis.scoreMulti = 1;\n\n\t\tfor (int i=0; i<bubbleList.Count; ++i) {\n\t\t\tpool.Despawn(bubbleList[i].transform);\n\t\t}\n\t\tbubbleList.Clear ();",
+            "start_line": 62,
+            "end_line": 68
+          }
+        ],
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\tList<Transform> list = new List<Transform> ();\n\t\tfor (int i=0; i<90; ++i) {\n\t\t\tTransform tran= CreateNewRandomBubble();\n\t\t\tlist.Add(tran);\n\t\t}\n\t\tSortView (list);",
+            "start_line": 70,
+            "end_line": 75
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/BubbleManager.cs": "ddc8504ac27dbde20671ab6f4ad64e26247a01d475e501a48b56852eb1dd0a41"
+      }
+    },
+    {
+      "id": "random-types",
+      "question": "How does CreateNewRandomBubble choose a bubble ID and initialize the spawned component?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\tint type = Random.value > 0.9 ? 30 : 10;\n\n\t\tint randonID =type+ Random.Range (1, 6);\n\t\t//Debug.Log (randonID);\n\t\tTransform newBubble = GetBubbleTran (randonID);\n\t\tnewBubble.parent = transform;\n\n\t\tBubbleUnit bubble=newBubble.GetComponent<BubbleUnit> ();\n\t\tbubble.SetData (randonID);\n\t\tbubbleList.Add(bubble);",
+            "start_line": 83,
+            "end_line": 92
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/BubbleManager.cs": "ddc8504ac27dbde20671ab6f4ad64e26247a01d475e501a48b56852eb1dd0a41"
+      }
+    },
+    {
+      "id": "score-multiplier",
+      "question": "What score multipliers does SetScoreMulti assign to chains of five and six bubbles?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\t}else if (linkCount == 5) {\n\t\t\tthis.scoreMulti =2f;\n\n\t\t}else if (linkCount == 6) {\n\t\t\tthis.scoreMulti =2.5f;",
+            "start_line": 194,
+            "end_line": 198
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/BubbleManager.cs": "ddc8504ac27dbde20671ab6f4ad64e26247a01d475e501a48b56852eb1dd0a41"
+      }
+    },
+    {
+      "id": "special-bubbles",
+      "question": "What special bubble IDs are chosen when CreateSpecialBubble receives counts of five and six?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\t} else if (cleanCount == 5) {\n\t\t\trandomID = 24;\n\t\t} else if (cleanCount == 6) {\n\t\t\trandomID = 23;",
+            "start_line": 222,
+            "end_line": 225
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/BubbleManager.cs": "ddc8504ac27dbde20671ab6f4ad64e26247a01d475e501a48b56852eb1dd0a41"
+      }
+    },
+    {
+      "id": "recycle-score",
+      "question": "How does RecycleBubble avoid recycling a bubble with remaining hits, and how is the awarded score calculated?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\tif (bubble.hitCount > 0) {\n\t\t\treturn;\n\t\t}\n\n\t\tthis.score += (int)( bubble.SingleScore * this.scoreMulti);",
+            "start_line": 253,
+            "end_line": 257
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/BubbleManager.cs": "ddc8504ac27dbde20671ab6f4ad64e26247a01d475e501a48b56852eb1dd0a41"
+      }
+    },
+    {
+      "id": "touch-test",
+      "question": "How does IsTouch decide that two bubbles are close enough to connect?",
+      "category": "physics",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\tfloat distance = Vector3.Distance (a.transform.localPosition, b.transform.localPosition);\n\n\t\tfloat radiusA = a.bubCollider.radius;\n\t\tfloat radiusB = b.bubCollider.radius;\n\n\t\tfloat offset = 5f;\n\n\t\tfloat calDistance = radiusA + radiusB + offset;\n\t\tif (calDistance >= distance) {",
+            "start_line": 331,
+            "end_line": 339
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/BubbleManager.cs": "ddc8504ac27dbde20671ab6f4ad64e26247a01d475e501a48b56852eb1dd0a41"
+      }
+    },
+    {
+      "id": "same-color-filter",
+      "question": "How does GetLinkBubble remove candidates whose color IDs differ from the selected bubble?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/BubbleManager.cs",
+            "quote": "\t\twhile (index <tempList.Count) {\n\t\t    if(IDTool.GetTypeID( tempList[index].ID ) != IDTool.GetTypeID( bubble.ID))\n\t\t\t{\n\t\t\t\ttempList.RemoveAt(index);\n\t\t\t}else\n\t\t\t{\n\t\t\t\tindex++;\n\t\t\t}\n\t\t}",
+            "start_line": 286,
+            "end_line": 294
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/BubbleManager.cs": "ddc8504ac27dbde20671ab6f4ad64e26247a01d475e501a48b56852eb1dd0a41"
+      }
+    },
+    {
+      "id": "freeze-setup",
+      "question": "How does FreezeBubbleUnit SetData initialize the hit count and show its frozen overlay?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/FreezeBubbleUnit.cs",
+            "quote": "\t\thitCount = 2;// Random.Range (2, 6);\n\t\tHitText.text = hitCount.ToString ();\n\n\t\tfreezeImg.gameObject.SetActive(true);",
+            "start_line": 17,
+            "end_line": 20
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/FreezeBubbleUnit.cs": "db0ca8cebc14ff378ef035a7c9b1f4d9c6ae517de7e78737429d488830520208"
+      }
+    },
+    {
+      "id": "freeze-thaw",
+      "question": "When does FreezeBubbleUnit hide its frozen overlay after a hit?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/FreezeBubbleUnit.cs",
+            "quote": "\t\tbase.ReduceHitCount ();\n\n\t\tHitText.text = hitCount.ToString ();\n\n\t\tif (hitCount < 1) {\n\t\t\tfreezeImg.gameObject.SetActive(false);\n\t\t}",
+            "start_line": 25,
+            "end_line": 31
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/FreezeBubbleUnit.cs": "db0ca8cebc14ff378ef035a7c9b1f4d9c6ae517de7e78737429d488830520208"
+      }
+    },
+    {
+      "id": "stone-vs-freeze",
+      "question": "How do StoneBubbleUnit and FreezeBubbleUnit differ in their initial hit-count assignment?",
+      "category": "cross-file",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Bubble/StoneBubbleUnit.cs",
+            "quote": "\t\thitCount = Random.Range (2, 6);\n\t\tHitText.text = hitCount.ToString ();",
+            "start_line": 15,
+            "end_line": 16
+          }
+        ],
+        [
+          {
+            "path": "Assets/Script/Bubble/FreezeBubbleUnit.cs",
+            "quote": "\t\thitCount = 2;// Random.Range (2, 6);\n\t\tHitText.text = hitCount.ToString ();",
+            "start_line": 17,
+            "end_line": 18
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Bubble/StoneBubbleUnit.cs": "178d70b4cd6a766f263b94c1f3ba3150a53433895807538c511ca8a6f313302b",
+        "Assets/Script/Bubble/FreezeBubbleUnit.cs": "db0ca8cebc14ff378ef035a7c9b1f4d9c6ae517de7e78737429d488830520208"
+      }
+    },
+    {
+      "id": "highest-score",
+      "question": "Which PlayerPrefs key does PlayerData use to read and write the highest score?",
+      "category": "persistence",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Public/PlayerData.cs",
+            "quote": "\t\treturn PlayerPrefs.GetInt (\"HightestScore\",0);",
+            "start_line": 37,
+            "end_line": 37
+          }
+        ],
+        [
+          {
+            "path": "Assets/Script/Public/PlayerData.cs",
+            "quote": "\t\tPlayerPrefs.SetInt (\"HightestScore\",score);",
+            "start_line": 41,
+            "end_line": 41
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Public/PlayerData.cs": "c1dd78af1f2b1314bea1121ab12edfca1f1af6ff5cef9fef6e178851ec4ffe5b"
+      }
+    },
+    {
+      "id": "record-high-score",
+      "question": "When does PlayerData AddRecord update the highest score?",
+      "category": "persistence",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Public/PlayerData.cs",
+            "quote": "\t\tif (score > GetHightestScore ()) {\n\t\t\tSetHightestScore(score);\n\t\t}",
+            "start_line": 80,
+            "end_line": 82
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Public/PlayerData.cs": "c1dd78af1f2b1314bea1121ab12edfca1f1af6ff5cef9fef6e178851ec4ffe5b"
+      }
+    },
+    {
+      "id": "record-limit",
+      "question": "Where does PlayerData GetRecord stop adding parsed scores from saved data?",
+      "category": "persistence",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Script/Public/PlayerData.cs",
+            "quote": "\t\tfor (int i=0; i<recordArry.Length; ++i) {\n\t\t\tint re = int.Parse(recordArry[i]); \n\t\t\trecordList.Add(re);\n\n\t\t\tif(i>3)\n\t\t\t\tbreak;",
+            "start_line": 95,
+            "end_line": 100
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Script/Public/PlayerData.cs": "c1dd78af1f2b1314bea1121ab12edfca1f1af6ff5cef9fef6e178851ec4ffe5b"
+      }
+    },
+    {
+      "id": "binary-prefab-reference",
+      "question": "What exact HitText object reference is serialized in Assets/Prefabs/Bubble/FreezeBubbleUnit.prefab?",
+      "category": "unsupported-asset",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    },
+    {
+      "id": "binary-pool-setting",
+      "question": "What exact serialized limitAmount is stored in Assets/Prefabs/Model/BubblePool.prefab?",
+      "category": "unsupported-asset",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    },
+    {
+      "id": "missing-symbol-a",
+      "question": "Locate QuantumBananaTelemetryBridge.",
+      "category": "absent-symbol",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    },
+    {
+      "id": "missing-symbol-b",
+      "question": "Locate FrostDragonNetworkReplicator.",
+      "category": "absent-symbol",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    }
+  ]
+}

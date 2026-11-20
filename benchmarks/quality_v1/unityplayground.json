@@ -1,0 +1,407 @@
+{
+  "schema_version": 2,
+  "split": "development",
+  "repository": "https://github.com/Unity-Technologies/UnityPlayground",
+  "revision": "1784663d1790de7015b3adaa29e57c3276a8f19d",
+  "label_review": {
+    "reviewer": "Codex",
+    "kind": "agent",
+    "rationale": "Source-inspected at the pinned revision before retrieval evaluation. Exact physical ranges and unique literal passages checked against file hashes. Convenience sample; not independent human approval."
+  },
+  "cases": [
+    {
+      "id": "health-cap",
+      "question": "How does ModifyHealth prevent healing beyond maximum health?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs",
+            "quote": "            if (health + amount > maxHealth) amount = maxHealth - health;\n\n            health += amount;",
+            "start_line": 49,
+            "end_line": 51
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs": "d46bade812bc7987f992c23605482b584d00e1b1a336dafdaefde8e12f728a30"
+      }
+    },
+    {
+      "id": "death",
+      "question": "When does HealthSystemAttribute destroy its GameObject?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs",
+            "quote": "            if (health <= 0) Destroy(gameObject);",
+            "start_line": 59,
+            "end_line": 59
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs": "d46bade812bc7987f992c23605482b584d00e1b1a336dafdaefde8e12f728a30"
+      }
+    },
+    {
+      "id": "player-tags",
+      "question": "How does HealthSystemAttribute map Player and Player2 tags to player numbers, and what happens for other tags?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs",
+            "quote": "                case \"Player\":\n                    playerNumber = 0;\n                    break;\n                case \"Player2\":\n                    playerNumber = 1;\n                    break;\n                default:\n                    playerNumber = -1;\n                    break;",
+            "start_line": 25,
+            "end_line": 33
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs": "d46bade812bc7987f992c23605482b584d00e1b1a336dafdaefde8e12f728a30"
+      }
+    },
+    {
+      "id": "health-ui",
+      "question": "Under what conditions does ModifyHealth update the player health UI?",
+      "category": "relationships",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs",
+            "quote": "            if (ui != null\n                && playerNumber != -1)\n                ui.ChangeHealth(amount, playerNumber);",
+            "start_line": 54,
+            "end_line": 56
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Attributes/HealthSystemAttribute.cs": "d46bade812bc7987f992c23605482b584d00e1b1a336dafdaefde8e12f728a30"
+      }
+    },
+    {
+      "id": "repeat-initial",
+      "question": "How does ConditionRepeat account for its initial delay before the first event?",
+      "category": "timing",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Conditions/ConditionRepeat.cs",
+            "quote": "            timeLastEventFired = Time.time + initialDelay - frequency;",
+            "start_line": 17,
+            "end_line": 17
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Conditions/ConditionRepeat.cs": "75bc3e874792eb3b0ee1aae03ae4156ad9d13f14d72368a5bb1be74c18852888"
+      }
+    },
+    {
+      "id": "repeat-next",
+      "question": "When does ConditionRepeat execute actions again and reset its event timestamp?",
+      "category": "timing",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Conditions/ConditionRepeat.cs",
+            "quote": "            if (Time.time >= timeLastEventFired + frequency)\n            {\n                ExecuteAllActions(null);\n                timeLastEventFired = Time.time;",
+            "start_line": 23,
+            "end_line": 26
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Conditions/ConditionRepeat.cs": "75bc3e874792eb3b0ee1aae03ae4156ad9d13f14d72368a5bb1be74c18852888"
+      }
+    },
+    {
+      "id": "shot-cooldown",
+      "question": "What input and cooldown conditions allow ObjectShooter to fire, and when does it record the last shot time?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs",
+            "quote": "            if (Keyboard.current[keyToPress].IsPressed()\n                && Time.time >= timeOfLastSpawn + creationRate)",
+            "start_line": 47,
+            "end_line": 48
+          }
+        ],
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs",
+            "quote": "                timeOfLastSpawn = Time.time;",
+            "start_line": 69,
+            "end_line": 69
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs": "0f9601b974d858cd13ef8d0b942dda09e6eff556c1b636565e549f69c4915f88"
+      }
+    },
+    {
+      "id": "shot-direction",
+      "question": "How does ObjectShooter decide whether the shot direction follows the object rotation?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs",
+            "quote": "                Vector2 actualBulletDirection = relativeToRotation\n                    ? Quaternion.Euler(0, 0, transform.eulerAngles.z) * shootDirection\n                    : shootDirection;",
+            "start_line": 50,
+            "end_line": 52
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs": "0f9601b974d858cd13ef8d0b942dda09e6eff556c1b636565e549f69c4915f88"
+      }
+    },
+    {
+      "id": "shot-force",
+      "question": "When and how does ObjectShooter apply an impulse to the spawned object?",
+      "category": "physics",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs",
+            "quote": "                Rigidbody2D rigidbody2D = newObject.GetComponent<Rigidbody2D>();\n                if (rigidbody2D != null) rigidbody2D.AddForce(actualBulletDirection * shootSpeed, ForceMode2D.Impulse);",
+            "start_line": 60,
+            "end_line": 61
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs": "0f9601b974d858cd13ef8d0b942dda09e6eff556c1b636565e549f69c4915f88"
+      }
+    },
+    {
+      "id": "bullet-owner",
+      "question": "How does ObjectShooter ensure its new bullet has a BulletAttribute and assign the owning player?",
+      "category": "relationships",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs",
+            "quote": "                BulletAttribute b = newObject.GetComponent<BulletAttribute>();\n                if (b == null) b = newObject.AddComponent<BulletAttribute>();\n                b.playerId = playerNumber;",
+            "start_line": 64,
+            "end_line": 66
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs": "0f9601b974d858cd13ef8d0b942dda09e6eff556c1b636565e549f69c4915f88"
+      }
+    },
+    {
+      "id": "destruction-delay",
+      "question": "How does TimedSelfDestruct schedule and perform object destruction?",
+      "category": "multi-part",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/TimedSelfDestruct.cs",
+            "quote": "            Invoke(\"DestroyMe\", timeToDestruction);",
+            "start_line": 14,
+            "end_line": 14
+          }
+        ],
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/TimedSelfDestruct.cs",
+            "quote": "        private void DestroyMe()\n        {\n            Destroy(gameObject);",
+            "start_line": 19,
+            "end_line": 21
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Gameplay/TimedSelfDestruct.cs": "84d17f5b475c7a14c6b7823b517b359909da8cf6ddde9b8e5912982c561a53bf"
+      }
+    },
+    {
+      "id": "smooth-follow",
+      "question": "How does CameraFollow calculate frame-rate-independent smoothing and move along X and Y?",
+      "category": "physics",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Movement/CameraFollow.cs",
+            "quote": "            Vector3 position = transform.position;\n            float t = 1f - Mathf.Exp(-followSharpness * Time.deltaTime);\n            position.x = Mathf.Lerp(position.x, target.position.x, t);\n            position.y = Mathf.Lerp(position.y, target.position.y, t);",
+            "start_line": 38,
+            "end_line": 41
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Movement/CameraFollow.cs": "85b19dce4b7d513f775229d3595f7f0fdcb8b5e72815b97097ad5f07c7096bf5"
+      }
+    },
+    {
+      "id": "camera-bounds",
+      "question": "How does CameraFollow clamp the view, including when the view is larger than the allowed bounds?",
+      "category": "behavior",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Movement/CameraFollow.cs",
+            "quote": "            if (max - min < halfView * 2f) return (min + max) * .5f;\n\n            return Mathf.Clamp(value, min + halfView, max - halfView);",
+            "start_line": 67,
+            "end_line": 69
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Movement/CameraFollow.cs": "85b19dce4b7d513f775229d3595f7f0fdcb8b5e72815b97097ad5f07c7096bf5"
+      }
+    },
+    {
+      "id": "camera-size",
+      "question": "How does GetHalfViewSize calculate the camera view size for orthographic and perspective cameras?",
+      "category": "physics",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Movement/CameraFollow.cs",
+            "quote": "            float halfHeight = _camera.orthographic\n                ? _camera.orthographicSize\n                : Mathf.Abs(transform.position.z) * Mathf.Tan(_camera.fieldOfView * .5f * Mathf.Deg2Rad);\n\n            return new Vector2(halfHeight * _camera.aspect, halfHeight);",
+            "start_line": 57,
+            "end_line": 61
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Movement/CameraFollow.cs": "85b19dce4b7d513f775229d3595f7f0fdcb8b5e72815b97097ad5f07c7096bf5"
+      }
+    },
+    {
+      "id": "auto-force",
+      "question": "How does AutoMove choose between relative and world-space forces?",
+      "category": "physics",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Movement/AutoMove.cs",
+            "quote": "            if (relativeToRotation)\n                rigidbody2D.AddRelativeForce(direction * 2f);\n            else\n                rigidbody2D.AddForce(direction * 2f);",
+            "start_line": 21,
+            "end_line": 24
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Movement/AutoMove.cs": "2416c352cace329b4b592d3952ed733d33e3011b2397349875ce25a673b63adf"
+      }
+    },
+    {
+      "id": "shooter-initial",
+      "question": "How does ObjectShooter initialize the spawn timestamp and player number?",
+      "category": "lifecycle",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs",
+            "quote": "            timeOfLastSpawn = -creationRate;\n\n            // Set the player number based on the GameObject tag\n            playerNumber = gameObject.CompareTag(\"Player\") ? 0 : 1;",
+            "start_line": 37,
+            "end_line": 40
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Scripts/Gameplay/ObjectShooter.cs": "0f9601b974d858cd13ef8d0b942dda09e6eff556c1b636565e549f69c4915f88"
+      }
+    },
+    {
+      "id": "bee-damage",
+      "question": "What healthChange value is serialized in the Adventure Bee prefab?",
+      "category": "serialized-asset",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Examples/Adventure/Bee.prefab",
+            "quote": "  healthChange: -1",
+            "start_line": 170,
+            "end_line": 170
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Examples/Adventure/Bee.prefab": "98fded891a8392194c916ac3b53b479a549575ad0b7cd0485ca6ed875722c3d6"
+      }
+    },
+    {
+      "id": "laser-lifetime",
+      "question": "What timeToDestruction value is saved in the Defender LaserBeam prefab?",
+      "category": "serialized-asset",
+      "expected_outcome": "evidence",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/UnityTechnologies/Playground/Examples/Defender/LaserBeam.prefab",
+            "quote": "  timeToDestruction: 2",
+            "start_line": 181,
+            "end_line": 181
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/UnityTechnologies/Playground/Examples/Defender/LaserBeam.prefab": "a05d515b15ea0391154cb43b16ab927313057bdba7f7dfb65b5faadce9114d10"
+      }
+    },
+    {
+      "id": "missing-symbol-a",
+      "question": "Locate QuantumBananaTelemetryBridge.",
+      "category": "absent-symbol",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    },
+    {
+      "id": "missing-symbol-b",
+      "question": "Locate FrostDragonNetworkReplicator.",
+      "category": "absent-symbol",
+      "expected_outcome": "insufficient_evidence",
+      "passage_groups": [],
+      "negative_passages": [],
+      "reviewed_source_sha256": {}
+    }
+  ]
+}

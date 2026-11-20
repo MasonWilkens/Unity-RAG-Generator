@@ -5,7 +5,14 @@ a useful RAG workspace for another developer's Unity project. A hosted service,
 Unity Editor integration and automatically trusted generated answers are outside
 this release target. Optional hosted generation remains opt-in.
 
-## 1. Release preparation and reproducible installation â€” active
+## 1. Release preparation and reproducible installation - baseline complete
+
+Verified on commit `1bb9ce5e944b39ebfcc89cd13920b4dd9f677887`: 529 tests with no
+skips; all four Windows/Linux CI configurations; wheel/source package checks and
+fresh installations; optional dependency installation checks. Both the
+[push run](https://github.com/MasonWilkens/Unity-RAG-Generator/actions/runs/44805804482)
+and [PR run](https://github.com/MasonWilkens/Unity-RAG-Generator/actions/runs/44805817698)
+passed. Later changes must pass the checks again.
 
 - Package Python modules, runtime metadata and all three Roslyn helper sources.
 - Build both a wheel and source distribution; check metadata and archive contents.
@@ -22,7 +29,15 @@ Exit gate: a clean clone builds and installs without this development machine's
 files; CI succeeds on the intended commit; the installed tool completes the
 fixture workflow. A local artifact pass alone does not close this gate.
 
-## 2. Independent quality evidence
+## 2. Independent quality evidence - active
+
+The next batch adds a pre-evaluation freeze format, multi-project evidence runner,
+candidate-index comparisons, and failure reports. The public candidate corpus in
+`benchmarks/quality_v1` contains 60 source-inspected questions across three pinned
+Unity repositories, with one repository held out. Labels are explicitly
+agent-reviewed. This completes evaluation infrastructure, not the independent
+human-review or generated-answer acceptance gates. See that directory for baseline
+results and reproduction instructions.
 
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.
@@ -88,4 +103,4 @@ This batch implements packaging, release documentation, isolated installation
 checks and automated checks. It does not certify semantic answer quality or
 complete the independent pilot. Validation results are recorded in
 [public evaluation records](tests/evaluation/README.md). CI coverage is only
-verified once the workflow runs on GitHub; configured lanes are not passing runs.
+verified by the exact GitHub runs linked above; future changes need fresh results.
