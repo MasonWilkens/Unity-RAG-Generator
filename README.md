@@ -61,6 +61,13 @@ Use `python -m unity_rag` in place of `unity-rag` when preferred.
   from another file through one resolved call. Both the call site and target
   keep literal citations and freshness dependencies. Ambiguous, virtual,
   interface and unresolved calls do not gain inferred implementation evidence.
+- Explicit comparisons such as `Compare Game.PulseEmitter and Game.RampEmitter
+  for charge and cooldown` reserve relevant method/property passages from both
+  named types, then complementary chunks. Qualified names resolve namespace
+  collisions; ambiguous overloads or a missing side preserve ordinary ranking.
+  This query-only rule works with existing indexes and preserves result/context
+  budgets. Tiny budgets may omit a side. Selection does not prove equivalence,
+  differences, runtime behavior or a call relationship between the types.
 - Questions about saved values in a named asset report an explicit evidence gap
   when its indexed source is binary, an LFS pointer, unparsed or ambiguously named.
   Related code defaults cannot replace the missing serialization. Use a full

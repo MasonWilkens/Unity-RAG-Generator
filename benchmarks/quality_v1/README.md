@@ -115,6 +115,13 @@ and retain each candidate's own implementation/index hashes. The portable baseli
 report in this directory omits the checkout-specific index snapshot's absolute
 project path; its original full-report hash is retained for traceability.
 
+The [two-type comparison candidate](candidates/type-comparison-v1.md) adds balanced
+implementation retrieval developed on a new hash-frozen synthetic corpus. That
+corpus improves from 0/9 to 9/9 complete passage cases, with all 12 fallback
+controls passing. This existing public corpus remains at 59/60 overall, 51/52
+essential evidence and 8/8 no-evidence outcomes, with no regressions. Sources,
+labels, budgets and indexes are unchanged; production gates remain open.
+
 ## Future comparisons
 
 For a rebuilt candidate, prepare a JSON object mapping all three project names to
