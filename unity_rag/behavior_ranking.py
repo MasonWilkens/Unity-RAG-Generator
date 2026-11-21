@@ -47,7 +47,7 @@ def _variants(word):
     return list(dict.fromkeys(result))
 
 
-def _type_scope(db, query):
+def _query_aliases(query):
     matches = list(re.finditer(r'[A-Za-z_][A-Za-z0-9_]*', query))
     words = [match.group() for match in matches]
     if len(words) > 32:
@@ -65,6 +65,12 @@ def _type_scope(db, query):
                 aliases.add(''.join(combination))
             if len(aliases) > 256:
                 raise _BoundExceeded
+    return aliases, words
+
+
+def _type_scope(db, query, exclude_aliases=()):
+    aliases, words = _query_aliases(query)
+    aliases.difference_update(exclude_aliases)
     if not aliases:
         return None, []
     rows = db.execute(

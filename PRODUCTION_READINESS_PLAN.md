@@ -42,9 +42,15 @@ results and reproduction instructions.
 The first [retrieval-quality candidate](benchmarks/quality_v1/candidates/literal-assets-v1.md)
 retains literal serialized-object passages and rejects loose fallback for explicit
 identifier lookups. Complete evidence improves from 44/52 to 48/52 and empty-evidence
-controls from 4/8 to 6/8. Held-out results do not improve. Continue development on
-the three remaining Path Creator/Playground multi-part code questions, while
-preserving the held-out repository and arranging independent label/answer review.
+controls from 4/8 to 6/8. The subsequent
+[multipart code candidate](benchmarks/quality_v1/candidates/multipart-code-v1.md)
+raises complete evidence to 51/52 and resolves all three remaining development
+misses, with no regressions. All 40 development cases and 11 multipart cases pass.
+Held-out results remain 15/16 essential coverage and 2/4 empty-evidence controls.
+The quality gate stays open. Next, develop general cross-file evidence and
+unsupported-asset abstention checks using new development fixtures; preserve the
+held-out repository and arrange independent label/answer review before further
+acceptance claims. Do not tune against its individual failed questions.
 
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.

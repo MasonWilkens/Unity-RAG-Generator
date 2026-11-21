@@ -51,6 +51,12 @@ Use `python -m unity_rag` in place of `unity-rag` when preferred.
 - Lexical search uses SQLite FTS5; exact lookup supports paths, GUIDs and qualified
   symbols. Semantic search uses optional local embeddings. Hybrid ranking combines
   available signals while preserving source provenance.
+- Multipart implementation questions can select complementary method/property
+  chunks from a uniquely identified type, including separate windows of a long
+  method. Property mutation questions use setter references. Selection preserves
+  literal citations, source dependencies and existing answer budgets; ambiguous
+  names or exceeded bounds leave ranking unchanged. It does not infer runtime
+  order or convert string-valued dispatch into confirmed calls.
 
 Complete requests such as `Locate Game.Enemy.CanAttack.` use exact name lookup,
 including overloads, in search, semantic and hybrid modes. Missing names yield no
