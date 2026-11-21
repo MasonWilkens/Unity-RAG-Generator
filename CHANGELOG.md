@@ -20,6 +20,9 @@ This version remains an experimental, review-required local tool.
   scene/object anchors. Refresh adds this evidence to older workspaces.
 - Treat complete identifier lookup requests as exact-name searches across search,
   semantic and hybrid modes; missing names no longer return shared word fragments.
+- Select complementary source chunks for multipart code questions using declared
+  types and parsed identifiers, including setter references, overloads and separate
+  windows of long methods. Preserve citations, freshness checks and context limits.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan

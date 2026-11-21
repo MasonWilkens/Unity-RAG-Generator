@@ -33,6 +33,13 @@ and empty-evidence controls to 6/8, with six improved cases and no regressions.
 Held-out coverage stays 15/16; the acceptance gate remains failed. The original
 baseline above and all frozen labels/settings remain unchanged.
 
+The [multipart code candidate](candidates/multipart-code-v1.md) improves complete
+evidence from 48/52 to 51/52, including all 11 multipart questions. All 40
+development cases pass; held-out outcomes and empty-evidence controls are
+unchanged. Three cases improve with no regressions from the previous candidate.
+This query-only change reuses its indexes; it requires no additional refresh.
+The acceptance gate remains failed and generated answers remain unevaluated.
+
 ## Scope and selection
 
 There are 52 answerable passage questions, six deliberately absent-symbol controls,

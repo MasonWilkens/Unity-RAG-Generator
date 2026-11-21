@@ -6,6 +6,7 @@ import unittest
 
 from unity_rag.quality_benchmark import _plan
 from unity_rag.passage_evaluation import passage_labels
+from unity_rag.quality_reporting import summarize
 
 
 class PublicQualityCorpusTests(unittest.TestCase):
@@ -49,6 +50,55 @@ class PublicQualityCorpusTests(unittest.TestCase):
         for project in manifest['projects']:
             digest = hashlib.sha256((root / project['dataset']).read_bytes()).hexdigest()
             self.assertEqual(by_name[project['name']]['dataset_sha256'], digest)
+        self.assertFalse(report['production_gate_passed'])
+        self.assertEqual(report['answer_quality']['status'], 'not_evaluated')
+
+    def test_multipart_candidate_preserves_inputs_counts_and_both_comparisons(self):
+        root = Path(__file__).resolve().parents[1] / 'benchmarks/quality_v1'
+        report = json.loads((root / 'candidates/multipart-code-v1.json').read_bytes())
+        for relative, comparison_key in (('baseline.json', 'comparison'),
+                                          ('candidates/literal-assets-v1.json', 'previous_candidate_comparison')):
+            original_bytes = (root / relative).read_bytes()
+            original = json.loads(original_bytes)
+            comparison = report[comparison_key]
+            self.assertEqual(comparison['baseline_sha256'], hashlib.sha256(original_bytes).hexdigest())
+            for key in ('lock_sha256', 'manifest_sha256', 'settings', 'targets'):
+                self.assertEqual(report[key], original[key])
+            old = {p['name']: p for p in original['projects']}
+            self.assertEqual(set(old), {p['name'] for p in report['projects']})
+            improved, regressed = [], []
+            for project in report['projects']:
+                previous = old[project['name']]
+                for key in ('repository', 'revision', 'split', 'source_sha256', 'dataset_sha256', 'label_review'):
+                    self.assertEqual(project[key], previous[key])
+                # This batch changes queries only; the previous candidate's
+                # immutable snapshot is reused rather than rebuilding inputs.
+                if comparison_key == 'previous_candidate_comparison':
+                    self.assertEqual(project['snapshot'], previous['snapshot'])
+                old_cases = {c['id']: c for c in previous['cases']}
+                self.assertEqual(set(old_cases), {c['id'] for c in project['cases']})
+                for case in project['cases']:
+                    prior = old_cases[case['id']]
+                    for key in ('question', 'expected_outcome', 'category'):
+                        self.assertEqual(case[key], prior[key])
+                    identity = [project['name'], case['id']]
+                    if prior['failures'] and not case['failures']:
+                        improved.append(identity)
+                    if not prior['failures'] and case['failures']:
+                        regressed.append(identity)
+            self.assertEqual(comparison['improved_cases'], improved)
+            self.assertEqual(comparison['regressed_cases'], regressed)
+        cases = [case for p in report['projects'] for case in p['cases']]
+        self.assertEqual(report['summary'], summarize(cases))
+        for project in report['projects']:
+            self.assertEqual(project['summary'], summarize(project['cases']))
+        for category, summary in report['categories'].items():
+            self.assertEqual(summary, summarize([c for c in cases if c['category'] == category]))
+        for split, summary in report['splits'].items():
+            calculated = summarize([c for p in report['projects'] if p['split'] == split for c in p['cases']])
+            self.assertEqual({key: summary[key] for key in calculated}, calculated)
+        self.assertEqual(report['status'], 'completed')
+        self.assertEqual(report['validation_errors'], [])
         self.assertFalse(report['production_gate_passed'])
         self.assertEqual(report['answer_quality']['status'], 'not_evaluated')
 
