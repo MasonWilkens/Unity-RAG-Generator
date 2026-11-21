@@ -27,6 +27,12 @@ held-out empty-evidence failures keep the retrieval gate failed. No cases errore
 or were removed from denominators. Human review and generated-answer support
 remain unmeasured. No ranker or label tuning was performed after observing scores.
 
+The first [development candidate](candidates/literal-assets-v1.md) adds literal
+YAML passages and exact lookup intent. It improves complete evidence to 48/52
+and empty-evidence controls to 6/8, with six improved cases and no regressions.
+Held-out coverage stays 15/16; the acceptance gate remains failed. The original
+baseline above and all frozen labels/settings remain unchanged.
+
 ## Scope and selection
 
 There are 52 answerable passage questions, six deliberately absent-symbol controls,

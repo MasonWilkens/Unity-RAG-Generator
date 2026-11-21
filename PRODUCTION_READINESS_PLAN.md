@@ -39,6 +39,13 @@ agent-reviewed. This completes evaluation infrastructure, not the independent
 human-review or generated-answer acceptance gates. See that directory for baseline
 results and reproduction instructions.
 
+The first [retrieval-quality candidate](benchmarks/quality_v1/candidates/literal-assets-v1.md)
+retains literal serialized-object passages and rejects loose fallback for explicit
+identifier lookups. Complete evidence improves from 44/52 to 48/52 and empty-evidence
+controls from 4/8 to 6/8. Held-out results do not improve. Continue development on
+the three remaining Path Creator/Playground multi-part code questions, while
+preserving the held-out repository and arranging independent label/answer review.
+
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.
 Freeze sources, labels, essential passages, question categories, answer budgets

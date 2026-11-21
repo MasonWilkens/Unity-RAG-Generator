@@ -23,6 +23,13 @@ winning passage without replacing original source evidence. This character polic
 is not the embedding model's actual tokenizer limit; model-aware limits remain a
 refinement target.
 
+Newly built indexes include literal serialized-object passages as `asset_source`.
+An unrestricted semantic build embeds these alongside parsed asset facts, which
+increases its passage count. Use explicit `--semantic-kind` selections when a
+smaller corpus is intended; saved kind restrictions remain in effect on refresh.
+Direct `Locate SomeIdentifier` requests use exact indexed aliases without query
+embedding, even when the requested mode is semantic or hybrid.
+
 Normalized vectors must be finite, nonzero and dimensionally consistent. Verified
 cached vectors can be reused. Search currently scans stored passage vectors and
 aggregates scores per evidence record; this is not an approximate-neighbor server.

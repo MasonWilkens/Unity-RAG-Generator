@@ -3,6 +3,26 @@ import json
 import re
 
 
+def explicit_symbol_lookup(query):
+    """Recognize a complete lookup request, not identifiers inside prose.
+
+    A missing exact name must not fall back to camel-case fragments. Unquoted
+    lowercase words remain ordinary topical searches; quotes make intent exact.
+    """
+    request = re.fullmatch(r'\s*(?:find|locate|show)(?:\s+me)?\s+(.+?)\s*[.!?]?\s*', query, re.I)
+    if not request:
+        return None
+    name = request.group(1)
+    quoted = len(name) > 2 and name[0] in ('`', '"', "'") and name[-1] == name[0]
+    if quoted:
+        name = name[1:-1]
+    if not re.fullmatch(r'[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*(?:\([A-Za-z0-9_., ?\[\]<>]*\))?', name):
+        return None
+    if not quoted and not (any(c.isupper() for c in name) or any(c in name for c in '_.(')):
+        return None
+    return name
+
+
 # Deliberately a lookup grammar, not a bag-of-words type filter. A question
 # about a GameObject's components must remain free to retrieve those components.
 _LOOKUP = re.compile(
