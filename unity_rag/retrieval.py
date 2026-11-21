@@ -1071,6 +1071,8 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
         named_object_used = False
         behavior_anchor_used = False
         multipart_used = False
+        cross_file_used = False
+        asset_requirement = None
         scores = None
 
         if mode in ("references", "used-by", "inherits", "derived-types"):
@@ -1299,6 +1301,9 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
                 from .multipart_ranking import promote_multipart_code
                 ordered, multipart_used = promote_multipart_code(db, ordered, query, kind)
 
+                from .cross_file_ranking import promote_cross_file_call
+                ordered, cross_file_used = promote_cross_file_call(db, ordered, query, kind)
+
             # Identical overlapping source ranges should not consume separate result slots.
 
             seen = set()
@@ -1326,6 +1331,11 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
             if results and limit>=3 and kind is None: rig_hits=rig_hits[:limit-1]
             results = (rig_hits + results)[:limit]
             total += len(rig_hits)
+        if mode in ('search', 'semantic', 'hybrid') and kind is None and not matched:
+            from .asset_requirements import serialized_asset_requirement
+            asset_requirement = serialized_asset_requirement(db, query)
+            if asset_requirement and asset_requirement['blocked']:
+                results, total = [], 0
         context, seen_context = [], {r.get("id") for r in results}
 
         for hit in results:
@@ -1480,7 +1490,8 @@ def retrieve(workspace, query, mode="search", limit=5, expand=0, kind=None, cont
                 "truncated": total > limit or omitted > 0, "limits": report["limits"],
 
                 "ranking": (("Unity rig catalog matches first; " if rig_hits else "") + ("Cosine similarity" if mode == "semantic" else ("Source-aware lexical reservation, then entity-diverse weighted reciprocal rank fusion k=60" if source_aware and semantic_weight < 1 else "Exact aliases first, entity-diverse weighted reciprocal rank fusion k=60") if mode == "hybrid" else "Exact aliases, then unambiguous named-prefab objects, then SQLite BM25 (lower is better)" if prefab_anchor_used else "Exact aliases first, then SQLite BM25 (lower is better)") + ("; unambiguous named-scene component and field-use anchors" if scene_anchor_used else "") + ("; named-root prefab position anchor" if named_root_position_used else "") + ("; declared Unity tag evidence anchor" if declared_unity_tag_used else "") + ("; uniquely matched named-type method" if named_type_method_used else "") + ("; experimental same-container method promotion" if related_rank_used else "") + ("; explicit named GameObject lookup" if named_object_used else "") + ("; parsed-identifier behavior anchors" if behavior_anchor_used else "")),
-                "related_rank": related_rank, "multipart_code": multipart_used}
+                "related_rank": related_rank, "multipart_code": multipart_used,
+                "cross_file_call": cross_file_used, "asset_requirement": asset_requirement}
 
     finally:
 
@@ -1520,5 +1531,8 @@ def format_results(result):
     if not result["results"]:
 
         lines.append("No matching evidence.")
+
+    if (result.get('asset_requirement') or {}).get('blocked'):
+        lines.append(result['asset_requirement']['description'])
 
     return "\n".join(lines)

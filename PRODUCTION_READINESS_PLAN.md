@@ -47,10 +47,16 @@ controls from 4/8 to 6/8. The subsequent
 raises complete evidence to 51/52 and resolves all three remaining development
 misses, with no regressions. All 40 development cases and 11 multipart cases pass.
 Held-out results remain 15/16 essential coverage and 2/4 empty-evidence controls.
-The quality gate stays open. Next, develop general cross-file evidence and
-unsupported-asset abstention checks using new development fixtures; preserve the
-held-out repository and arrange independent label/answer review before further
-acceptance claims. Do not tune against its individual failed questions.
+The next [candidate](benchmarks/quality_v1/candidates/cross-file-v1.md), developed
+with new synthetic fixtures, adds one-hop resolved call evidence and explicit
+gaps for unavailable saved-asset values. Empty-evidence controls improve to 8/8;
+complete evidence remains 51/52, with 59/60 outcomes passing and no regressions.
+The frozen retrieval gate passes, but the production gate remains open. The
+remaining cross-file case is retained rather than tuned against. Next, expand
+cross-type comparison and deeper dependency coverage with new development cases,
+and arrange independently reviewed labels and generated-answer acceptance on a
+fresh sample. Repeated-corpus results are regression evidence, not new proof of
+generalization. Do not tune against individual held-out questions.
 
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.
