@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "d68b007da2ff4781bfed6570cb2a7bdfbc256e1c",
+  "settings": {
+    "mode": "search",
+    "limit": 5,
+    "expand": 0,
+    "context_chars": 24000
+  },
+  "chunk_budget": 1024,
+  "sha256": {
+    "labels.json": "b1298b5b90db8b94b1e00f6bd764291dfd636375fa3370a454a39a31fe28b4f4",
+    "project/Assets/Controls.cs": "96a6bee337166934797f93df7e88222bdcea73d1a5349822667773f97e53265d",
+    "project/Assets/Properties.cs": "1745de1493929dbbb7f79aae847a1649df4c8d92368a4346de0410c908689b94",
+    "project/Assets/PulseEmitter.cs": "c7c6b93e2be5ec693b11dababbcf14fd40fbde1cd9872ac67bf03cb219ecb552",
+    "project/Assets/PulseEmitter.State.cs": "0ab1a8d0fddefde8336661636237a2aa66857638e98f2f80664458fadad36242",
+    "project/Assets/RampEmitter.cs": "a1331312df66c23e15b442d96f6690e1ca765b5dd715a5da8eb7ed9ae7fa7ea6",
+    "project/Assets/RampEmitter.State.cs": "e83ab0b93743894fcec49cc4655bfbdf73fce955d81b49163ecbef7d16ae0594",
+    "project/Assets/Scopes.cs": "ac5fa52c01df727eabf6ebc7ce0ea5abc4d6126adf3834505f2aa4f847c400c4",
+    "project/Assets/SeparateEmitter.cs": "f0f8f531bb44e06b78e55822f50670d5a0ab4069e9f805e290c0e8843d2910db",
+    "project/Assets/TallEmitter.cs": "72eaf985db0357b734044bf30a0931c3e462a0ab189f70f7ae266a4fed1e8965",
+    "project/Assets/WideEmitter.cs": "272552882b4c079dd41657036477f53059e44ea96cfd02ee2fb26dbba784403f",
+    "project/ProjectSettings/ProjectVersion.txt": "2856bd159c6b975466f2e22df4f539f15d43a20cbf946ae51baa8d10b2e0a6ee"
+  }
+}

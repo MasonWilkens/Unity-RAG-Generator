@@ -45,7 +45,8 @@ def focus_lines(record, query=''):
         return None
     source, lines = source_and_lines
     diagnostics = record.get('ranking_diagnostics', {})
-    spans = (diagnostics.get('cross_file_call', {}).get('reference_spans')
+    spans = (diagnostics.get('type_comparison', {}).get('reference_spans')
+             or diagnostics.get('cross_file_call', {}).get('reference_spans')
              or diagnostics.get('multipart_code', {}).get('reference_spans')
              or diagnostics.get('behavior_anchor', {}).get('reference_spans', []))
     valid = [s for s in spans if s.get('path') == source['path']

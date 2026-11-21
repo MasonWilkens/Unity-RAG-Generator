@@ -1,0 +1,1280 @@
+{
+  "schema_version": 1,
+  "dataset_sha256": "b1298b5b90db8b94b1e00f6bd764291dfd636375fa3370a454a39a31fe28b4f4",
+  "split": "synthetic-development",
+  "snapshot": {
+    "discovery": "2026-11-21T15:05:20.729869+00:00",
+    "code": "511d69418dcf63c138a12231a48a5280de797911eccd7c86f79dd1422af678ed",
+    "assets": "0eaafec0405fad5cb056c10a2cc245c16b9b66d8f2218e54303fc4c6bd5ecc4f"
+  },
+  "settings": {
+    "mode": "search",
+    "limit": 5,
+    "expand": 0,
+    "context_chars": 24000,
+    "retrieval_context_chars": 1000000,
+    "context_tokens": null,
+    "token_encoding": "utf8-bytes"
+  },
+  "cases": [
+    {
+      "id": "basic",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.023657199984882027,
+      "answer_seconds": 0.07261370000196621,
+      "candidate_count": 80,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1463,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "reversed",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.010071800003061071,
+      "answer_seconds": 0.07432539999717847,
+      "candidate_count": 80,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1463,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "how-do",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.011501000000862405,
+      "answer_seconds": 0.075450100004673,
+      "candidate_count": 80,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1463,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "difference",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.011708200006978586,
+      "answer_seconds": 0.0725957999820821,
+      "candidate_count": 80,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1463,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "qualified",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "evidence_found",
+      "retrieval_seconds": 0.00905989998136647,
+      "answer_seconds": 0.05903770000441,
+      "candidate_count": 82,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 6,
+            "end_line": 6,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 6,
+            "end_line": 6,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1116,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "qualified-collision",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "evidence_found",
+      "retrieval_seconds": 0.006827700010035187,
+      "answer_seconds": 0.03262039998662658,
+      "candidate_count": 63,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 6,
+            "end_line": 6,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 14,
+            "end_line": 14,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 15,
+            "end_line": 15,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 6,
+            "end_line": 6,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 14,
+            "end_line": 14,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Scopes.cs",
+            "start_line": 15,
+            "end_line": 15,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 968,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "long-both",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.008033699996303767,
+      "answer_seconds": 0.05300839999108575,
+      "candidate_count": 80,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/TallEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/TallEmitter.cs",
+            "start_line": 224,
+            "end_line": 224,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/WideEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/WideEmitter.cs",
+            "start_line": 224,
+            "end_line": 224,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/TallEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/TallEmitter.cs",
+            "start_line": 224,
+            "end_line": 224,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/WideEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/WideEmitter.cs",
+            "start_line": 224,
+            "end_line": 224,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 6530,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "separate-members",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "evidence_found",
+      "retrieval_seconds": 0.00877549999859184,
+      "answer_seconds": 0.06044149998342618,
+      "candidate_count": 80,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/SeparateEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/SeparateEmitter.cs",
+            "start_line": 7,
+            "end_line": 7,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 4,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/SeparateEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/SeparateEmitter.cs",
+            "start_line": 7,
+            "end_line": 7,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RampEmitter.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1019,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "properties",
+      "category": "two-type-comparison",
+      "expected_outcome": "evidence",
+      "answer_status": "evidence_found",
+      "retrieval_seconds": 0.005932700005359948,
+      "answer_seconds": 0.025429700006498024,
+      "candidate_count": 61,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 2,
+        "groups": 2,
+        "group_hits": [
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/Properties.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Properties.cs",
+            "start_line": 7,
+            "end_line": 7,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 2,
+        "groups": 2,
+        "group_hits": [
+          true,
+          true
+        ],
+        "passage_recall": 1.0,
+        "negative_passages_found": 0,
+        "expected_outcome_met": true,
+        "passed": true,
+        "checks": [
+          {
+            "path": "Assets/Properties.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/Properties.cs",
+            "start_line": 7,
+            "end_line": 7,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 902,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    }
+  ],
+  "summary": {
+    "retrieved": {
+      "passed": 9,
+      "cases": 9,
+      "groups_found": 34,
+      "groups": 34,
+      "negative_passages_found": 0
+    },
+    "packed": {
+      "passed": 9,
+      "cases": 9,
+      "groups_found": 34,
+      "groups": 34,
+      "negative_passages_found": 0
+    }
+  },
+  "scope": "Hash-checked passage delivery and labeled negatives; not generated-answer factuality or independent review.",
+  "implementation_sha256": "84b830cbd1d0f6117a446727ef543460e4bd2dea45f2fdb9895b6f8c405b5d3c",
+  "fixture_lock_sha256": "6611f4f890905e3b04939e0060d6f7090e54705df6fd774bdc4e486cafe7c392",
+  "controls": [
+    {
+      "question": "Compare Stepper and RampEmitter for charge and cooldown.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare MissingEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare PlainEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare AbstractEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare TiedEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare PulseEmitter and PulseEmitter for charge and cooldown.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare PulseEmitter and RampEmitter and ThirdEmitter for charge and cooldown.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare PulseEmitter and RampEmitter for satellite telemetry.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare PulseEmitter and RampEmitter.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does PulseEmitter update charge and cooldown?",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Locate PulseEmitter.Tick.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Compare the saved prefab values of PulseEmitter and RampEmitter.",
+      "comparison_selected": false,
+      "actual_comparison_selected": false,
+      "passed": true
+    }
+  ],
+  "full_report_sha256": "722f0ee661de4860213024e0bdf662232f1abf38dbb8413bb261f523f624921e",
+  "redactions": [
+    "generation"
+  ]
+}
