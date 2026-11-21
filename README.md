@@ -57,6 +57,14 @@ Use `python -m unity_rag` in place of `unity-rag` when preferred.
   literal citations, source dependencies and existing answer budgets; ambiguous
   names or exceeded bounds leave ranking unchanged. It does not infer runtime
   order or convert string-valued dispatch into confirmed calls.
+- Scoped multipart questions can also bring in a complementary implementation
+  from another file through one resolved call. Both the call site and target
+  keep literal citations and freshness dependencies. Ambiguous, virtual,
+  interface and unresolved calls do not gain inferred implementation evidence.
+- Questions about saved values in a named asset report an explicit evidence gap
+  when its indexed source is binary, an LFS pointer, unparsed or ambiguously named.
+  Related code defaults cannot replace the missing serialization. Use a full
+  asset path to resolve name collisions and refresh after making sources readable.
 
 Complete requests such as `Locate Game.Enemy.CanAttack.` use exact name lookup,
 including overloads, in search, semantic and hybrid modes. Missing names yield no

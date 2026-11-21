@@ -40,6 +40,14 @@ unchanged. Three cases improve with no regressions from the previous candidate.
 This query-only change reuses its indexes; it requires no additional refresh.
 The acceptance gate remains failed and generated answers remain unevaluated.
 
+The subsequent [cross-file/serialization candidate](candidates/cross-file-v1.md)
+keeps complete evidence at 51/52 and improves empty-evidence controls to 8/8,
+for 59/60 passing outcomes with no regressions. The frozen retrieval gate now
+passes; human label review and generated-answer acceptance remain unmeasured,
+so the production gate stays open. New one-hop call fixtures pass, while the
+original cross-file miss remains. These repeated-corpus results are regression
+evidence rather than a fresh independent generalization evaluation.
+
 ## Scope and selection
 
 There are 52 answerable passage questions, six deliberately absent-symbol controls,

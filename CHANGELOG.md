@@ -23,6 +23,10 @@ This version remains an experimental, review-required local tool.
 - Select complementary source chunks for multipart code questions using declared
   types and parsed identifiers, including setter references, overloads and separate
   windows of long methods. Preserve citations, freshness checks and context limits.
+- Follow one resolved static call to complementary source passages in another file,
+  preserving call-site and target dependencies without inferring dynamic dispatch.
+- Report unavailable or ambiguously named serialized assets in retrieval and both
+  answer styles; related C# defaults no longer replace unavailable saved values.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan

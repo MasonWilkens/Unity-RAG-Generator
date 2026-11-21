@@ -53,11 +53,11 @@ class PublicQualityCorpusTests(unittest.TestCase):
         self.assertFalse(report['production_gate_passed'])
         self.assertEqual(report['answer_quality']['status'], 'not_evaluated')
 
-    def test_multipart_candidate_preserves_inputs_counts_and_both_comparisons(self):
+    def check_query_candidate(self, candidate, previous_candidate):
         root = Path(__file__).resolve().parents[1] / 'benchmarks/quality_v1'
-        report = json.loads((root / 'candidates/multipart-code-v1.json').read_bytes())
+        report = json.loads((root / candidate).read_bytes())
         for relative, comparison_key in (('baseline.json', 'comparison'),
-                                          ('candidates/literal-assets-v1.json', 'previous_candidate_comparison')):
+                                          (previous_candidate, 'previous_candidate_comparison')):
             original_bytes = (root / relative).read_bytes()
             original = json.loads(original_bytes)
             comparison = report[comparison_key]
@@ -101,6 +101,12 @@ class PublicQualityCorpusTests(unittest.TestCase):
         self.assertEqual(report['validation_errors'], [])
         self.assertFalse(report['production_gate_passed'])
         self.assertEqual(report['answer_quality']['status'], 'not_evaluated')
+
+    def test_multipart_candidate_preserves_inputs_counts_and_both_comparisons(self):
+        self.check_query_candidate('candidates/multipart-code-v1.json', 'candidates/literal-assets-v1.json')
+
+    def test_cross_file_candidate_preserves_inputs_counts_and_both_comparisons(self):
+        self.check_query_candidate('candidates/cross-file-v1.json', 'candidates/multipart-code-v1.json')
 
     def test_literal_asset_candidate_preserves_frozen_contract_and_comparison(self):
         root = Path(__file__).resolve().parents[1] / 'benchmarks/quality_v1'

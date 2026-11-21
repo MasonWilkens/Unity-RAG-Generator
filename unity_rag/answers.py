@@ -241,6 +241,7 @@ def ask(workspace, question, provider=None, mode='semantic', limit=5, expand=3,
     unsupported_omitted = 0
     truncated = 0
     retrieval_omitted = 0
+    asset_gaps = []
 
     def search(query):
         nonlocal used, omitted, unsupported_omitted, truncated, retrieval_omitted, inventory
@@ -250,6 +251,9 @@ def ask(workspace, question, provider=None, mode='semantic', limit=5, expand=3,
             raise ValueError('Retrieval snapshot changed during the answer. Retry.')
         retrieval_omitted += result.get('context_budget', {}).get('omitted_records', 0)
         searches.append({'query': query, 'candidate_count': result['candidate_count']})
+        requirement = result.get('asset_requirement')
+        if requirement and requirement.get('blocked') and requirement['description'] not in asset_gaps:
+            asset_gaps.append(requirement['description'])
         for row in result['results'] + result['context']:
             if row.get("kind")=="rig_asset":
                 from .rig_catalog import report_entry,check_rig_snapshot
@@ -296,6 +300,10 @@ def ask(workspace, question, provider=None, mode='semantic', limit=5, expand=3,
         if unsupported_omitted:
             gaps.append('unsupported_source_records')
             GAPS = {**GAPS, 'unsupported_source_records': 'Some retrieved records referenced unsupported source files and were omitted.'}
+        for index, description in enumerate(asset_gaps):
+            key = f'asset_requirement_{index}'
+            gaps.append(key)
+            GAPS = {**GAPS, key: description}
         if retrieval_status(workspace) != snapshot or status(workspace)['scanned_at'] != inventory['scanned_at']:
             raise ValueError('Project snapshot changed during the answer. Retry.')
         verify_sources(inventory, evidence.values())
@@ -323,6 +331,8 @@ def ask(workspace, question, provider=None, mode='semantic', limit=5, expand=3,
               'evidence_gaps': [{'kind': 'repository_evidence', 'description': 'No verifiable evidence was retrieved.'}]}
     if runtime_reason:
         answer['evidence_gaps'] = [{'kind': 'runtime_observation', 'description': runtime_reason}]
+    elif asset_gaps:
+        answer['evidence_gaps'] = [{'kind': 'repository_evidence', 'description': gap} for gap in asset_gaps]
     if evidence and not runtime_reason:
         for round_number in range(2):
             verify_sources(inventory, evidence.values())
@@ -354,6 +364,9 @@ def ask(workspace, question, provider=None, mode='semantic', limit=5, expand=3,
             answer['evidence_gaps'].append({'kind': 'repository_evidence',
                 'description': 'Some draft claims were omitted because their support could not be verified.'})
     _guard_serialized_scene_claims(question, answer, evidence, inventory)
+    for description in asset_gaps:
+        if not any(g['description'] == description for g in answer['evidence_gaps']):
+            answer['evidence_gaps'].append({'kind': 'repository_evidence', 'description': description})
     if unsupported_omitted:
         answer['evidence_gaps'].append({'kind': 'repository_evidence',
             'description': 'Some retrieved records referenced unsupported source files and were omitted.'})
