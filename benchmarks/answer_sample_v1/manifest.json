@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "kind": "answer-sample",
+  "scope": "fresh-candidate",
+  "repository": "https://github.com/SebLague/Boids",
+  "revision": "fdda4db1368df92fbacd8a644bbe6dc61d705441",
+  "previously_used_for_tuning": false,
+  "questions": 12,
+  "dataset": "questions.json",
+  "dataset_sha256": "fe257b8476bc1393f881ade35eb662ca6ab3480ef9daf8554f9f3c7e6f4748f5",
+  "source_review": {
+    "kind": "agent",
+    "reviewer": "Codex",
+    "rationale": "Authored from the pinned source before retrieval or generation; independent source review remains pending."
+  },
+  "policy": {
+    "supported_claim_rate": 0.95,
+    "all_cases_required": true,
+    "require_human": true,
+    "require_independence": true
+  },
+  "settings": {
+    "mode": "search",
+    "limit": 5,
+    "expand": 0,
+    "context_chars": 24000,
+    "followups": 0,
+    "context_tokens": null,
+    "token_encoding": "utf8-bytes",
+    "model_context_tokens": null
+  },
+  "provider": {
+    "model": "qwen3.5:9b",
+    "endpoint": "http://127.0.0.1:11434",
+    "timeout": 120,
+    "thinking": false,
+    "max_output_tokens": 2048,
+    "seed": 42
+  },
+  "model_digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90"
+}

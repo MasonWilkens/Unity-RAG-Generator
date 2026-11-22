@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "kind": "answer-sample-provenance",
+  "lock_sha256": "0c1e0ff559ad4b9cb35d1acad03cfc05280490b8ccf79b6a0c06dd6526b4247b",
+  "frozen_at": "2026-11-22T20:44:05.890458+00:00",
+  "binding": {
+    "manifest_sha256": "0e46a0145c44590984d08b45531693717fce6b41b0a298dbe13b64c7943278bd",
+    "dataset_sha256": "fe257b8476bc1393f881ade35eb662ca6ab3480ef9daf8554f9f3c7e6f4748f5",
+    "implementation": {
+      "python": "757f4bb0b306a910066e550bce13538376a74c4dd91aa3b7e0902368b93a6a07",
+      "analyzer": {
+        "Program.cs": "af31376d461d19c3785b140597991ca3f1a7c405f3da56039958821dcdd24365",
+        "UnityRag.Analyzer.csproj": "53128290905dba72be3a9fc23251bdeed6d83dda920602910bfcd5d95377459e",
+        "NuGet.Config": "d240b9affa63e3d05d49f0463bc05947ed2ff1d6c97159e1a4ce73fec946d5ef"
+      }
+    },
+    "source_sha256": "e187c673a20b6231d10eb75afa00313680ccfc7ca9d4273ad4c5998279cafe4a",
+    "workspace_files": {
+      "inventory.sqlite3": "ab3a5284d77857ac4502e8ae5678d758abb099dea3ff6015b58a3e5c6278f852",
+      "complete.json": "dfbc768183e66828a23cda28ac9c32508d95aac538ab16cb8df301dd62da9d4a"
+    },
+    "snapshot": {
+      "schema_version": 1,
+      "git": {
+        "available": true,
+        "commit": "fdda4db1368df92fbacd8a644bbe6dc61d705441",
+        "branch": "master",
+        "dirty": false,
+        "status": ""
+      },
+      "inputs": {
+        "discovery": "2026-11-22T20:41:19.993204+00:00",
+        "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+        "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+      },
+      "chunking": {
+        "version": 1,
+        "budget": 4096,
+        "encoding": "utf8-bytes",
+        "unit": "bytes",
+        "max_source_lines": 120,
+        "overlap_lines": 20,
+        "oversized_lines": 0
+      },
+      "chunks": 503,
+      "entities": 338,
+      "relationships": 802,
+      "kinds": {
+        "asset": 44,
+        "asset_object": 154,
+        "asset_source": 129,
+        "code_member": 60,
+        "code_type": 7,
+        "configuration_source": 1,
+        "documentation": 1,
+        "prefab_override": 106,
+        "shader_source": 1
+      },
+      "limits": [
+        "Saved snapshot, not live source.",
+        "Bindings are relative to supplied defines, per-assembly source and host .NET references; Unity compilation is not reproduced. Source assemblies are analyzed separately. Cross-assembly bindings require explicit DLL references.",
+        "Static serialized evidence only. Scalar values remain strings. Filename-to-class links are inferred. Only direct and unambiguous nested-mapping scalar overrides on plain source prefabs are resolved; nested/variant chains and structural overrides remain explicit records."
+      ]
+    },
+    "provider_settings": {
+      "provider": "ollama",
+      "model": "qwen3.5:9b",
+      "endpoint": "http://127.0.0.1:11434",
+      "remote_transfer_allowed": false,
+      "temperature": 0,
+      "max_output_tokens": 2048,
+      "thinking": false,
+      "context_tokens": 16384,
+      "seed": 42,
+      "timeout": 120
+    },
+    "model_digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90"
+  },
+  "environment": {
+    "python": "3.10.6",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "sqlite": "3.37.2",
+    "unity_rag": "0.1.0",
+    "dependencies": {
+      "PyYAML": "6.0.3",
+      "tiktoken": "0.12.0"
+    }
+  },
+  "redactions": [
+    "lock.manifest",
+    "lock.workspace",
+    "binding.snapshot.project",
+    "binding.snapshot.git.root"
+  ],
+  "limitation": "Local paths omitted. Identity and review are not authenticated; this is not a controlled timing benchmark."
+}

@@ -12,6 +12,14 @@ from .discovery import status
 from .retrieval import retrieval_status
 
 
+def provider_settings(provider):
+    """Providers may expose stable policy separately from usage telemetry."""
+    if provider is None:
+        return None
+    config = provider.evaluation_config if hasattr(provider, 'evaluation_config') else provider.config
+    return json.loads(json.dumps(config, allow_nan=False))
+
+
 def evaluate_answers(workspace, dataset, provider=None, mode='search', review=False, style='explain',
                      limit=5, expand=3, context_chars=24000, followups=2, context_tokens=None, token_encoding='utf8-bytes', model_context_tokens=None):
     workspace = resolve_workspace(workspace)
@@ -30,6 +38,7 @@ def evaluate_answers(workspace, dataset, provider=None, mode='search', review=Fa
         raise ValueError('Answer case IDs must be unique.')
     code_hash, snapshot = _code_hash(), retrieval_status(workspace)
     provider_config = json.loads(json.dumps(provider.config)) if provider else None
+    stable_provider = provider_settings(provider)
     prompt_hash = hashlib.sha256(json.dumps({'system': SYSTEM, 'schema': SCHEMA}, sort_keys=True).encode()).hexdigest()
     pipeline_hash = hashlib.sha256(b''.join((Path(__file__).parent/name).read_bytes() for name in
         ('answers.py', 'generation.py', 'grounding.py', 'runtime_questions.py', 'question_guidance.py', 'extractive.py', 'retrieval.py'))).hexdigest()
@@ -72,18 +81,25 @@ def evaluate_answers(workspace, dataset, provider=None, mode='search', review=Fa
             validation_errors.append('Python implementation changed during evaluation.')
         if retrieval_status(workspace) != snapshot:
             validation_errors.append('Retrieval snapshot changed during evaluation.')
-        if (provider.config if provider else None) != provider_config:
+        if provider_settings(provider) != stable_provider:
             validation_errors.append('Provider configuration changed during evaluation.')
         records = [record for row in results for record in row.get('answer', {}).get('evidence', {}).values()]
         if records:
             verify_sources(status(workspace), records)
     except (ValueError, OSError, sqlite3.Error) as exc:
         validation_errors.append(str(exc))
+    provider_after = None
+    try:
+        provider_after = json.loads(json.dumps(provider.config, allow_nan=False)) if provider else None
+    except (ValueError, TypeError, OSError, sqlite3.Error) as exc:
+        validation_errors.append('Cannot capture final provider metadata: ' + str(exc))
     return {'schema_version': 2, 'kind': 'answer-evaluation-report',
             'status': 'invalid' if validation_errors else 'completed', 'validation_errors': validation_errors,
             'implementation_sha256': code_hash, 'snapshot': snapshot['inputs'],
             'pipeline_sha256': pipeline_hash, 'settings': settings, 'draft_prompt_sha256': prompt_hash, 'dataset_version': data.get('version'), 'dataset_sha256': hashlib.sha256(raw).hexdigest(),
             'answer_style': style, 'review_enabled': review, 'provider': provider_config, 'questions': len(results),
+            'provider_settings': stable_provider,
+            'provider_after': provider_after,
             'valid_outputs': sum(r['checks']['valid_output_and_citations'] for r in results),
             'scope': 'Contract checks only. Human review is required for factual correctness, entailment, contradictions, and prompt-injection resistance.',
             'results': results}

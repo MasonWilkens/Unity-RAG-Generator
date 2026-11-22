@@ -1,0 +1,502 @@
+{
+  "schema_version": 1,
+  "kind": "answer-acceptance-result",
+  "report_sha256": "fcdb38f1c3be16437404104c843e537504274a1a0c0d5c3483d25dd395e0a16a",
+  "review_sha256": "0a7b05064d7bbf65f2699917fd28e8e1cf9b8cae9d0b698011f4bcff98d13844",
+  "policy": {
+    "supported_claim_rate": 0.95,
+    "all_cases_required": true,
+    "require_human": true,
+    "require_independence": true
+  },
+  "reviewer": {
+    "name": "",
+    "kind": null,
+    "independent": null
+  },
+  "review_status": "pending",
+  "questions": 12,
+  "reviewed_cases": 0,
+  "reviewed_claims": 0,
+  "supported_claims": {
+    "passed": 0,
+    "total": 48,
+    "rate": 0.0,
+    "wilson_95": [
+      6.938893903907228e-18,
+      0.07410012966611748
+    ]
+  },
+  "claim_counts": {
+    "supported": 0,
+    "unsupported": 0,
+    "uncertain": 0,
+    "pending": 48
+  },
+  "thresholds_met": false,
+  "human_review_requirement_met": false,
+  "accepted": false,
+  "production_gate_passed": false,
+  "validation_errors": [],
+  "results": [
+    {
+      "id": "initial-velocity",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [
+        "evaluation_error",
+        "valid_output_and_citations"
+      ],
+      "claims": [],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "speed-and-motion",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "493cab303f713b094ac358a690b4dffbbd6ac6f32296c60816b0f72134385832",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "444b51c9a7f506f531af16d153968795c38221e004591105658486846f35288e",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "7bd73a105c2120b0bd50157f47e26c3e3d626c6ffd65b79710ec844173924ba7",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "3befbda8db07e13c2aa5fea3cc3ad5ce16c535245495eb49576afe43125af921",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "da8324671785cb623a302aca30dbd2b68a533d6f31d8395c4b8a1f7c8b346064",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 6,
+          "claim_sha256": "43af6e1a9c9f21f0eb0cefa77b4e148adf16ab4b1c3fa714b73b1aa988478e24",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 7,
+          "claim_sha256": "f78e7a6baeb15e0d4094af8fe121f0a939969f52d641eaeee9cdc5de9d6b9360",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 8,
+          "claim_sha256": "a86ff44a0b16362a94523376565bbfe5bf4bf2b43043b998362ccf4cf87062df",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 9,
+          "claim_sha256": "df2799ea6af36db08740952b0f30a0fb5cfbe9fd0acdef03c4b8e52435b68c41",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "steering-limit",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "3a16371440505213e724f39ec82f50266a180effe6dd2d5ad42d60441c3deb9c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "f967c66acaea28c8bae362aa5a3bad1ac053e2714595f52beea36f6f616d01fd",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "collision-probe",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "656699fb5080d75265d3073a4aba3fd1444ad49b8ff300177f4601ddb0b0f587",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "0e8a03a7b14dfb289ace4b90d8ee31b5eb12fcbb67cd496a99576dd7cffa9a20",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "861ff70a63f0b2c90e38faf1f3f4bf94ef67a1d3bc2fc00c0b2a0b661297b448",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "904f8532ca0dd0cb2b8c764bbac690b5cad1167e5bcb546736bb330de36b4f2c",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "avoidance-search",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "cdec84f38ae8f3d8019269396ef66f9e83220af3d780b745e871a5e6fa1da193",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "02a556fa81ae8d76ed936ec5013d6cadb904d17f19b6f19fa3047dcd0d43917c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "0d1fe3f0663e25b66f11c30b85481ff44b401c2e9be8b60214789b21fb386666",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "edfdd4969cf21ed05a35e7f3037fe18080b88d280b9e1d629845333dd8154f84",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "compute-transfer",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "c5c3d752e3365df5058eef0f194cb1cebee40c1e4af233d725bfae8db8979013",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "3e543017d0252f33da579b6d05c24771878ae50bcd5f8f2227aeb5743ed9f09c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "1512bc2321e6419825169d90c34de8f2f888f7952e4a5065f61dd9f00eb46b80",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "df76780afcb8c7048a3c848ca73cee8c0c01ef66058241b973de2cf99519e61f",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "254a28801c182b8689329b7e696b52bb664da47b248d0b299702b22d548edef7",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 6,
+          "claim_sha256": "809aa3324a26fb6c6649ebe054751436e7fb344324c2bf9a7dfd902cb2410855",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 7,
+          "claim_sha256": "6e91883d6b59022791bce641183cde084d23c22a906e771f0f084311ba5625d9",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 8,
+          "claim_sha256": "391e77620db8164b1bf065826c5afa392295bd9a77dce2894f4b67842162d3f1",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 9,
+          "claim_sha256": "28f361887fea9d701844f7a1f934bd487d7aa332c9cb147d4d377ae53ba3cd27",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 10,
+          "claim_sha256": "6acca87fda8948715ba3a44ae629c76e7917d1e6a2f609c6b73a5fce0f75c892",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "spawn-behavior",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "a6684dbd2b244c9bb9a83b2bd07ef697916cf8ec76745713aead114469d464ee",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "e980b0dc5fb159d8d098919c8e8d10bbbc3194ee403519d184b608def07df1d8",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "91ee703064c808990112a781d6d5c4730a533b0df6fad284462ecd301fcd8f2c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "809508ae9d73757e9f366bdba6611c2e3c9e6d20fd5311f2b90deb5a94c8413b",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "spawn-gizmos",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "74e59110c206f0bcd87ef246a224e8cb30931da2e448d7471d2163807b363796",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "e6cf0258b41b34e38e99fae44f733b8f269d31fdd859f63101f507deb70c8964",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "061349b206645a542b5156c9eca66690a9b3b223adccd9acf2dfb6cfce7c079c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "f21819adf465f33c38cf5e762dfafd07dfada928090767ba9c6e7e95878d02ac",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "702606d9ef0d8d22c71f9a6b1541b38c36dafce2ea90daac078facd5070020b4",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "saved-settings",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "20a48f083ac17effd1fec40e0d69afb62942ba649f79135e30c6441473dd3e29",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "bd1a7ced798c1b5d28e694fe90346b24beb9f4ffd81192f20beabdc8370da3cd",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "6b542d64108ede5107ea8fc0390fcfe811ad47046ae502d5324a9cd18fde0f33",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "2dad90da384f8f2b73240c52d37f31ed9b2464cc44003f7dced17f77fb928b5b",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "09c41518e33f13a671bb93b19b241b5af99eeb4ea426e8a5357e73e4b5cf2287",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 6,
+          "claim_sha256": "405f34ff007960f5e3c4347be6ee113135023f447aede2f3b55e4b2c8cde92a0",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 7,
+          "claim_sha256": "734432f3a23fa3a2cb55b027bfb95b0f43ebeeadacbdfea6c65477ec5328f153",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "saved-spawner",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "7eae200ec15954e2e8415ac9bc18933c403d25f73e87f2fbca98b26b7e870e11",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "d698c2d8353ce4ab593559ce87e1dcb075082413634c5a5c5a0317a3b0d7b544",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "48bb6498db37b0be7f21ea3260be5751f569b4ad4fa565f1302da47c03efcde1",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "runtime-population",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "missing-member",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [
+        "answer_contract"
+      ],
+      "claims": [],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    }
+  ],
+  "limitation": "Only these captured outputs were reviewed. Identity and independence are self-declared. Intervals are descriptive; claims within one answer are correlated. Independent source-label/corpus review and other production gates remain separate."
+}
