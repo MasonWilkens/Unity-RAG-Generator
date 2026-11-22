@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "kind": "answer-acceptance-result",
+  "report_sha256": "376215036d19cf0d3b04df3a7588e3c850f98986e8262dafa0b666fcca8f6b7a",
+  "review_sha256": "6cc296427f5acaf39f0ffc2904ec83c05b2a02323bdc4a2e253a561ce3ed7c19",
+  "policy": {
+    "supported_claim_rate": 0.95,
+    "all_cases_required": true,
+    "require_human": true,
+    "require_independence": true
+  },
+  "reviewer": {
+    "name": "",
+    "kind": null,
+    "independent": null
+  },
+  "review_status": "pending",
+  "questions": 2,
+  "reviewed_cases": 0,
+  "reviewed_claims": 0,
+  "supported_claims": {
+    "passed": 0,
+    "total": 1,
+    "rate": 0.0,
+    "wilson_95": [
+      0,
+      0.7934506856227626
+    ]
+  },
+  "claim_counts": {
+    "supported": 0,
+    "unsupported": 0,
+    "uncertain": 0,
+    "pending": 1
+  },
+  "thresholds_met": false,
+  "human_review_requirement_met": false,
+  "accepted": false,
+  "production_gate_passed": false,
+  "validation_errors": [],
+  "results": [
+    {
+      "id": "equality",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [],
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "fe30e05731b2508bb1f520689f10eddd1f88f8426cc656108a374b0a1603b75c",
+          "support": null,
+          "rationale": ""
+        }
+      ],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    },
+    {
+      "id": "missing",
+      "pending": true,
+      "passed": false,
+      "failed_criteria": [
+        "answer_contract"
+      ],
+      "claims": [],
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": ""
+    }
+  ],
+  "limitation": "Only these captured outputs were reviewed. Identity and independence are self-declared. Intervals are descriptive; claims within one answer are correlated. Independent source-label/corpus review and other production gates remain separate."
+}

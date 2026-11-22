@@ -21,7 +21,7 @@ ROSLYN = {'unity_rag/roslyn/' + name for name in
 DOCS = {'LICENSE', 'README.md', 'pyproject.toml', 'MANIFEST.in', 'CHANGELOG.md',
         'RELEASE.md', 'PRODUCTION_READINESS_PLAN.md', 'DEVELOPMENT_PLAN.md',
         'REFINEMENT_PLAN.md', 'BENCHMARK.md', 'SEMANTIC_INDEXING.md', 'OPENAI.md',
-        'RAG_CREATION_PLAN.md', 'SHEET_INGESTION_DESIGN.md'}
+        'RAG_CREATION_PLAN.md', 'SHEET_INGESTION_DESIGN.md', 'ANSWER_ACCEPTANCE.md'}
 SCRIPTS = {'scripts/verify_distribution.py', 'scripts/install_smoke.py',
            'requirements/release.txt', 'requirements/test.txt'}
 

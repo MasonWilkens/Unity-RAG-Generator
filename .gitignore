@@ -28,6 +28,7 @@ pilot/
 !/SEMANTIC_INDEXING.md
 !/RAG_CREATION_PLAN.md
 !/SHEET_INGESTION_DESIGN.md
+!/ANSWER_ACCEPTANCE.md
 /*.discovery.example.json
 tests/evaluation/*.json
 tests/evaluation/*.md

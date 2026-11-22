@@ -81,6 +81,36 @@ def main():
         require(excerpt['text'] == '\n'.join(lines[excerpt['start_line']-1:excerpt['end_line']]),
                 'Cited excerpt differs from literal source')
         require(excerpt['sha256'] == hashlib.sha256(raw).hexdigest(), 'Citation hash mismatch')
+
+    # Exercise installed acceptance commands without inference or invented review.
+    from unity_rag.answer_evaluation import evaluate_answers
+    from unity_rag.answer_acceptance import write_review_artifact
+
+    class ScriptedProvider:
+        config = {'provider': 'scripted-test', 'model': 'install-contract'}
+
+        def generate(self, messages, schema):
+            evidence = json.loads(messages[1]['content'])['evidence']
+            key = next(k for k, row in evidence.items() if 'CanAttack' in row['title'])
+            return {'claims': [{'text': 'CanAttack is declared in the retrieved source.',
+                                'kind': 'fact', 'evidence_ids': [key]}],
+                    'missing_evidence': [], 'followup_queries': []}
+
+    dataset, report_path, review_path = (args.workspace.parent / name for name in
+                                       ('answer-questions.json', 'answer-report.json', 'answer-review.json'))
+    write_review_artifact({'schema_version': 1, 'questions': [
+        {'id': 'installed', 'question': 'Game.Enemy.CanAttack', 'mode': 'exact'}]}, dataset)
+    report = evaluate_answers(args.workspace, dataset, ScriptedProvider(), expand=0, followups=0)
+    require(report['status'] == 'completed' and report['valid_outputs'] == 1, 'Installed evaluation failed')
+    write_review_artifact(report, report_path)
+    command('answer-acceptance-template', report_path, '--output', review_path)
+    pending = subprocess.run([str(executable), 'review-answer-acceptance', str(report_path), str(review_path)],
+                             capture_output=True, text=True, encoding='utf-8', timeout=60)
+    require(pending.returncode == 1, 'An unfilled installed review must exit with failure')
+    result = json.loads(pending.stdout)
+    require(result['review_status'] == 'pending' and result['claim_counts']['pending'] == 1
+            and not result['accepted'] and not result['production_gate_passed'],
+            'Installed review incorrectly accepted pending judgments')
     repeat = command('refresh', *work)
     require(repeat['state'] == 'unchanged' and repeat['generation'] == built['generation'],
             'Unchanged refresh rebuilt the snapshot')
@@ -107,7 +137,7 @@ def main():
             ['dotnet', '--version'], text=True, cwd=package / 'roslyn').strip(),
         'checks': ['installed_import', 'console_and_module_entry_points', 'analyzer_bundle',
                    'fts5', 'preflight', 'code_lookup', 'keyword_lookup', 'guid_lookup',
-                   'asset_script_link', 'literal_citations', 'no_model_calls',
+                   'asset_script_link', 'literal_citations', 'no_model_calls', 'pending_answer_acceptance',
                    'source_unchanged', 'installed_package_unchanged', 'unchanged_refresh',
                    'changed_source_refresh', 'previous_generation_preserved'],
         'extras_imported': args.extras.split(',') if args.extras else [],

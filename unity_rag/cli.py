@@ -12,6 +12,7 @@ from .asset_map import map_assets, asset_report, find_assets, asset_users, asset
 from .retrieval import build_retrieval, retrieval_status, retrieve, format_results, MODES
 from .answer_evaluation import evaluate_answers
 from .answer_review import review_template, review_answers
+from .answer_acceptance import acceptance_template, review_acceptance, write_review_artifact
 from .answers import ask, format_answer
 from .openai_generation import provider_from_args
 from .evaluation import evaluate
@@ -288,6 +289,13 @@ def main():
     review_parser = commands.add_parser("review-answers", help="Check a completed quality review against the exact evaluated outputs")
     review_parser.add_argument("report")
     review_parser.add_argument("judgments")
+    acceptance_packet = commands.add_parser('answer-acceptance-template', help='Create an unfilled claim-by-claim review packet for an exact evaluation report')
+    acceptance_packet.add_argument('report')
+    acceptance_packet.add_argument('--output', help='Create a new UTF-8 JSON file; never overwrite')
+    acceptance_review = commands.add_parser('review-answer-acceptance', help='Measure claim support and independent human review requirements for captured outputs')
+    acceptance_review.add_argument('report')
+    acceptance_review.add_argument('judgments')
+    acceptance_review.add_argument('--output', help='Create a new UTF-8 JSON result; never overwrite')
     ingest = commands.add_parser("index", help="Rebuild the index for a Unity project")
     ingest.add_argument("project")
     legacy_search = commands.add_parser("search", help="Find relevant source chunks")
@@ -439,6 +447,15 @@ def main():
             result = review_answers(args.report, args.judgments)
             print(json.dumps(result, indent=2))
             return 0 if result['accepted'] else 1
+        elif args.command in ('answer-acceptance-template', 'review-answer-acceptance'):
+            result = (acceptance_template(args.report) if args.command == 'answer-acceptance-template'
+                      else review_acceptance(args.report, args.judgments))
+            if args.output:
+                write_review_artifact(result, args.output)
+                print(json.dumps({'output': args.output, 'kind': result['kind']}, indent=2))
+            else:
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+            return 0 if args.command == 'answer-acceptance-template' or result['accepted'] else 1
         elif args.command in ("scan", "status"):
             report = (scan(args.project, args.workspace, args.config)
                       if args.command == "scan" else status(args.workspace))
@@ -515,7 +532,9 @@ def main():
             print(json.dumps(run_benchmark(args.manifest, mode=args.mode, limit=args.limit, expand=args.expand), indent=2))
         elif args.command == "evaluate-answers":
             provider = provider_from_args(args)
-            print(json.dumps(evaluate_answers(args.workspace, args.dataset, provider, args.mode, review=args.review_claims, style=args.style, limit=args.limit, expand=args.expand, context_chars=args.context_chars, followups=args.followups, context_tokens=args.context_tokens, token_encoding=args.token_encoding, model_context_tokens=args.model_context_tokens), indent=2))
+            result = evaluate_answers(args.workspace, args.dataset, provider, args.mode, review=args.review_claims, style=args.style, limit=args.limit, expand=args.expand, context_chars=args.context_chars, followups=args.followups, context_tokens=args.context_tokens, token_encoding=args.token_encoding, model_context_tokens=args.model_context_tokens)
+            print(json.dumps(result, indent=2))
+            return 0 if result['status'] == 'completed' and result['valid_outputs'] == result['questions'] else 1
         elif args.command == "ask":
             provider = provider_from_args(args)
             result = ask(args.workspace, args.question, provider, args.mode, args.limit,

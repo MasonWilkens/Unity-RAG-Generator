@@ -3,6 +3,7 @@ include LICENSE README.md pyproject.toml MANIFEST.in
 include CHANGELOG.md RELEASE.md PRODUCTION_READINESS_PLAN.md
 include DEVELOPMENT_PLAN.md REFINEMENT_PLAN.md BENCHMARK.md SEMANTIC_INDEXING.md OPENAI.md
 include RAG_CREATION_PLAN.md SHEET_INGESTION_DESIGN.md
+include ANSWER_ACCEPTANCE.md
 recursive-include unity_rag *.py
 include unity_rag/roslyn/Program.cs
 include unity_rag/roslyn/UnityRag.Analyzer.csproj

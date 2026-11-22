@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "version": "scripted-acceptance-example-v1",
+  "scope": "Scripted contract demonstration, not independent acceptance.",
+  "questions": [
+    {
+      "id": "equality",
+      "question": "Game.Enemy.CanAttack",
+      "mode": "exact",
+      "human_review": "Inspect the >= operator; the equality comment is misleading."
+    },
+    {
+      "id": "missing",
+      "question": "NeverExisted.Tick",
+      "mode": "exact",
+      "expected_status": "insufficient_evidence",
+      "human_review": "No exact indexed source is available; inspect the evidence gap."
+    }
+  ]
+}
