@@ -68,6 +68,13 @@ Use `python -m unity_rag` in place of `unity-rag` when preferred.
   This query-only rule works with existing indexes and preserves result/context
   budgets. Tiny budgets may omit a side. Selection does not prove equivalence,
   differences, runtime behavior or a call relationship between the types.
+- Single-type multipart questions can follow two resolved method calls, supplying
+  the caller, intermediate call site and complementary endpoint implementation.
+  A bridge can lack query terms when its literal calls connect the evidence.
+  Cycles, equally supported paths, virtual/interface/delegate/string dispatch and
+  missing targets do not gain inferred implementations. Traversal stops at two
+  calls and preserves existing anchors, source checks and budgets; it does not
+  establish execution order, argument flow or runtime behavior.
 - Questions about saved values in a named asset report an explicit evidence gap
   when its indexed source is binary, an LFS pointer, unparsed or ambiguously named.
   Related code defaults cannot replace the missing serialization. Use a full

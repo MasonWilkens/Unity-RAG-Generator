@@ -1,0 +1,858 @@
+{
+  "schema_version": 1,
+  "dataset_sha256": "651c0fef338f8c4a14938a8fb95f694e6a104f75cbeceb61dfd316d2edea9849",
+  "split": "synthetic-development",
+  "snapshot": {
+    "discovery": "2026-11-22T16:08:39.715523+00:00",
+    "code": "52bc0d2e10ef75b7551944be6f886772c1eced0d55dddc226c1f3c74aee56e69",
+    "assets": "669dc1f88a795c13a4e1337f1b12f1b67b2fd1998543f0101d442de4fd812245"
+  },
+  "settings": {
+    "mode": "search",
+    "limit": 5,
+    "expand": 0,
+    "context_chars": 24000,
+    "retrieval_context_chars": 1000000,
+    "context_tokens": null,
+    "token_encoding": "utf8-bytes"
+  },
+  "cases": [
+    {
+      "id": "plain-relay",
+      "category": "two-hop-dependency",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.03672570000003361,
+      "answer_seconds": 0.03934870000000501,
+      "candidate_count": 76,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 1,
+        "groups": 3,
+        "group_hits": [
+          true,
+          false,
+          false
+        ],
+        "passage_recall": 0.3333333333333333,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/ParcelDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/ParcelRelay.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 1,
+        "groups": 3,
+        "group_hits": [
+          true,
+          false,
+          false
+        ],
+        "passage_recall": 0.3333333333333333,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/ParcelDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/ParcelRelay.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 848,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "extend-one-hop",
+      "category": "two-hop-dependency",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.009899700000005396,
+      "answer_seconds": 0.046688099999983024,
+      "candidate_count": 73,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 3,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "passage_recall": 0.75,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/Counting.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/CountingRelay.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/CountingRelay.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 3,
+        "groups": 4,
+        "group_hits": [
+          true,
+          true,
+          true,
+          false
+        ],
+        "passage_recall": 0.75,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/Counting.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/CountingRelay.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/CountingRelay.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1450,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "same-owner-helper",
+      "category": "two-hop-dependency",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.009471999999959735,
+      "answer_seconds": 0.036125200000014956,
+      "candidate_count": 68,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 2,
+        "groups": 3,
+        "group_hits": [
+          true,
+          true,
+          false
+        ],
+        "passage_recall": 0.6666666666666666,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/LocalDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/LocalDock.cs",
+            "start_line": 6,
+            "end_line": 6,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 2,
+        "groups": 3,
+        "group_hits": [
+          true,
+          true,
+          false
+        ],
+        "passage_recall": 0.6666666666666666,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/LocalDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/LocalDock.cs",
+            "start_line": 6,
+            "end_line": 6,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1121,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "long-relay",
+      "category": "two-hop-dependency",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.009929000000056476,
+      "answer_seconds": 0.04347229999996216,
+      "candidate_count": 78,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 1,
+        "groups": 3,
+        "group_hits": [
+          true,
+          false,
+          false
+        ],
+        "passage_recall": 0.3333333333333333,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/LengthyDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/LengthyRelay.cs",
+            "start_line": 223,
+            "end_line": 223,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 1,
+        "groups": 3,
+        "group_hits": [
+          true,
+          false,
+          false
+        ],
+        "passage_recall": 0.3333333333333333,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/LengthyDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/LengthyRelay.cs",
+            "start_line": 223,
+            "end_line": 223,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/RecordBook.cs",
+            "start_line": 5,
+            "end_line": 5,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1077,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "long-leaf",
+      "category": "two-hop-dependency",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.013732900000036352,
+      "answer_seconds": 0.05366900000001351,
+      "candidate_count": 72,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 1,
+        "groups": 4,
+        "group_hits": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "passage_recall": 0.25,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/WideDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/WideRelay.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/LongRegister.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/LongRegister.cs",
+            "start_line": 224,
+            "end_line": 224,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 1,
+        "groups": 4,
+        "group_hits": [
+          true,
+          false,
+          false,
+          false
+        ],
+        "passage_recall": 0.25,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/WideDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/WideRelay.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/LongRegister.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/LongRegister.cs",
+            "start_line": 224,
+            "end_line": 224,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 8315,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    },
+    {
+      "id": "nonvirtual-instance",
+      "category": "two-hop-dependency",
+      "expected_outcome": "evidence",
+      "answer_status": "partial",
+      "retrieval_seconds": 0.010954500000025291,
+      "answer_seconds": 0.04339700000002722,
+      "candidate_count": 72,
+      "semantic_profile": null,
+      "retrieved": {
+        "groups_found": 2,
+        "groups": 3,
+        "group_hits": [
+          true,
+          false,
+          true
+        ],
+        "passage_recall": 0.6666666666666666,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/InstanceDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/InstanceRelay.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/InstanceBook.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "packed": {
+        "groups_found": 2,
+        "groups": 3,
+        "group_hits": [
+          true,
+          false,
+          true
+        ],
+        "passage_recall": 0.6666666666666666,
+        "negative_passages_found": 0,
+        "expected_outcome_met": false,
+        "passed": false,
+        "checks": [
+          {
+            "path": "Assets/InstanceDock.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          },
+          {
+            "path": "Assets/InstanceRelay.cs",
+            "start_line": 3,
+            "end_line": 3,
+            "review_status": "current",
+            "returned": false,
+            "retrieved_source_current": false,
+            "reference_dependencies_current": null,
+            "matched_current": false
+          },
+          {
+            "path": "Assets/InstanceBook.cs",
+            "start_line": 4,
+            "end_line": 4,
+            "review_status": "current",
+            "returned": true,
+            "retrieved_source_current": true,
+            "reference_dependencies_current": true,
+            "matched_current": true
+          }
+        ]
+      },
+      "context_budget": {
+        "max_chars": 24000,
+        "used_chars": 1045,
+        "model_input": null,
+        "max_tokens": null,
+        "used_tokens": null,
+        "token_encoding": null,
+        "truncated_records": 0,
+        "retrieval_omitted_records": 0,
+        "omitted_records": 0,
+        "unsupported_records_omitted": 0
+      }
+    }
+  ],
+  "summary": {
+    "retrieved": {
+      "passed": 0,
+      "cases": 6,
+      "groups_found": 10,
+      "groups": 20,
+      "negative_passages_found": 0
+    },
+    "packed": {
+      "passed": 0,
+      "cases": 6,
+      "groups_found": 10,
+      "groups": 20,
+      "negative_passages_found": 0
+    }
+  },
+  "scope": "Hash-checked passage delivery and labeled negatives; not generated-answer factuality or independent review.",
+  "implementation_sha256": "58a2f62623e8b38bf9f282b3069c7f42ae0950b0f141b0673d589de1180bb3f3",
+  "controls": [
+    {
+      "question": "How does AmbiguousDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does CyclicDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does DeepDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does VirtualDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does VirtualLeafDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does InterfaceDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does DelegateDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does StringDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does MissingDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does DirectDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does RedundantDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does DecoyDock validate shipment and increment the audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does ParcelDock validate shipment and calculate nonexistentSatellite?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "How does ParcelDock use CountingDock and increment audit stamp?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "Locate ParcelDock.Run.",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    },
+    {
+      "question": "What is serialized in the ParcelDock scene and prefab?",
+      "chain_selected": false,
+      "actual_chain_selected": false,
+      "passed": true
+    }
+  ],
+  "fixture_lock_sha256": "dcef0cb1dd8ee5f2d23bb0d5fb88aae798a6c34dc107a8e2d05f5d596d3d4cc6",
+  "full_report_sha256": "960f78bf784c9888b4e62ff3d875cffb034314b540e538a4aa0b76af3c926dd1",
+  "redactions": [
+    "generation"
+  ]
+}

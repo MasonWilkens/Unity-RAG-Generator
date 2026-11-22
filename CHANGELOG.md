@@ -31,6 +31,10 @@ This version remains an experimental, review-required local tool.
   questions, including qualified names, partial declarations, properties and long
   split methods. Preserve overload identities, source freshness and existing
   budgets; ambiguous or unsupported comparisons keep ordinary ranking.
+- Follow bounded two-call dependency paths with literal caller, bridge and
+  endpoint evidence. Preserve namespace/overload identities and freshness for
+  intermediate and partial source files; reject cycles, ambiguous paths and
+  unresolved or polymorphic dispatch, including default interface methods.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan
