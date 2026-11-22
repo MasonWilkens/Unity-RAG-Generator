@@ -22,6 +22,11 @@ records. They run without private repositories, credentials or a Unity Editor.
   source files. These do not constitute a held-out real-project benchmark.
 - `release-*.json` and `release-*.md`: dated release-check evidence. Each record
   identifies its exact tested source/artifacts and whether remote CI actually ran.
+- `benchmarks/answer_acceptance_v1/example/` (relative to the repository root):
+  scripted fixture outputs, an unfilled claim review and a pending result. Run
+  `scripts/answer_acceptance_example.py --output-dir NEW_DIRECTORY` to reproduce
+  the workflow without external inference. This is not a model-quality result
+  or independent review; see [the review guide](../../ANSWER_ACCEPTANCE.md).
 
 ## Local project experiments
 

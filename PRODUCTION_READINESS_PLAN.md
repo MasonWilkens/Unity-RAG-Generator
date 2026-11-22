@@ -67,6 +67,15 @@ broader traversal needs additional development evidence. Repeated-corpus results
 are regression evidence, not new proof of generalization. Do not tune against
 individual held-out questions.
 
+The [claim-level acceptance workflow](ANSWER_ACCEPTANCE.md) now supplies unfilled
+review packets tied to exact schema-2 evaluation reports, with a frozen 95%
+supported-claim policy and separate case-level correctness, completeness and
+abstention checks. Evaluation detects changed inputs and source evidence. Human
+identity/independence remain declarations, and the standalone result never closes
+the production gate. The checked-in example is scripted and unreviewed. Next,
+freeze a fresh answer sample and arrange actual independent source and answer
+reviews; no independent review or model-quality target is claimed by this batch.
+
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.
 Freeze sources, labels, essential passages, question categories, answer budgets

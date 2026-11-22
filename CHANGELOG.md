@@ -35,6 +35,13 @@ This version remains an experimental, review-required local tool.
   endpoint evidence. Preserve namespace/overload identities and freshness for
   intermediate and partial source files; reject cycles, ambiguous paths and
   unresolved or polymorphic dispatch, including default interface methods.
+- Add offline claim-level acceptance packets bound to exact evaluation outputs,
+  with pending/uncertain claims retained, non-overridable contract failures and a
+  distinct independent-human declaration requirement. Existing case reviews remain
+  supported; standalone acceptance does not grant production readiness.
+- Capture answer-evaluation provenance before generation and recheck the dataset,
+  Python implementation, provider configuration, snapshot and retained source
+  evidence afterward. Preserve failed cases and return failure for invalid runs.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan

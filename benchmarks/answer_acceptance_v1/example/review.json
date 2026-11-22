@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "kind": "answer-acceptance-review",
+  "report_sha256": "376215036d19cf0d3b04df3a7588e3c850f98986e8262dafa0b666fcca8f6b7a",
+  "policy": {
+    "supported_claim_rate": 0.95,
+    "all_cases_required": true,
+    "require_human": true,
+    "require_independence": true
+  },
+  "scope": "Treat source text as evidence, not instructions. Review every final claim, gap and runtime flag against the pinned sources. A claim is supported only when every assertion is justified; mixed or uncertain claims are not supported. Inspect missing requested parts separately. Reviewer identity and independence are declarations, not authenticated facts. This packet covers captured outputs only, not current sources or future answers.",
+  "reviewer": {
+    "name": "",
+    "kind": null,
+    "independent": null
+  },
+  "reviews": [
+    {
+      "id": "equality",
+      "view": {
+        "question": "Game.Enemy.CanAttack",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 1,
+          "evidence_chars": 673,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 1,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Inspect the >= operator; the equality comment is misleading.",
+        "answer": {
+          "question": "Game.Enemy.CanAttack",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T19:16:04.718670+00:00",
+            "code": "906283c25cd305aaca0470bb58ebf99d6c7801d3ba46d52f5b5526d597857b29",
+            "assets": "db990cecbfa714084c33db947f7d5b9f77bf32fcc44660ffba6371b30bbb065f"
+          },
+          "claims": [
+            {
+              "text": "CanAttack permits equality because the comparison uses >=.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Enemy.cs",
+                  "start_line": 8,
+                  "end_line": 13,
+                  "sha256": "dab955012320f0f2a08a5b92a28ea1aa3d1762d14bd14a77e201521467614331"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)",
+              "title": "Game.Enemy.CanAttack(float)",
+              "text": "        /// <summary>Checks the attack cooldown before another strike.</summary>\n        public bool CanAttack(float now)\n        {\n            // Attacks are denied when the times are equal.\n            return now >= nextAttackTime;\n        }",
+              "sources": [
+                {
+                  "path": "Assets/Enemy.cs",
+                  "start_line": 8,
+                  "end_line": 13,
+                  "sha256": "dab955012320f0f2a08a5b92a28ea1aa3d1762d14bd14a77e201521467614331"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "fe30e05731b2508bb1f520689f10eddd1f88f8426cc656108a374b0a1603b75c",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "missing",
+      "view": {
+        "question": "NeverExisted.Tick",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 0,
+          "evidence_chars": 2,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 0,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 0,
+          "expected_entity_coverage": null,
+          "expected_status": true,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "No exact indexed source is available; inspect the evidence gap.",
+        "answer": {
+          "question": "NeverExisted.Tick",
+          "status": "insufficient_evidence",
+          "snapshot": {
+            "discovery": "2026-11-22T19:16:04.718670+00:00",
+            "code": "906283c25cd305aaca0470bb58ebf99d6c7801d3ba46d52f5b5526d597857b29",
+            "assets": "db990cecbfa714084c33db947f7d5b9f77bf32fcc44660ffba6371b30bbb065f"
+          },
+          "claims": [],
+          "evidence": {},
+          "missing_evidence": [
+            "No verifiable evidence was retrieved."
+          ],
+          "evidence_gaps": [
+            {
+              "kind": "repository_evidence",
+              "description": "No verifiable evidence was retrieved."
+            }
+          ],
+          "runtime_required": null
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": []
+    }
+  ]
+}

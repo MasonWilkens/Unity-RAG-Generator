@@ -1,0 +1,255 @@
+{
+  "schema_version": 2,
+  "kind": "answer-evaluation-report",
+  "status": "completed",
+  "validation_errors": [],
+  "implementation_sha256": "fd8da9b2017e8a1417414733968a21611cfb03ce10694f6333138b7c9fa1d27b",
+  "snapshot": {
+    "discovery": "2026-11-22T19:16:04.718670+00:00",
+    "code": "906283c25cd305aaca0470bb58ebf99d6c7801d3ba46d52f5b5526d597857b29",
+    "assets": "db990cecbfa714084c33db947f7d5b9f77bf32fcc44660ffba6371b30bbb065f"
+  },
+  "pipeline_sha256": "8a17309f9d983d052f71d01cd06ce8b3357b6bb56f9019b0864c799ed0dc3848",
+  "settings": {
+    "mode": "search",
+    "limit": 5,
+    "expand": 0,
+    "context_chars": 24000,
+    "followups": 0,
+    "context_tokens": null,
+    "token_encoding": "utf8-bytes",
+    "model_context_tokens": null
+  },
+  "draft_prompt_sha256": "302125579c1a31d4aa8158588d8758446e959cee51c071cd9bbeba334bc25689",
+  "dataset_version": "scripted-acceptance-example-v1",
+  "dataset_sha256": "0367381af97707f4224f0d2192ea2562f0b1e00f02dfbb4524a95482f365d3a2",
+  "answer_style": "explain",
+  "review_enabled": false,
+  "provider": {
+    "provider": "scripted-test",
+    "model": "acceptance-example"
+  },
+  "questions": 2,
+  "valid_outputs": 2,
+  "scope": "Contract checks only. Human review is required for factual correctness, entailment, contradictions, and prompt-injection resistance.",
+  "results": [
+    {
+      "id": "equality",
+      "question": "Game.Enemy.CanAttack",
+      "settings": {
+        "mode": "exact",
+        "limit": 5,
+        "expand": 0,
+        "context_chars": 24000,
+        "followups": 0,
+        "context_tokens": null,
+        "token_encoding": "utf8-bytes",
+        "model_context_tokens": null
+      },
+      "seconds": 0.020714299998871866,
+      "checks": {
+        "valid_output_and_citations": true,
+        "retrieved_expected_entity_coverage": null,
+        "evidence_records": 1,
+        "evidence_chars": 673,
+        "evidence_tokens": null,
+        "truncated_evidence_records": 0,
+        "omitted_evidence_records": 0,
+        "retained_claims": 1,
+        "source_excerpts": 0,
+        "removed_claims": 0,
+        "model_calls": 1,
+        "expected_entity_coverage": null,
+        "expected_status": null,
+        "expected_runtime_flag": null
+      },
+      "human_review": "Inspect the >= operator; the equality comment is misleading.",
+      "answer": {
+        "schema_version": 4,
+        "answer_style": "explain",
+        "question": "Game.Enemy.CanAttack",
+        "snapshot": {
+          "discovery": "2026-11-22T19:16:04.718670+00:00",
+          "code": "906283c25cd305aaca0470bb58ebf99d6c7801d3ba46d52f5b5526d597857b29",
+          "assets": "db990cecbfa714084c33db947f7d5b9f77bf32fcc44660ffba6371b30bbb065f"
+        },
+        "model": {
+          "provider": "scripted-test",
+          "model": "acceptance-example"
+        },
+        "status": "answered",
+        "claims": [
+          {
+            "text": "CanAttack permits equality because the comparison uses >=.",
+            "kind": "fact",
+            "evidence_ids": [
+              "E1"
+            ],
+            "citations": [
+              {
+                "evidence_id": "E1",
+                "path": "Assets/Enemy.cs",
+                "start_line": 8,
+                "end_line": 13,
+                "sha256": "dab955012320f0f2a08a5b92a28ea1aa3d1762d14bd14a77e201521467614331"
+              }
+            ]
+          }
+        ],
+        "missing_evidence": [],
+        "evidence_gaps": [],
+        "runtime_required": false,
+        "evidence": {
+          "E1": {
+            "entity_id": "Assembly-CSharp::M:Game.Enemy.CanAttack(System.Single)",
+            "title": "Game.Enemy.CanAttack(float)",
+            "text": "        /// <summary>Checks the attack cooldown before another strike.</summary>\n        public bool CanAttack(float now)\n        {\n            // Attacks are denied when the times are equal.\n            return now >= nextAttackTime;\n        }",
+            "sources": [
+              {
+                "path": "Assets/Enemy.cs",
+                "start_line": 8,
+                "end_line": 13,
+                "sha256": "dab955012320f0f2a08a5b92a28ea1aa3d1762d14bd14a77e201521467614331"
+              }
+            ],
+            "evidence_type": "original_source",
+            "provenance": {
+              "scope": "repository_snapshot",
+              "record_kind": "code_member",
+              "runtime_observed": false
+            }
+          }
+        },
+        "searches": [
+          {
+            "query": "Game.Enemy.CanAttack",
+            "candidate_count": 1
+          }
+        ],
+        "model_calls": 1,
+        "grounding_review": {
+          "method": "not_requested",
+          "removed_claims": 0
+        },
+        "runtime_routing": {
+          "matched": false,
+          "method": "explicit_live_question_v1"
+        },
+        "quality": {
+          "status": "unreviewed_model_output",
+          "requires_source_review": true,
+          "model_review_is_approval": false
+        },
+        "context_budget": {
+          "max_chars": 24000,
+          "used_chars": 673,
+          "omitted_records": 0,
+          "model_input": null,
+          "max_tokens": null,
+          "used_tokens": null,
+          "token_encoding": null,
+          "truncated_records": 0,
+          "retrieval_omitted_records": 0,
+          "unsupported_records_omitted": 0
+        },
+        "validation": "Citation IDs, source hashes, and line ranges verified. Claim correctness is not automatically proven."
+      }
+    },
+    {
+      "id": "missing",
+      "question": "NeverExisted.Tick",
+      "settings": {
+        "mode": "exact",
+        "limit": 5,
+        "expand": 0,
+        "context_chars": 24000,
+        "followups": 0,
+        "context_tokens": null,
+        "token_encoding": "utf8-bytes",
+        "model_context_tokens": null
+      },
+      "seconds": 0.009600400000636,
+      "checks": {
+        "valid_output_and_citations": true,
+        "retrieved_expected_entity_coverage": null,
+        "evidence_records": 0,
+        "evidence_chars": 2,
+        "evidence_tokens": null,
+        "truncated_evidence_records": 0,
+        "omitted_evidence_records": 0,
+        "retained_claims": 0,
+        "source_excerpts": 0,
+        "removed_claims": 0,
+        "model_calls": 0,
+        "expected_entity_coverage": null,
+        "expected_status": true,
+        "expected_runtime_flag": null
+      },
+      "human_review": "No exact indexed source is available; inspect the evidence gap.",
+      "answer": {
+        "schema_version": 4,
+        "answer_style": "explain",
+        "question": "NeverExisted.Tick",
+        "snapshot": {
+          "discovery": "2026-11-22T19:16:04.718670+00:00",
+          "code": "906283c25cd305aaca0470bb58ebf99d6c7801d3ba46d52f5b5526d597857b29",
+          "assets": "db990cecbfa714084c33db947f7d5b9f77bf32fcc44660ffba6371b30bbb065f"
+        },
+        "model": {
+          "provider": "scripted-test",
+          "model": "acceptance-example"
+        },
+        "status": "insufficient_evidence",
+        "claims": [],
+        "missing_evidence": [
+          "No verifiable evidence was retrieved."
+        ],
+        "evidence_gaps": [
+          {
+            "kind": "repository_evidence",
+            "description": "No verifiable evidence was retrieved."
+          }
+        ],
+        "runtime_required": null,
+        "evidence": {},
+        "searches": [
+          {
+            "query": "NeverExisted.Tick",
+            "candidate_count": 0
+          }
+        ],
+        "model_calls": 0,
+        "grounding_review": {
+          "method": "not_requested",
+          "removed_claims": 0
+        },
+        "runtime_routing": {
+          "matched": false,
+          "method": "explicit_live_question_v1"
+        },
+        "quality": {
+          "status": "no_model_output",
+          "requires_source_review": false,
+          "model_review_is_approval": false
+        },
+        "context_budget": {
+          "max_chars": 24000,
+          "used_chars": 2,
+          "omitted_records": 0,
+          "model_input": null,
+          "max_tokens": null,
+          "used_tokens": null,
+          "token_encoding": null,
+          "truncated_records": 0,
+          "retrieval_omitted_records": 0,
+          "unsupported_records_omitted": 0
+        },
+        "validation": "Citation IDs, source hashes, and line ranges verified. Claim correctness is not automatically proven."
+      }
+    }
+  ],
+  "example": "Scripted provider output; no model quality or human review measured.",
+  "redactions": [
+    "results[*].answer.project"
+  ]
+}

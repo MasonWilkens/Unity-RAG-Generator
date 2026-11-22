@@ -116,6 +116,11 @@ malformed responses and truncated output are rejected. These checks do not prove
 factual correctness. Runtime behavior, live Inspector state and performance need
 runtime evidence; initializers and serialized defaults cannot establish them.
 
+For recorded evaluations, [claim-level answer review](ANSWER_ACCEPTANCE.md)
+creates unfilled packets tied to exact outputs, counts supported claims and keeps
+agent review distinct from declared independent human review. Incomplete reviews
+remain pending; these checks do not close the production-readiness gates.
+
 ## Maintained workspaces
 
 Refresh stages a new generation, checks sources and configuration, then publishes
