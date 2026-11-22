@@ -1,4 +1,5 @@
 import json
+import sqlite3
 from pathlib import Path
 import tempfile
 import unittest
@@ -144,6 +145,27 @@ class AnswerEvaluationTests(unittest.TestCase):
                 report = evaluate_answers('workspace', self.dataset, provider=provider)
             self.assertEqual(report['status'], 'invalid')
             self.assertIn('Provider configuration changed during evaluation.', report['validation_errors'])
+
+    def test_unreadable_final_provider_telemetry_retains_outputs_as_invalid(self):
+        class Provider:
+            failed = False
+            evaluation_config = {'provider': 'synthetic-test'}
+
+            @property
+            def config(self):
+                if self.failed:
+                    raise sqlite3.DatabaseError('Synthetic unreadable ledger')
+                return {'provider': 'synthetic-test'}
+        provider = Provider()
+        def generate(*args, **kwargs):
+            provider.failed = True
+            return self.answer()
+        with patch('unity_rag.answer_evaluation.ask', side_effect=generate):
+            report = evaluate_answers('workspace', self.dataset, provider=provider)
+        self.assertEqual(report['status'], 'invalid')
+        self.assertEqual(report['valid_outputs'], 1)
+        self.assertIsNone(report['provider_after'])
+        self.assertIn('Cannot capture final provider metadata', report['validation_errors'][0])
 
     def test_cli_returns_failure_for_invalid_or_failed_evaluations(self):
         from contextlib import redirect_stdout

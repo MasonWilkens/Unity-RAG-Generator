@@ -5,6 +5,7 @@ import io
 import json
 from pathlib import Path
 import shutil
+import sqlite3
 import sys
 import tempfile
 import unittest
@@ -128,6 +129,14 @@ class SampleTests(unittest.TestCase):
         self.assertEqual(json.loads((output / 'report.json').read_bytes())['results'][0]['error'], 'Model failed.')
         with self.assertRaises(FileExistsError):
             sample.run_sample(self.lock, output)
+        # An index that becomes unreadable after generation must still leave a
+        # report and unfilled review, rather than only the started marker.
+        locked = sample._locked(self.lock)
+        with patch.object(sample, 'evaluate_answers', return_value=copy.deepcopy(report)), patch.object(
+                sample, '_locked', side_effect=[locked, sqlite3.DatabaseError('Synthetic index corruption')]):
+            invalid = sample.run_sample(self.lock, self.root / 'corrupt-run')
+        self.assertEqual(invalid['status'], 'invalid')
+        self.assertTrue((self.root / 'corrupt-run/review.json').is_file())
 
     def test_changes_during_generation_are_retained_as_invalid(self):
         self.prepare()

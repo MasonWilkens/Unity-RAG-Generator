@@ -67,6 +67,11 @@ errors. The runtime-observation question returned `insufficient_evidence` with
 the required runtime flag, and the missing member returned `insufficient_evidence`.
 Those are contract/status observations, not independent judgments of correctness.
 
+The capture used implementation commit `fec447b47d505f00554888c0131856abaa16c527`.
+A later error-retention fix preserves reports if an index or final provider
+metadata becomes unreadable; this historical sample has not been rerun against
+that change. The lock records the original implementation and remains historical.
+
 There are 48 retained claims, zero reviewed claims, and an
 [unfilled review packet](run-1/review.json). The [acceptance result](run-1/pending.json)
 is pending and false. Even fully supportive judgments could not override the

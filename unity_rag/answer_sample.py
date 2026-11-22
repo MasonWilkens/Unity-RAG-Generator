@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sqlite3
 from urllib.request import Request, build_opener, ProxyHandler
 
 from .answer_acceptance import POLICY, _read, acceptance_template, review_acceptance, write_review_artifact
@@ -155,7 +156,7 @@ def run_sample(lock_path, output):
         _locked(lock_path)
         if file_sha256(lock_path) != lock_hash:
             raise ValueError('Sample lock changed during generation.')
-    except (ValueError, OSError) as exc:
+    except (ValueError, OSError, sqlite3.Error) as exc:
         report['status'] = 'invalid'
         report['validation_errors'].append(str(exc))
     for row in report['results']:

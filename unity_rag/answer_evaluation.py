@@ -88,13 +88,18 @@ def evaluate_answers(workspace, dataset, provider=None, mode='search', review=Fa
             verify_sources(status(workspace), records)
     except (ValueError, OSError, sqlite3.Error) as exc:
         validation_errors.append(str(exc))
+    provider_after = None
+    try:
+        provider_after = json.loads(json.dumps(provider.config, allow_nan=False)) if provider else None
+    except (ValueError, TypeError, OSError, sqlite3.Error) as exc:
+        validation_errors.append('Cannot capture final provider metadata: ' + str(exc))
     return {'schema_version': 2, 'kind': 'answer-evaluation-report',
             'status': 'invalid' if validation_errors else 'completed', 'validation_errors': validation_errors,
             'implementation_sha256': code_hash, 'snapshot': snapshot['inputs'],
             'pipeline_sha256': pipeline_hash, 'settings': settings, 'draft_prompt_sha256': prompt_hash, 'dataset_version': data.get('version'), 'dataset_sha256': hashlib.sha256(raw).hexdigest(),
             'answer_style': style, 'review_enabled': review, 'provider': provider_config, 'questions': len(results),
             'provider_settings': stable_provider,
-            'provider_after': json.loads(json.dumps(provider.config)) if provider else None,
+            'provider_after': provider_after,
             'valid_outputs': sum(r['checks']['valid_output_and_citations'] for r in results),
             'scope': 'Contract checks only. Human review is required for factual correctness, entailment, contradictions, and prompt-injection resistance.',
             'results': results}

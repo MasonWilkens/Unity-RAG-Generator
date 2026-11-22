@@ -1,6 +1,7 @@
 """Prepare a frozen local answer sample, or run it once and create an unfilled review."""
 import argparse
 import json
+import sqlite3
 from pathlib import Path
 import sys
 
@@ -27,7 +28,7 @@ def main():
         result = run_sample(args.lock, args.output)
         print(json.dumps(result, indent=2))
         return 0 if result['status'] == 'completed' and result['valid_outputs'] == result['questions'] else 1
-    except (ValueError, OSError) as exc:
+    except (ValueError, OSError, sqlite3.Error) as exc:
         parser.exit(1, str(exc) + '\n')
 
 
