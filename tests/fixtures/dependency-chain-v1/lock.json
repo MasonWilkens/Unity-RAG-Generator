@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "a3b84a23778aa66e2d80df3e7732e85951d79e98",
+  "settings": {
+    "mode": "search",
+    "limit": 5,
+    "expand": 0,
+    "context_chars": 24000
+  },
+  "chunk_budget": 1024,
+  "sha256": {
+    "labels.json": "651c0fef338f8c4a14938a8fb95f694e6a104f75cbeceb61dfd316d2edea9849",
+    "project/Assets/Controls.cs": "f3ca0b735dd3956b0c47d04ad42ce07f6eb15f78472cde2387a9111bc32bd085",
+    "project/Assets/Counting.cs": "495b2d80b554384be0c41da1aab02e10caae1dad31d3ff23c3ea7b493ce1984e",
+    "project/Assets/CountingRelay.cs": "8722b22f093c742e089334964b5a317ceef6c5af393df061fa6d3f8d30dc200c",
+    "project/Assets/InstanceBook.cs": "900c9661d808aab66d0d0d34ab5a7e1405eb3b52c0aec27c0ba19aeabfcf9a30",
+    "project/Assets/InstanceDock.cs": "988ee9faa5ad5f4885b44739f9397c18694baf98d9a66f345fa4afcd86d64d1e",
+    "project/Assets/InstanceRelay.cs": "e3b6f948d60733099f1be1259e831d4b022dd47deb250ca6a34d0fdf688221d2",
+    "project/Assets/LengthyDock.cs": "88025a33af21d72b88b772cbd87478ce1d885aa1f86087ba553fae8484721512",
+    "project/Assets/LengthyRelay.cs": "eaecdc0e003b517417d7eb5d71ca108df723f05deb070bbcda165fd3eca2991e",
+    "project/Assets/LocalDock.cs": "31bca6644fb62c9083970598fcb620b756b0b78d372f0f8cda12b875c16a4556",
+    "project/Assets/LongRegister.cs": "c362b08f8cfa7fdd190abbaa5da1dff2aaede1da9248221d6a799e455ad13d00",
+    "project/Assets/ParcelDock.cs": "87c8781ddd3aba2375a127d1fe77b076e3292deacc7ada0c6731a8993c3c84ee",
+    "project/Assets/ParcelDock.State.cs": "8b83476628cf7fe7e7e158070645a1b2e1a3cd542cfc5f07a32dd3837136cf15",
+    "project/Assets/ParcelRelay.cs": "42747e67a872ba8f2016df1bbd289c0d1b72a1fbf95c16d3e55cb510201f020f",
+    "project/Assets/ParcelRelay.State.cs": "f5461409a515ebc547530e8a66b6effcc7f8e168fd787ccc317a079fb9aff090",
+    "project/Assets/RecordBook.cs": "c6efd0a8ce0dc28884d0fa0fab924e5e674b484a83f7c9fe0cf297d28bd00f77",
+    "project/Assets/RecordBook.State.cs": "bbeadf77c5399ae60b620a1a68861df785781c719a4f9fddc4d115eafd97446f",
+    "project/Assets/WideDock.cs": "447c936e49c1e9484e8c04332c5641459e35f151ff95c55d1ee8c4572e05a0e2",
+    "project/Assets/WideRelay.cs": "84a4a6e1ea48c6dab60106bfbc2dcf55ff70ebf7ef7b71b3b330ceb1fee9103b",
+    "project/ProjectSettings/ProjectVersion.txt": "2856bd159c6b975466f2e22df4f539f15d43a20cbf946ae51baa8d10b2e0a6ee"
+  }
+}

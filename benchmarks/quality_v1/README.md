@@ -122,6 +122,12 @@ controls passing. This existing public corpus remains at 59/60 overall, 51/52
 essential evidence and 8/8 no-evidence outcomes, with no regressions. Sources,
 labels, budgets and indexes are unchanged; production gates remain open.
 
+The [two-call dependency candidate](candidates/dependency-chain-v1.md) retrieves
+literal caller, bridge and endpoint evidence. Six newly frozen development cases
+improve from 0/6 to 6/6, with 20/20 essential passages and 16/16 fallback controls
+passing. The comparison fixtures and all forty public development cases remain
+green. This corpus stays at 59/60 overall, with no regressions or changed inputs.
+
 ## Future comparisons
 
 For a rebuilt candidate, prepare a JSON object mapping all three project names to

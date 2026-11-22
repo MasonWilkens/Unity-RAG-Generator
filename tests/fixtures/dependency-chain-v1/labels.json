@@ -1,0 +1,310 @@
+{
+  "schema_version": 2,
+  "split": "synthetic-development",
+  "scope": "Frozen two-hop mechanism cases before runtime changes; not independent acceptance or execution tracing.",
+  "cases": [
+    {
+      "id": "plain-relay",
+      "category": "two-hop-dependency",
+      "question": "How does ParcelDock validate shipment and increment the audit stamp?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/ParcelDock.cs",
+            "quote": "if (shipment > 0) ParcelRelay.Transfer(shipment);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/ParcelRelay.cs",
+            "quote": "Records.RecordBook.Append(value);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/RecordBook.cs",
+            "quote": "auditStamp++;",
+            "start_line": 5,
+            "end_line": 5
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/ParcelDock.cs": "87c8781ddd3aba2375a127d1fe77b076e3292deacc7ada0c6731a8993c3c84ee",
+        "Assets/ParcelRelay.cs": "42747e67a872ba8f2016df1bbd289c0d1b72a1fbf95c16d3e55cb510201f020f",
+        "Assets/RecordBook.cs": "c6efd0a8ce0dc28884d0fa0fab924e5e674b484a83f7c9fe0cf297d28bd00f77"
+      }
+    },
+    {
+      "id": "extend-one-hop",
+      "category": "two-hop-dependency",
+      "question": "How does CountingDock validate shipment and update the route count and audit stamp?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Counting.cs",
+            "quote": "if (shipment > 0) CountingRelay.Transfer(shipment);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/CountingRelay.cs",
+            "quote": "routeCount++;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ],
+        [
+          {
+            "path": "Assets/CountingRelay.cs",
+            "quote": "Records.RecordBook.Append(value);",
+            "start_line": 5,
+            "end_line": 5
+          }
+        ],
+        [
+          {
+            "path": "Assets/RecordBook.cs",
+            "quote": "auditStamp++;",
+            "start_line": 5,
+            "end_line": 5
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Counting.cs": "495b2d80b554384be0c41da1aab02e10caae1dad31d3ff23c3ea7b493ce1984e",
+        "Assets/CountingRelay.cs": "8722b22f093c742e089334964b5a317ceef6c5af393df061fa6d3f8d30dc200c",
+        "Assets/RecordBook.cs": "c6efd0a8ce0dc28884d0fa0fab924e5e674b484a83f7c9fe0cf297d28bd00f77"
+      }
+    },
+    {
+      "id": "same-owner-helper",
+      "category": "two-hop-dependency",
+      "question": "How does LocalDock validate shipment and increment the audit stamp?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/LocalDock.cs",
+            "quote": "if (shipment > 0) Forward(shipment);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/LocalDock.cs",
+            "quote": "Records.RecordBook.Append(value);",
+            "start_line": 6,
+            "end_line": 6
+          }
+        ],
+        [
+          {
+            "path": "Assets/RecordBook.cs",
+            "quote": "auditStamp++;",
+            "start_line": 5,
+            "end_line": 5
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/LocalDock.cs": "31bca6644fb62c9083970598fcb620b756b0b78d372f0f8cda12b875c16a4556",
+        "Assets/RecordBook.cs": "c6efd0a8ce0dc28884d0fa0fab924e5e674b484a83f7c9fe0cf297d28bd00f77"
+      }
+    },
+    {
+      "id": "long-relay",
+      "category": "two-hop-dependency",
+      "question": "How does LengthyDock validate shipment and increment the audit stamp?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/LengthyDock.cs",
+            "quote": "if (shipment > 0) LengthyRelay.Transfer(shipment);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/LengthyRelay.cs",
+            "quote": "Records.RecordBook.Append(value);",
+            "start_line": 223,
+            "end_line": 223
+          }
+        ],
+        [
+          {
+            "path": "Assets/RecordBook.cs",
+            "quote": "auditStamp++;",
+            "start_line": 5,
+            "end_line": 5
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/LengthyDock.cs": "88025a33af21d72b88b772cbd87478ce1d885aa1f86087ba553fae8484721512",
+        "Assets/LengthyRelay.cs": "eaecdc0e003b517417d7eb5d71ca108df723f05deb070bbcda165fd3eca2991e",
+        "Assets/RecordBook.cs": "c6efd0a8ce0dc28884d0fa0fab924e5e674b484a83f7c9fe0cf297d28bd00f77"
+      }
+    },
+    {
+      "id": "long-leaf",
+      "category": "two-hop-dependency",
+      "question": "How does WideDock validate shipment and update the audit stamp and receipt counter?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/WideDock.cs",
+            "quote": "if (shipment > 0) WideRelay.Transfer(shipment);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/WideRelay.cs",
+            "quote": "LongRegister.Append(value);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/LongRegister.cs",
+            "quote": "auditStamp++;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/LongRegister.cs",
+            "quote": "receiptCounter++;",
+            "start_line": 224,
+            "end_line": 224
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/WideDock.cs": "447c936e49c1e9484e8c04332c5641459e35f151ff95c55d1ee8c4572e05a0e2",
+        "Assets/WideRelay.cs": "84a4a6e1ea48c6dab60106bfbc2dcf55ff70ebf7ef7b71b3b330ceb1fee9103b",
+        "Assets/LongRegister.cs": "c362b08f8cfa7fdd190abbaa5da1dff2aaede1da9248221d6a799e455ad13d00"
+      }
+    },
+    {
+      "id": "nonvirtual-instance",
+      "category": "two-hop-dependency",
+      "question": "How does InstanceDock validate shipment and increment the audit stamp?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/InstanceDock.cs",
+            "quote": "if (shipment > 0) new InstanceRelay().Transfer(shipment);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/InstanceRelay.cs",
+            "quote": "new InstanceBook().Append(value);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/InstanceBook.cs",
+            "quote": "auditStamp++;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/InstanceDock.cs": "988ee9faa5ad5f4885b44739f9397c18694baf98d9a66f345fa4afcd86d64d1e",
+        "Assets/InstanceRelay.cs": "e3b6f948d60733099f1be1259e831d4b022dd47deb250ca6a34d0fdf688221d2",
+        "Assets/InstanceBook.cs": "900c9661d808aab66d0d0d34ab5a7e1405eb3b52c0aec27c0ba19aeabfcf9a30"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "question": "How does AmbiguousDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does CyclicDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does DeepDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does VirtualDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does VirtualLeafDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does InterfaceDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does DelegateDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does StringDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does MissingDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does DirectDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does RedundantDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does DecoyDock validate shipment and increment the audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does ParcelDock validate shipment and calculate nonexistentSatellite?",
+      "chain_selected": false
+    },
+    {
+      "question": "How does ParcelDock use CountingDock and increment audit stamp?",
+      "chain_selected": false
+    },
+    {
+      "question": "Locate ParcelDock.Run.",
+      "chain_selected": false
+    },
+    {
+      "question": "What is serialized in the ParcelDock scene and prefab?",
+      "chain_selected": false
+    }
+  ]
+}

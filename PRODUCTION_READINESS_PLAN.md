@@ -56,11 +56,16 @@ remaining cross-file case is retained rather than tuned against. The next
 [two-type comparison candidate](benchmarks/quality_v1/candidates/type-comparison-v1.md)
 adds evidence from both explicitly named types, developed against a new hash-frozen
 synthetic set (0/9 to 9/9 passage cases, 12/12 fallback controls). The original
-corpus stays at 59/60 with no regressions. This closes the first comparison batch;
-deeper dependency traversal belongs in a separate change with new development
-fixtures. Arrange independently reviewed labels and generated-answer acceptance
-on a fresh sample. Repeated-corpus results are regression evidence, not new proof
-of generalization. Do not tune against individual held-out questions.
+corpus stays at 59/60 with no regressions. The separate
+[two-call dependency candidate](benchmarks/quality_v1/candidates/dependency-chain-v1.md)
+adds caller, intermediate call-site and endpoint evidence. Its new frozen cases
+improve from 0/6 to 6/6, with 16/16 fallback controls passing. Previous comparison
+cases and the public corpus remain unchanged. Traversal stops after two resolved
+calls and does not infer runtime dispatch or argument flow. Next, arrange
+independently reviewed labels and generated-answer acceptance on a fresh sample;
+broader traversal needs additional development evidence. Repeated-corpus results
+are regression evidence, not new proof of generalization. Do not tune against
+individual held-out questions.
 
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.
