@@ -27,6 +27,10 @@ This version remains an experimental, review-required local tool.
   preserving call-site and target dependencies without inferring dynamic dispatch.
 - Report unavailable or ambiguously named serialized assets in retrieval and both
   answer styles; related C# defaults no longer replace unavailable saved values.
+- Reserve implementation evidence from both explicitly named types in comparison
+  questions, including qualified names, partial declarations, properties and long
+  split methods. Preserve overload identities, source freshness and existing
+  budgets; ambiguous or unsupported comparisons keep ordinary ranking.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan

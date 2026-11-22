@@ -1,0 +1,435 @@
+{
+  "schema_version": 2,
+  "split": "synthetic-development",
+  "scope": "Frozen mechanism fixtures before implementation; not independent acceptance or generated-answer evaluation.",
+  "cases": [
+    {
+      "id": "basic",
+      "category": "two-type-comparison",
+      "question": "Compare PulseEmitter and RampEmitter for charge and cooldown.",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "charge += elapsed;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "cooldown = 2 * elapsed;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "charge = System.Math.Max(0, charge - elapsed);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "cooldown = elapsed + 7;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PulseEmitter.cs": "c7c6b93e2be5ec693b11dababbcf14fd40fbde1cd9872ac67bf03cb219ecb552",
+        "Assets/RampEmitter.cs": "a1331312df66c23e15b442d96f6690e1ca765b5dd715a5da8eb7ed9ae7fa7ea6"
+      }
+    },
+    {
+      "id": "reversed",
+      "category": "two-type-comparison",
+      "question": "Compare RampEmitter with PulseEmitter for charge and cooldown.",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "charge = System.Math.Max(0, charge - elapsed);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "cooldown = elapsed + 7;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ],
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "charge += elapsed;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "cooldown = 2 * elapsed;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/RampEmitter.cs": "a1331312df66c23e15b442d96f6690e1ca765b5dd715a5da8eb7ed9ae7fa7ea6",
+        "Assets/PulseEmitter.cs": "c7c6b93e2be5ec693b11dababbcf14fd40fbde1cd9872ac67bf03cb219ecb552"
+      }
+    },
+    {
+      "id": "how-do",
+      "category": "two-type-comparison",
+      "question": "How do PulseEmitter and RampEmitter differ in charge and cooldown?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "charge += elapsed;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "cooldown = 2 * elapsed;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "charge = System.Math.Max(0, charge - elapsed);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "cooldown = elapsed + 7;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PulseEmitter.cs": "c7c6b93e2be5ec693b11dababbcf14fd40fbde1cd9872ac67bf03cb219ecb552",
+        "Assets/RampEmitter.cs": "a1331312df66c23e15b442d96f6690e1ca765b5dd715a5da8eb7ed9ae7fa7ea6"
+      }
+    },
+    {
+      "id": "difference",
+      "category": "two-type-comparison",
+      "question": "What is the difference between PulseEmitter and RampEmitter for charge and cooldown?",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "charge += elapsed;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/PulseEmitter.cs",
+            "quote": "cooldown = 2 * elapsed;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "charge = System.Math.Max(0, charge - elapsed);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "cooldown = elapsed + 7;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/PulseEmitter.cs": "c7c6b93e2be5ec693b11dababbcf14fd40fbde1cd9872ac67bf03cb219ecb552",
+        "Assets/RampEmitter.cs": "a1331312df66c23e15b442d96f6690e1ca765b5dd715a5da8eb7ed9ae7fa7ea6"
+      }
+    },
+    {
+      "id": "qualified",
+      "category": "two-type-comparison",
+      "question": "Compare Workshop.Stepper and RampEmitter for charge and cooldown.",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Scopes.cs",
+            "quote": "charge += elapsed * 3;",
+            "start_line": 5,
+            "end_line": 5
+          }
+        ],
+        [
+          {
+            "path": "Assets/Scopes.cs",
+            "quote": "cooldown = elapsed + 4;",
+            "start_line": 6,
+            "end_line": 6
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "charge = System.Math.Max(0, charge - elapsed);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "cooldown = elapsed + 7;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Scopes.cs": "ac5fa52c01df727eabf6ebc7ce0ea5abc4d6126adf3834505f2aa4f847c400c4",
+        "Assets/RampEmitter.cs": "a1331312df66c23e15b442d96f6690e1ca765b5dd715a5da8eb7ed9ae7fa7ea6"
+      }
+    },
+    {
+      "id": "qualified-collision",
+      "category": "two-type-comparison",
+      "question": "Compare Workshop.Stepper vs Runtime.Stepper for charge and cooldown.",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Scopes.cs",
+            "quote": "charge += elapsed * 3;",
+            "start_line": 5,
+            "end_line": 5
+          }
+        ],
+        [
+          {
+            "path": "Assets/Scopes.cs",
+            "quote": "cooldown = elapsed + 4;",
+            "start_line": 6,
+            "end_line": 6
+          }
+        ],
+        [
+          {
+            "path": "Assets/Scopes.cs",
+            "quote": "charge -= elapsed * 5;",
+            "start_line": 14,
+            "end_line": 14
+          }
+        ],
+        [
+          {
+            "path": "Assets/Scopes.cs",
+            "quote": "cooldown = elapsed + 6;",
+            "start_line": 15,
+            "end_line": 15
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Scopes.cs": "ac5fa52c01df727eabf6ebc7ce0ea5abc4d6126adf3834505f2aa4f847c400c4"
+      }
+    },
+    {
+      "id": "long-both",
+      "category": "two-type-comparison",
+      "question": "Compare TallEmitter and WideEmitter for charge and cooldown.",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/TallEmitter.cs",
+            "quote": "charge += elapsed;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/TallEmitter.cs",
+            "quote": "cooldown += elapsed;",
+            "start_line": 224,
+            "end_line": 224
+          }
+        ],
+        [
+          {
+            "path": "Assets/WideEmitter.cs",
+            "quote": "charge -= elapsed;",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/WideEmitter.cs",
+            "quote": "cooldown -= elapsed;",
+            "start_line": 224,
+            "end_line": 224
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/TallEmitter.cs": "72eaf985db0357b734044bf30a0931c3e462a0ab189f70f7ae266a4fed1e8965",
+        "Assets/WideEmitter.cs": "272552882b4c079dd41657036477f53059e44ea96cfd02ee2fb26dbba784403f"
+      }
+    },
+    {
+      "id": "separate-members",
+      "category": "two-type-comparison",
+      "question": "Compare SeparateEmitter and RampEmitter for charge and cooldown.",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/SeparateEmitter.cs",
+            "quote": "charge += elapsed * 9;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ],
+        [
+          {
+            "path": "Assets/SeparateEmitter.cs",
+            "quote": "cooldown = elapsed * 8;",
+            "start_line": 7,
+            "end_line": 7
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "charge = System.Math.Max(0, charge - elapsed);",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/RampEmitter.cs",
+            "quote": "cooldown = elapsed + 7;",
+            "start_line": 4,
+            "end_line": 4
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/SeparateEmitter.cs": "f0f8f531bb44e06b78e55822f50670d5a0ab4069e9f805e290c0e8843d2910db",
+        "Assets/RampEmitter.cs": "a1331312df66c23e15b442d96f6690e1ca765b5dd715a5da8eb7ed9ae7fa7ea6"
+      }
+    },
+    {
+      "id": "properties",
+      "category": "two-type-comparison",
+      "question": "Compare ThrottleMeter and BrakeMeter for charge and cooldown.",
+      "passage_groups": [
+        [
+          {
+            "path": "Assets/Properties.cs",
+            "quote": "public int Value { get { return charge + cooldown; } }",
+            "start_line": 3,
+            "end_line": 3
+          }
+        ],
+        [
+          {
+            "path": "Assets/Properties.cs",
+            "quote": "public int Value { get { return charge - cooldown; } }",
+            "start_line": 7,
+            "end_line": 7
+          }
+        ]
+      ],
+      "negative_passages": [],
+      "reviewed_source_sha256": {
+        "Assets/Properties.cs": "1745de1493929dbbb7f79aae847a1649df4c8d92368a4346de0410c908689b94"
+      }
+    }
+  ],
+  "controls": [
+    {
+      "question": "Compare Stepper and RampEmitter for charge and cooldown.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare MissingEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare PlainEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare AbstractEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare TiedEmitter and RampEmitter for charge and cooldown.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare PulseEmitter and PulseEmitter for charge and cooldown.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare PulseEmitter and RampEmitter and ThirdEmitter for charge and cooldown.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare PulseEmitter and RampEmitter for satellite telemetry.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare PulseEmitter and RampEmitter.",
+      "comparison_selected": false
+    },
+    {
+      "question": "How does PulseEmitter update charge and cooldown?",
+      "comparison_selected": false
+    },
+    {
+      "question": "Locate PulseEmitter.Tick.",
+      "comparison_selected": false
+    },
+    {
+      "question": "Compare the saved prefab values of PulseEmitter and RampEmitter.",
+      "comparison_selected": false
+    }
+  ]
+}

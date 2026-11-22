@@ -108,6 +108,35 @@ class PublicQualityCorpusTests(unittest.TestCase):
     def test_cross_file_candidate_preserves_inputs_counts_and_both_comparisons(self):
         self.check_query_candidate('candidates/cross-file-v1.json', 'candidates/multipart-code-v1.json')
 
+    def test_type_comparison_candidate_preserves_inputs_counts_and_both_comparisons(self):
+        self.check_query_candidate('candidates/type-comparison-v1.json', 'candidates/cross-file-v1.json')
+
+    def test_type_comparison_development_preserves_frozen_sources_labels_and_attempts(self):
+        root = Path(__file__).resolve().parents[1]
+        fixture = root / 'tests/fixtures/type-comparison-v1'
+        lock_hash = hashlib.sha256((fixture / 'lock.json').read_bytes()).hexdigest()
+        label_hash = hashlib.sha256((fixture / 'labels.json').read_bytes()).hexdigest()
+        baseline = None
+        for name, passing in [('baseline', 0), ('attempt-1', 9), ('attempt-2', 9)]:
+            report = json.loads((root / f'benchmarks/quality_v1/candidates/type-comparison-development/{name}.json').read_bytes())
+            self.assertEqual(report['fixture_lock_sha256'], lock_hash)
+            self.assertEqual(report['dataset_sha256'], label_hash)
+            self.assertEqual(report['redactions'], ['generation'])
+            self.assertNotIn('generation', report)
+            self.assertEqual(report['summary']['retrieved']['passed'], passing)
+            self.assertEqual(report['summary']['packed']['passed'], passing)
+            self.assertEqual(len(report['cases']), 9)
+            self.assertEqual(sum(c['passed'] for c in report['controls']), 12)
+            self.assertEqual(len(report['controls']), 12)
+            if baseline is not None:
+                for key in ('settings', 'snapshot', 'dataset_sha256', 'fixture_lock_sha256', 'controls'):
+                    self.assertEqual(report[key], baseline[key])
+                self.assertEqual([c['id'] for c in report['cases']], [c['id'] for c in baseline['cases']])
+            else:
+                baseline = report
+        regression = json.loads((root / 'benchmarks/quality_v1/candidates/type-comparison-v1.json').read_bytes())
+        self.assertEqual(report['implementation_sha256'], regression['implementation_sha256'])
+
     def test_literal_asset_candidate_preserves_frozen_contract_and_comparison(self):
         root = Path(__file__).resolve().parents[1] / 'benchmarks/quality_v1'
         baseline_bytes = (root / 'baseline.json').read_bytes()

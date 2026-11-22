@@ -9,6 +9,10 @@ records. They run without private repositories, credentials or a Unity Editor.
 - `greenhouse-synthetic-*.json`: source lookup and work-queue controls over
   `fixtures/greenhouse_project`.
 - `passage-development-v1.json`: decisive-passage controls over `fixtures/passage_project`.
+- `fixtures/type-comparison-v1/` (relative to `tests/`): frozen sources, labels and
+  hash lock for nine two-type passage cases and twelve fallback controls. Run
+  `scripts/evaluate_type_comparisons.py` to reproduce baseline/candidate checks;
+  these are development mechanism tests, not independent acceptance.
 - `fixtures/datasets/authoring-*.json` (relative to `tests/`): disjoint synthetic
   label-contract controls, with hashes and quotes checked against the greenhouse
   source files. These do not constitute a held-out real-project benchmark.

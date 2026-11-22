@@ -52,11 +52,15 @@ with new synthetic fixtures, adds one-hop resolved call evidence and explicit
 gaps for unavailable saved-asset values. Empty-evidence controls improve to 8/8;
 complete evidence remains 51/52, with 59/60 outcomes passing and no regressions.
 The frozen retrieval gate passes, but the production gate remains open. The
-remaining cross-file case is retained rather than tuned against. Next, expand
-cross-type comparison and deeper dependency coverage with new development cases,
-and arrange independently reviewed labels and generated-answer acceptance on a
-fresh sample. Repeated-corpus results are regression evidence, not new proof of
-generalization. Do not tune against individual held-out questions.
+remaining cross-file case is retained rather than tuned against. The next
+[two-type comparison candidate](benchmarks/quality_v1/candidates/type-comparison-v1.md)
+adds evidence from both explicitly named types, developed against a new hash-frozen
+synthetic set (0/9 to 9/9 passage cases, 12/12 fallback controls). The original
+corpus stays at 59/60 with no regressions. This closes the first comparison batch;
+deeper dependency traversal belongs in a separate change with new development
+fixtures. Arrange independently reviewed labels and generated-answer acceptance
+on a fresh sample. Repeated-corpus results are regression evidence, not new proof
+of generalization. Do not tune against individual held-out questions.
 
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.
