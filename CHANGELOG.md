@@ -42,6 +42,11 @@ This version remains an experimental, review-required local tool.
 - Capture answer-evaluation provenance before generation and recheck the dataset,
   Python implementation, provider configuration, snapshot and retained source
   evidence afterward. Preserve failed cases and return failure for invalid runs.
+- Freeze local answer samples before generation, including source references,
+  model digest, implementation and index identity. Retain failures and unfilled
+  reviews; include a fresh twelve-question Boids candidate for independent review.
+- Compare stable provider settings separately from request usage telemetry so
+  ordinary OpenAI token/spending updates do not invalidate answer evaluations.
 
 Generated explanations require source review. Synthetic tests and development
 benchmarks do not establish production answer quality. See the production plan

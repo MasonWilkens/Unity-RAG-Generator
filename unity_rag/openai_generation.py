@@ -151,6 +151,15 @@ class OpenAIProvider:
                 'pricing_checked': PRICING_CHECKED, 'pricing_url': PRICING_URL,
                 'spend': self.ledger.summary(), 'last_usage': self.last_usage}
 
+    @property
+    def evaluation_config(self):
+        """Stable request policy, separate from changing usage telemetry."""
+        config = self.config
+        spend = config.pop('spend')
+        config.pop('last_usage')
+        return {**config, 'budget_usd': spend['budget_usd'], 'timeout': self.timeout,
+                'pricing_valid_through': PRICING_VALID_THROUGH}
+
     def generate(self, messages, schema):
         if not date.fromisoformat(PRICING_CHECKED) <= date.today() <= date.fromisoformat(PRICING_VALID_THROUGH):
             raise ValueError('Reverify official OpenAI pricing before refreshing the price-validity window.')

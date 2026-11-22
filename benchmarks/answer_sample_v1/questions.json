@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "version": "boids-answer-sample-v1",
+  "questions": [
+    {
+      "id": "initial-velocity",
+      "category": "code",
+      "question": "How does Boid.Initialize choose the initial speed and velocity direction?",
+      "human_review": "Check the midpoint of minSpeed and maxSpeed, the transform forward vector, and initial cached position/forward. Do not substitute saved asset values for the general formula.",
+      "references": [
+        {
+          "path": "Assets/Scripts/Boid.cs",
+          "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2",
+          "start_line": 37,
+          "end_line": 45,
+          "quote": "    public void Initialize (BoidSettings settings, Transform target) {\n        this.target = target;\n        this.settings = settings;\n\n        position = cachedTransform.position;\n        forward = cachedTransform.forward;\n\n        float startSpeed = (settings.minSpeed + settings.maxSpeed) / 2;\n        velocity = transform.forward * startSpeed;"
+        }
+      ]
+    },
+    {
+      "id": "speed-and-motion",
+      "category": "multipart-code",
+      "question": "How does Boid.UpdateBoid apply acceleration, clamp speed, and update position and facing?",
+      "human_review": "Inspect integration by deltaTime, magnitude/direction calculation, the min/max clamp, then cachedTransform and cached position/forward updates. Do not claim handling of zero velocity unless shown.",
+      "references": [
+        {
+          "path": "Assets/Scripts/Boid.cs",
+          "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2",
+          "start_line": 82,
+          "end_line": 89,
+          "quote": "        velocity += acceleration * Time.deltaTime;\n        float speed = velocity.magnitude;\n        Vector3 dir = velocity / speed;\n        speed = Mathf.Clamp (speed, settings.minSpeed, settings.maxSpeed);\n        velocity = dir * speed;\n\n        cachedTransform.position += velocity * Time.deltaTime;\n        cachedTransform.forward = dir;"
+        }
+      ]
+    },
+    {
+      "id": "steering-limit",
+      "category": "code",
+      "question": "What does Boid.SteerTowards calculate, and how is the steering force limited?",
+      "human_review": "Inspect normalized desired velocity minus current velocity, then ClampMagnitude with maxSteerForce. This is an acceleration steering calculation, not an unconditional speed assignment.",
+      "references": [
+        {
+          "path": "Assets/Scripts/Boid.cs",
+          "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2",
+          "start_line": 116,
+          "end_line": 118,
+          "quote": "    Vector3 SteerTowards (Vector3 vector) {\n        Vector3 v = vector.normalized * settings.maxSpeed - velocity;\n        return Vector3.ClampMagnitude (v, settings.maxSteerForce);"
+        }
+      ]
+    },
+    {
+      "id": "collision-probe",
+      "category": "code",
+      "question": "Which geometry, distance and layer filter does Boid.IsHeadingForCollision use to detect an obstacle?",
+      "human_review": "Verify SphereCast from cached position along forward, boundsRadius, collisionAvoidDst and obstacleMask. Do not describe a line ray or infer current collisions.",
+      "references": [
+        {
+          "path": "Assets/Scripts/Boid.cs",
+          "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2",
+          "start_line": 94,
+          "end_line": 99,
+          "quote": "    bool IsHeadingForCollision () {\n        RaycastHit hit;\n        if (Physics.SphereCast (position, settings.boundsRadius, forward, out hit, settings.collisionAvoidDst, settings.obstacleMask)) {\n            return true;\n        } else { }\n        return false;"
+        }
+      ]
+    },
+    {
+      "id": "avoidance-search",
+      "category": "cross-file",
+      "question": "How does Boid.ObstacleRays use BoidHelper.directions to find an avoidance direction, and what happens when all directions are blocked?",
+      "human_review": "Check helper generation of 300 directions, local-to-world conversion, first unblocked SphereCast direction, and fallback to forward. Do not claim guaranteed collision avoidance.",
+      "references": [
+        {
+          "path": "Assets/Scripts/Boid.cs",
+          "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2",
+          "start_line": 102,
+          "end_line": 113,
+          "quote": "    Vector3 ObstacleRays () {\n        Vector3[] rayDirections = BoidHelper.directions;\n\n        for (int i = 0; i < rayDirections.Length; i++) {\n            Vector3 dir = cachedTransform.TransformDirection (rayDirections[i]);\n            Ray ray = new Ray (position, dir);\n            if (!Physics.SphereCast (ray, settings.boundsRadius, settings.collisionAvoidDst, settings.obstacleMask)) {\n                return dir;\n            }\n        }\n\n        return forward;"
+        },
+        {
+          "path": "Assets/Scripts/BoidHelper.cs",
+          "sha256": "a72c15334787eea8d02d24731d70b64cc8d4a06c13566a68c58fad2ad7dc9408",
+          "start_line": 7,
+          "end_line": 24,
+          "quote": "    const int numViewDirections = 300;\n    public static readonly Vector3[] directions;\n\n    static BoidHelper () {\n        directions = new Vector3[BoidHelper.numViewDirections];\n\n        float goldenRatio = (1 + Mathf.Sqrt (5)) / 2;\n        float angleIncrement = Mathf.PI * 2 * goldenRatio;\n\n        for (int i = 0; i < numViewDirections; i++) {\n            float t = (float) i / numViewDirections;\n            float inclination = Mathf.Acos (1 - 2 * t);\n            float azimuth = angleIncrement * i;\n\n            float x = Mathf.Sin (inclination) * Mathf.Cos (azimuth);\n            float y = Mathf.Sin (inclination) * Mathf.Sin (azimuth);\n            float z = Mathf.Cos (inclination);\n            directions[i] = new Vector3 (x, y, z);"
+        }
+      ]
+    },
+    {
+      "id": "compute-transfer",
+      "category": "multipart-code",
+      "question": "How does BoidManager.Update send boid state to the compute shader and apply the returned flock data before releasing the buffer?",
+      "human_review": "Check data population, buffer setup and radii, ceiling division by threadGroupSize, Dispatch then GetData, all four flock fields, UpdateBoid, and Release. C# call sequence is evidence; GPU execution timing is not measured.",
+      "references": [
+        {
+          "path": "Assets/Scripts/BoidManager.cs",
+          "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58",
+          "start_line": 7,
+          "end_line": 7,
+          "quote": "    const int threadGroupSize = 1024;"
+        },
+        {
+          "path": "Assets/Scripts/BoidManager.cs",
+          "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58",
+          "start_line": 24,
+          "end_line": 54,
+          "quote": "            int numBoids = boids.Length;\n            var boidData = new BoidData[numBoids];\n\n            for (int i = 0; i < boids.Length; i++) {\n                boidData[i].position = boids[i].position;\n                boidData[i].direction = boids[i].forward;\n            }\n\n            var boidBuffer = new ComputeBuffer (numBoids, BoidData.Size);\n            boidBuffer.SetData (boidData);\n\n            compute.SetBuffer (0, \"boids\", boidBuffer);\n            compute.SetInt (\"numBoids\", boids.Length);\n            compute.SetFloat (\"viewRadius\", settings.perceptionRadius);\n            compute.SetFloat (\"avoidRadius\", settings.avoidanceRadius);\n\n            int threadGroups = Mathf.CeilToInt (numBoids / (float) threadGroupSize);\n            compute.Dispatch (0, threadGroups, 1, 1);\n\n            boidBuffer.GetData (boidData);\n\n            for (int i = 0; i < boids.Length; i++) {\n                boids[i].avgFlockHeading = boidData[i].flockHeading;\n                boids[i].centreOfFlockmates = boidData[i].flockCentre;\n                boids[i].avgAvoidanceHeading = boidData[i].avoidanceHeading;\n                boids[i].numPerceivedFlockmates = boidData[i].numFlockmates;\n\n                boids[i].UpdateBoid ();\n            }\n\n            boidBuffer.Release ();"
+        }
+      ]
+    },
+    {
+      "id": "spawn-behavior",
+      "category": "code",
+      "question": "How does Spawner.Awake choose spawned positions and forward directions, and apply colour?",
+      "human_review": "Check insideUnitSphere scaled by radius and offset by spawner position, Instantiate, independent random forward assignment and SetColour. Do not describe spawning on the sphere surface or assume a measured population.",
+      "references": [
+        {
+          "path": "Assets/Scripts/Spawner.cs",
+          "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1",
+          "start_line": 15,
+          "end_line": 22,
+          "quote": "    void Awake () {\n        for (int i = 0; i < spawnCount; i++) {\n            Vector3 pos = transform.position + Random.insideUnitSphere * spawnRadius;\n            Boid boid = Instantiate (prefab);\n            boid.transform.position = pos;\n            boid.transform.forward = Random.insideUnitSphere;\n\n            boid.SetColour (colour);"
+        }
+      ]
+    },
+    {
+      "id": "spawn-gizmos",
+      "category": "multipart-code",
+      "question": "When does Spawner draw the spawn-region gizmo, and how does it choose the gizmo colour, opacity and radius?",
+      "human_review": "Check Always versus SelectedOnly callbacks, DrawGizmos RGB with alpha 0.3 and sphere centered on transform.position with spawnRadius. Never has no drawing branch.",
+      "references": [
+        {
+          "path": "Assets/Scripts/Spawner.cs",
+          "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1",
+          "start_line": 26,
+          "end_line": 41,
+          "quote": "    private void OnDrawGizmos () {\n        if (showSpawnRegion == GizmoType.Always) {\n            DrawGizmos ();\n        }\n    }\n\n    void OnDrawGizmosSelected () {\n        if (showSpawnRegion == GizmoType.SelectedOnly) {\n            DrawGizmos ();\n        }\n    }\n\n    void DrawGizmos () {\n\n        Gizmos.color = new Color (colour.r, colour.g, colour.b, 0.3f);\n        Gizmos.DrawSphere (transform.position, spawnRadius);"
+        }
+      ]
+    },
+    {
+      "id": "saved-settings",
+      "category": "asset-code",
+      "question": "In Assets/Settings/Settings.asset, what are the saved minSpeed, maxSpeed and maxSteerForce values, and how do they differ from the BoidSettings C# initializers?",
+      "human_review": "Saved values are 5, 8, 8; C# initializers are 2, 5, 3. Cite both sources and distinguish serialized values from initializer defaults and live runtime values.",
+      "references": [
+        {
+          "path": "Assets/Settings/Settings.asset",
+          "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52",
+          "start_line": 15,
+          "end_line": 19,
+          "quote": "  minSpeed: 5\n  maxSpeed: 8\n  perceptionRadius: 2.5\n  avoidanceRadius: 1\n  maxSteerForce: 8"
+        },
+        {
+          "path": "Assets/Scripts/BoidSettings.cs",
+          "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b",
+          "start_line": 8,
+          "end_line": 12,
+          "quote": "    public float minSpeed = 2;\n    public float maxSpeed = 5;\n    public float perceptionRadius = 2.5f;\n    public float avoidanceRadius = 1;\n    public float maxSteerForce = 3;"
+        }
+      ]
+    },
+    {
+      "id": "saved-spawner",
+      "category": "asset-code",
+      "question": "What spawnCount and spawnRadius are saved in Assets/Prefabs/Spawner.prefab, and how do they compare with the Spawner C# defaults?",
+      "human_review": "Prefab saves radius 4 and count 80; C# initializes both to 10. The prefab values are not proof of the live scene population or instance overrides.",
+      "references": [
+        {
+          "path": "Assets/Prefabs/Spawner.prefab",
+          "sha256": "8d083b5b13f445dad4f17fa2e8d366189ecd195f6d71bcb8036a4561796f6572",
+          "start_line": 47,
+          "end_line": 48,
+          "quote": "  spawnRadius: 4\n  spawnCount: 80"
+        },
+        {
+          "path": "Assets/Scripts/Spawner.cs",
+          "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1",
+          "start_line": 10,
+          "end_line": 11,
+          "quote": "    public float spawnRadius = 10;\n    public int spawnCount = 10;"
+        }
+      ]
+    },
+    {
+      "id": "runtime-population",
+      "category": "runtime-limit",
+      "question": "How many boids are alive right now in the running scene, and what frame rate is it achieving?",
+      "human_review": "Static code and saved prefab counts cannot establish live population or measured frame rate. Require runtime observation and avoid substituting initializers or serialized counts.",
+      "references": [],
+      "runtime_required": true
+    },
+    {
+      "id": "missing-member",
+      "category": "missing-source",
+      "question": "Boid.TeleportToMoon",
+      "human_review": "There is no exact indexed member with this name. Appropriate missing-evidence response must not invent implementation or use loosely matching methods.",
+      "references": [],
+      "mode": "exact",
+      "expected_status": "insufficient_evidence"
+    }
+  ]
+}

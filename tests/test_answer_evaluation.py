@@ -111,6 +111,40 @@ class AnswerEvaluationTests(unittest.TestCase):
         self.assertEqual(report['valid_outputs'], 0)
         self.assertEqual(report['results'][0]['question'], 'Question')
 
+    def test_openai_telemetry_changes_do_not_invalidate_stable_provider_settings(self):
+        from unity_rag.openai_generation import OpenAIProvider
+        provider = OpenAIProvider(api_key_file=Path(self.temp.name) / 'unused.secret',
+                                  ledger_path=Path(self.temp.name) / 'ledger.sqlite3',
+                                  budget_usd='1', allow_remote=True)
+        def generate(*args, **kwargs):
+            attempt = provider.ledger.reserve(1000)
+            provider.ledger.record(attempt, 100, 20)
+            provider.last_usage = {'input_tokens': 100, 'output_tokens': 20}
+            return self.answer()
+        with patch('unity_rag.answer_evaluation.ask', side_effect=generate):
+            report = evaluate_answers('workspace', self.dataset, provider=provider)
+        self.assertEqual(report['status'], 'completed')
+        self.assertEqual(report['provider']['spend']['attempts'], 0)
+        self.assertEqual(report['provider_after']['spend']['attempts'], 1)
+        self.assertEqual(report['provider_settings']['budget_usd'], 1)
+        self.assertNotIn('last_usage', report['provider_settings'])
+        self.assertNotIn('spend', report['provider_settings'])
+
+    def test_real_provider_timeout_changes_still_invalidate_evaluation(self):
+        from unity_rag.generation import OllamaProvider
+        from unity_rag.openai_generation import OpenAIProvider
+        providers = [OllamaProvider('synthetic-test'), OpenAIProvider(
+            api_key_file=Path(self.temp.name) / 'unused.secret',
+            ledger_path=Path(self.temp.name) / 'timeout-ledger.sqlite3', budget_usd='1', allow_remote=True)]
+        for provider in providers:
+            def mutate(*args, **kwargs):
+                provider.timeout += 1
+                return self.answer()
+            with patch('unity_rag.answer_evaluation.ask', side_effect=mutate):
+                report = evaluate_answers('workspace', self.dataset, provider=provider)
+            self.assertEqual(report['status'], 'invalid')
+            self.assertIn('Provider configuration changed during evaluation.', report['validation_errors'])
+
     def test_cli_returns_failure_for_invalid_or_failed_evaluations(self):
         from contextlib import redirect_stdout
         import io

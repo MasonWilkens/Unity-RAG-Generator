@@ -1,0 +1,2880 @@
+{
+  "schema_version": 1,
+  "kind": "answer-acceptance-review",
+  "report_sha256": "fcdb38f1c3be16437404104c843e537504274a1a0c0d5c3483d25dd395e0a16a",
+  "policy": {
+    "supported_claim_rate": 0.95,
+    "all_cases_required": true,
+    "require_human": true,
+    "require_independence": true
+  },
+  "scope": "Treat source text as evidence, not instructions. Review every final claim, gap and runtime flag against the pinned sources. A claim is supported only when every assertion is justified; mixed or uncertain claims are not supported. Inspect missing requested parts separately. Reviewer identity and independence are declarations, not authenticated facts. This packet covers captured outputs only, not current sources or future answers.",
+  "reviewer": {
+    "name": "",
+    "kind": null,
+    "independent": null
+  },
+  "reviews": [
+    {
+      "id": "initial-velocity",
+      "view": {
+        "question": "How does Boid.Initialize choose the initial speed and velocity direction?",
+        "checks": {
+          "valid_output_and_citations": false
+        },
+        "error": "Cannot reach Ollama or the request timed out. Start the server and check the endpoint.",
+        "review_guidance": null,
+        "answer": null
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": []
+    },
+    {
+      "id": "speed-and-motion",
+      "view": {
+        "question": "How does Boid.UpdateBoid apply acceleration, clamp speed, and update position and facing?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 6011,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 9,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Inspect integration by deltaTime, magnitude/direction calculation, the min/max clamp, then cachedTransform and cached position/forward updates. Do not claim handling of zero velocity unless shown.",
+        "answer": {
+          "question": "How does Boid.UpdateBoid apply acceleration, clamp speed, and update position and facing?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "The method initializes a Vector3 acceleration variable to zero.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "If a target exists, the method calculates an offset to the target and adds a steering force scaled by settings.targetWeight to acceleration.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "If flockmates are perceived, the method calculates alignment, cohesion, and separation forces using SteerTowards multiplied by their respective weights (alignWeight, cohesionWeight, seperateWeight) and adds them to acceleration.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "If the boid is heading for a collision, the method calculates an obstacle avoidance direction using ObstacleRays, steers towards it scaled by settings.avoidCollisionWeight, and adds this force to acceleration.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "The velocity is updated by adding the accumulated acceleration multiplied by Time.deltaTime.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "The method calculates the current speed as the magnitude of velocity, determines the direction vector, and then clamps the speed between settings.minSpeed and settings.maxSpeed.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "The velocity is reconstructed by multiplying the clamped speed with the direction vector.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "The cachedTransform position is updated by adding the new velocity multiplied by Time.deltaTime.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "The cachedTransform forward vector is set to the direction vector, and the local position and forward fields are updated from the transform.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Boid.UpdateBoid",
+              "title": "Boid.UpdateBoid()",
+              "text": "\n    public void UpdateBoid () {\n        Vector3 acceleration = Vector3.zero;\n\n        if (target != null) {\n            Vector3 offsetToTarget = (target.position - position);\n            acceleration = SteerTowards (offsetToTarget) * settings.targetWeight;\n        }\n\n        if (numPerceivedFlockmates != 0) {\n            centreOfFlockmates /= numPerceivedFlockmates;\n\n            Vector3 offsetToFlockmatesCentre = (centreOfFlockmates - position);\n\n            var alignmentForce = SteerTowards (avgFlockHeading) * settings.alignWeight;\n            var cohesionForce = SteerTowards (offsetToFlockmatesCentre) * settings.cohesionWeight;\n            var seperationForce = SteerTowards (avgAvoidanceHeading) * settings.seperateWeight;\n\n            acceleration += alignmentForce;\n            acceleration += cohesionForce;\n            acceleration += seperationForce;\n        }\n\n        if (IsHeadingForCollision ()) {\n            Vector3 collisionAvoidDir = ObstacleRays ();\n            Vector3 collisionAvoidForce = SteerTowards (collisionAvoidDir) * settings.avoidCollisionWeight;\n            acceleration += collisionAvoidForce;\n        }\n\n        velocity += acceleration * Time.deltaTime;\n        float speed = velocity.magnitude;\n        Vector3 dir = velocity / speed;\n        speed = Mathf.Clamp (speed, settings.minSpeed, settings.maxSpeed);\n        velocity = dir * speed;\n\n        cachedTransform.position += velocity * Time.deltaTime;\n        cachedTransform.forward = dir;\n        position = cachedTransform.position;\n        forward = dir;\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::T:Boid",
+              "title": "Boid",
+              "text": "public class Boid : MonoBehaviour\nBases: MonoBehaviour\nBoidSettings settings;\n[HideInInspector]\r\n    public Vector3 position;\n[HideInInspector]\r\n    public Vector3 forward;\nVector3 velocity;\nVector3 acceleration;\n[HideInInspector]\r\n    public Vector3 avgFlockHeading;\n[HideInInspector]\r\n    public Vector3 avgAvoidanceHeading;\n[HideInInspector]\r\n    public Vector3 centreOfFlockmates;\n[HideInInspector]\r\n    public int numPerceivedFlockmates;\nMaterial material;\nTransform cachedTransform;\nTransform target;\nvoid Awake ()\npublic void Initialize (BoidSettings settings, Transform target)\npublic void SetColour (Color col)\npublic void UpdateBoid ()\nbool IsHeadingForCollision ()\nVector3 ObstacleRays ()\nVector3 SteerTowards (Vector3 vector)",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 5,
+                  "end_line": 121,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "Assembly-CSharp::F:Boid.acceleration",
+              "title": "Boid.acceleration",
+              "text": "\n    // To update:\n    Vector3 acceleration;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 15,
+                  "end_line": 17,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::M:BoidManager.Update",
+              "title": "BoidManager.Update()",
+              "text": "\n    void Update () {\n        if (boids != null) {\n\n            int numBoids = boids.Length;\n            var boidData = new BoidData[numBoids];\n\n            for (int i = 0; i < boids.Length; i++) {\n                boidData[i].position = boids[i].position;\n                boidData[i].direction = boids[i].forward;\n            }\n\n            var boidBuffer = new ComputeBuffer (numBoids, BoidData.Size);\n            boidBuffer.SetData (boidData);\n\n            compute.SetBuffer (0, \"boids\", boidBuffer);\n            compute.SetInt (\"numBoids\", boids.Length);\n            compute.SetFloat (\"viewRadius\", settings.perceptionRadius);\n            compute.SetFloat (\"avoidRadius\", settings.avoidanceRadius);\n\n            int threadGroups = Mathf.CeilToInt (numBoids / (float) threadGroupSize);\n            compute.Dispatch (0, threadGroups, 1, 1);\n\n            boidBuffer.GetData (boidData);\n\n            for (int i = 0; i < boids.Length; i++) {\n                boids[i].avgFlockHeading = boidData[i].flockHeading;\n                boids[i].centreOfFlockmates = boidData[i].flockCentre;\n                boids[i].avgAvoidanceHeading = boidData[i].avoidanceHeading;\n                boids[i].numPerceivedFlockmates = boidData[i].numFlockmates;\n\n                boids[i].UpdateBoid ();\n            }\n\n            boidBuffer.Release ();\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::M:Boid.SteerTowards(Vector3)",
+              "title": "Boid.SteerTowards(Vector3)",
+              "text": "\n    Vector3 SteerTowards (Vector3 vector) {\n        Vector3 v = vector.normalized * settings.maxSpeed - velocity;\n        return Vector3.ClampMagnitude (v, settings.maxSteerForce);\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 115,
+                  "end_line": 119,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "493cab303f713b094ac358a690b4dffbbd6ac6f32296c60816b0f72134385832",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "444b51c9a7f506f531af16d153968795c38221e004591105658486846f35288e",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "7bd73a105c2120b0bd50157f47e26c3e3d626c6ffd65b79710ec844173924ba7",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "3befbda8db07e13c2aa5fea3cc3ad5ce16c535245495eb49576afe43125af921",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "da8324671785cb623a302aca30dbd2b68a533d6f31d8395c4b8a1f7c8b346064",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 6,
+          "claim_sha256": "43af6e1a9c9f21f0eb0cefa77b4e148adf16ab4b1c3fa714b73b1aa988478e24",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 7,
+          "claim_sha256": "f78e7a6baeb15e0d4094af8fe121f0a939969f52d641eaeee9cdc5de9d6b9360",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 8,
+          "claim_sha256": "a86ff44a0b16362a94523376565bbfe5bf4bf2b43043b998362ccf4cf87062df",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 9,
+          "claim_sha256": "df2799ea6af36db08740952b0f30a0fb5cfbe9fd0acdef03c4b8e52435b68c41",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "steering-limit",
+      "view": {
+        "question": "What does Boid.SteerTowards calculate, and how is the steering force limited?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 5184,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 2,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Inspect normalized desired velocity minus current velocity, then ClampMagnitude with maxSteerForce. This is an acceleration steering calculation, not an unconditional speed assignment.",
+        "answer": {
+          "question": "What does Boid.SteerTowards calculate, and how is the steering force limited?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "Boid.SteerTowards calculates a steering force vector by first determining the difference between a desired velocity (the target direction scaled to maxSpeed) and the current velocity, then clamping the magnitude of that difference.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 115,
+                  "end_line": 119,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "The steering force is limited by clamping its magnitude to the value of settings.maxSteerForce.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 115,
+                  "end_line": 119,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 12,
+                  "end_line": 12,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Boid.UpdateBoid",
+              "title": "Boid.UpdateBoid()",
+              "text": "\n    public void UpdateBoid () {\n        Vector3 acceleration = Vector3.zero;\n\n        if (target != null) {\n            Vector3 offsetToTarget = (target.position - position);\n            acceleration = SteerTowards (offsetToTarget) * settings.targetWeight;\n        }\n\n        if (numPerceivedFlockmates != 0) {\n            centreOfFlockmates /= numPerceivedFlockmates;\n\n            Vector3 offsetToFlockmatesCentre = (centreOfFlockmates - position);\n\n            var alignmentForce = SteerTowards (avgFlockHeading) * settings.alignWeight;\n            var cohesionForce = SteerTowards (offsetToFlockmatesCentre) * settings.cohesionWeight;\n            var seperationForce = SteerTowards (avgAvoidanceHeading) * settings.seperateWeight;\n\n            acceleration += alignmentForce;\n            acceleration += cohesionForce;\n            acceleration += seperationForce;\n        }\n\n        if (IsHeadingForCollision ()) {\n            Vector3 collisionAvoidDir = ObstacleRays ();\n            Vector3 collisionAvoidForce = SteerTowards (collisionAvoidDir) * settings.avoidCollisionWeight;\n            acceleration += collisionAvoidForce;\n        }\n\n        velocity += acceleration * Time.deltaTime;\n        float speed = velocity.magnitude;\n        Vector3 dir = velocity / speed;\n        speed = Mathf.Clamp (speed, settings.minSpeed, settings.maxSpeed);\n        velocity = dir * speed;\n\n        cachedTransform.position += velocity * Time.deltaTime;\n        cachedTransform.forward = dir;\n        position = cachedTransform.position;\n        forward = dir;\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::M:Boid.SteerTowards(Vector3)",
+              "title": "Boid.SteerTowards(Vector3)",
+              "text": "\n    Vector3 SteerTowards (Vector3 vector) {\n        Vector3 v = vector.normalized * settings.maxSpeed - velocity;\n        return Vector3.ClampMagnitude (v, settings.maxSteerForce);\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 115,
+                  "end_line": 119,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "Assembly-CSharp::F:BoidSettings.maxSteerForce",
+              "title": "BoidSettings.maxSteerForce",
+              "text": "    public float maxSteerForce = 3;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 12,
+                  "end_line": 12,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::T:Boid",
+              "title": "Boid",
+              "text": "public class Boid : MonoBehaviour\nBases: MonoBehaviour\nBoidSettings settings;\n[HideInInspector]\r\n    public Vector3 position;\n[HideInInspector]\r\n    public Vector3 forward;\nVector3 velocity;\nVector3 acceleration;\n[HideInInspector]\r\n    public Vector3 avgFlockHeading;\n[HideInInspector]\r\n    public Vector3 avgAvoidanceHeading;\n[HideInInspector]\r\n    public Vector3 centreOfFlockmates;\n[HideInInspector]\r\n    public int numPerceivedFlockmates;\nMaterial material;\nTransform cachedTransform;\nTransform target;\nvoid Awake ()\npublic void Initialize (BoidSettings settings, Transform target)\npublic void SetColour (Color col)\npublic void UpdateBoid ()\nbool IsHeadingForCollision ()\nVector3 ObstacleRays ()\nVector3 SteerTowards (Vector3 vector)",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 5,
+                  "end_line": 121,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::T:BoidSettings",
+              "title": "BoidSettings",
+              "text": "[CreateAssetMenu]\r\npublic class BoidSettings : ScriptableObject\nBases: ScriptableObject\npublic float minSpeed = 2;\npublic float maxSpeed = 5;\npublic float perceptionRadius = 2.5f;\npublic float avoidanceRadius = 1;\npublic float maxSteerForce = 3;\npublic float alignWeight = 1;\npublic float cohesionWeight = 1;\npublic float seperateWeight = 1;\npublic float targetWeight = 1;\n[Header (\"Collisions\")]\r\n    public LayerMask obstacleMask;\npublic float boundsRadius = .27f;\npublic float avoidCollisionWeight = 10;\npublic float collisionAvoidDst = 5;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "3a16371440505213e724f39ec82f50266a180effe6dd2d5ad42d60441c3deb9c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "f967c66acaea28c8bae362aa5a3bad1ac053e2714595f52beea36f6f616d01fd",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "collision-probe",
+      "view": {
+        "question": "Which geometry, distance and layer filter does Boid.IsHeadingForCollision use to detect an obstacle?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 5701,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 4,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Verify SphereCast from cached position along forward, boundsRadius, collisionAvoidDst and obstacleMask. Do not describe a line ray or infer current collisions.",
+        "answer": {
+          "question": "Which geometry, distance and layer filter does Boid.IsHeadingForCollision use to detect an obstacle?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "Boid.IsHeadingForCollision uses a sphere cast with the boid's position as the origin and forward as the direction.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 93,
+                  "end_line": 100,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "The sphere cast uses settings.boundsRadius as the radius for the collision check.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E5"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 93,
+                  "end_line": 100,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                },
+                {
+                  "evidence_id": "E5",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ]
+            },
+            {
+              "text": "The sphere cast uses settings.collisionAvoidDst as the maximum distance to check for collisions.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E5"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 93,
+                  "end_line": 100,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                },
+                {
+                  "evidence_id": "E5",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ]
+            },
+            {
+              "text": "The sphere cast filters by the layer mask specified in settings.obstacleMask.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E5"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 93,
+                  "end_line": 100,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                },
+                {
+                  "evidence_id": "E5",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Boid.UpdateBoid",
+              "title": "Boid.UpdateBoid()",
+              "text": "\n    public void UpdateBoid () {\n        Vector3 acceleration = Vector3.zero;\n\n        if (target != null) {\n            Vector3 offsetToTarget = (target.position - position);\n            acceleration = SteerTowards (offsetToTarget) * settings.targetWeight;\n        }\n\n        if (numPerceivedFlockmates != 0) {\n            centreOfFlockmates /= numPerceivedFlockmates;\n\n            Vector3 offsetToFlockmatesCentre = (centreOfFlockmates - position);\n\n            var alignmentForce = SteerTowards (avgFlockHeading) * settings.alignWeight;\n            var cohesionForce = SteerTowards (offsetToFlockmatesCentre) * settings.cohesionWeight;\n            var seperationForce = SteerTowards (avgAvoidanceHeading) * settings.seperateWeight;\n\n            acceleration += alignmentForce;\n            acceleration += cohesionForce;\n            acceleration += seperationForce;\n        }\n\n        if (IsHeadingForCollision ()) {\n            Vector3 collisionAvoidDir = ObstacleRays ();\n            Vector3 collisionAvoidForce = SteerTowards (collisionAvoidDir) * settings.avoidCollisionWeight;\n            acceleration += collisionAvoidForce;\n        }\n\n        velocity += acceleration * Time.deltaTime;\n        float speed = velocity.magnitude;\n        Vector3 dir = velocity / speed;\n        speed = Mathf.Clamp (speed, settings.minSpeed, settings.maxSpeed);\n        velocity = dir * speed;\n\n        cachedTransform.position += velocity * Time.deltaTime;\n        cachedTransform.forward = dir;\n        position = cachedTransform.position;\n        forward = dir;\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 53,
+                  "end_line": 92,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::M:Boid.IsHeadingForCollision",
+              "title": "Boid.IsHeadingForCollision()",
+              "text": "\n    bool IsHeadingForCollision () {\n        RaycastHit hit;\n        if (Physics.SphereCast (position, settings.boundsRadius, forward, out hit, settings.collisionAvoidDst, settings.obstacleMask)) {\n            return true;\n        } else { }\n        return false;\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 93,
+                  "end_line": 100,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "Assembly-CSharp::T:Boid",
+              "title": "Boid",
+              "text": "public class Boid : MonoBehaviour\nBases: MonoBehaviour\nBoidSettings settings;\n[HideInInspector]\r\n    public Vector3 position;\n[HideInInspector]\r\n    public Vector3 forward;\nVector3 velocity;\nVector3 acceleration;\n[HideInInspector]\r\n    public Vector3 avgFlockHeading;\n[HideInInspector]\r\n    public Vector3 avgAvoidanceHeading;\n[HideInInspector]\r\n    public Vector3 centreOfFlockmates;\n[HideInInspector]\r\n    public int numPerceivedFlockmates;\nMaterial material;\nTransform cachedTransform;\nTransform target;\nvoid Awake ()\npublic void Initialize (BoidSettings settings, Transform target)\npublic void SetColour (Color col)\npublic void UpdateBoid ()\nbool IsHeadingForCollision ()\nVector3 ObstacleRays ()\nVector3 SteerTowards (Vector3 vector)",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 5,
+                  "end_line": 121,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::M:Boid.ObstacleRays",
+              "title": "Boid.ObstacleRays()",
+              "text": "\n    Vector3 ObstacleRays () {\n        Vector3[] rayDirections = BoidHelper.directions;\n\n        for (int i = 0; i < rayDirections.Length; i++) {\n            Vector3 dir = cachedTransform.TransformDirection (rayDirections[i]);\n            Ray ray = new Ray (position, dir);\n            if (!Physics.SphereCast (ray, settings.boundsRadius, settings.collisionAvoidDst, settings.obstacleMask)) {\n                return dir;\n            }\n        }\n\n        return forward;\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 101,
+                  "end_line": 114,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::T:BoidSettings",
+              "title": "BoidSettings",
+              "text": "[CreateAssetMenu]\r\npublic class BoidSettings : ScriptableObject\nBases: ScriptableObject\npublic float minSpeed = 2;\npublic float maxSpeed = 5;\npublic float perceptionRadius = 2.5f;\npublic float avoidanceRadius = 1;\npublic float maxSteerForce = 3;\npublic float alignWeight = 1;\npublic float cohesionWeight = 1;\npublic float seperateWeight = 1;\npublic float targetWeight = 1;\n[Header (\"Collisions\")]\r\n    public LayerMask obstacleMask;\npublic float boundsRadius = .27f;\npublic float avoidCollisionWeight = 10;\npublic float collisionAvoidDst = 5;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "656699fb5080d75265d3073a4aba3fd1444ad49b8ff300177f4601ddb0b0f587",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "0e8a03a7b14dfb289ace4b90d8ee31b5eb12fcbb67cd496a99576dd7cffa9a20",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "861ff70a63f0b2c90e38faf1f3f4bf94ef67a1d3bc2fc00c0b2a0b661297b448",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "904f8532ca0dd0cb2b8c764bbac690b5cad1167e5bcb546736bb330de36b4f2c",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "avoidance-search",
+      "view": {
+        "question": "How does Boid.ObstacleRays use BoidHelper.directions to find an avoidance direction, and what happens when all directions are blocked?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 3469,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 4,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Check helper generation of 300 directions, local-to-world conversion, first unblocked SphereCast direction, and fallback to forward. Do not claim guaranteed collision avoidance.",
+        "answer": {
+          "question": "How does Boid.ObstacleRays use BoidHelper.directions to find an avoidance direction, and what happens when all directions are blocked?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "Boid.ObstacleRays uses BoidHelper.directions by assigning the entire array to a local variable rayDirections.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 101,
+                  "end_line": 114,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                },
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/BoidHelper.cs",
+                  "start_line": 8,
+                  "end_line": 8,
+                  "sha256": "a72c15334787eea8d02d24731d70b64cc8d4a06c13566a68c58fad2ad7dc9408"
+                }
+              ]
+            },
+            {
+              "text": "The method iterates through each direction in rayDirections, transforming it from local space to world space using cachedTransform.TransformDirection.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 101,
+                  "end_line": 114,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "For each transformed direction, the method casts a sphere ray and returns that direction immediately if no collision is detected.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 101,
+                  "end_line": 114,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            },
+            {
+              "text": "If all directions in BoidHelper.directions are blocked by collisions, the method returns the forward vector instead of any ray direction.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 101,
+                  "end_line": 114,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Boid.ObstacleRays",
+              "title": "Boid.ObstacleRays()",
+              "text": "\n    Vector3 ObstacleRays () {\n        Vector3[] rayDirections = BoidHelper.directions;\n\n        for (int i = 0; i < rayDirections.Length; i++) {\n            Vector3 dir = cachedTransform.TransformDirection (rayDirections[i]);\n            Ray ray = new Ray (position, dir);\n            if (!Physics.SphereCast (ray, settings.boundsRadius, settings.collisionAvoidDst, settings.obstacleMask)) {\n                return dir;\n            }\n        }\n\n        return forward;\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 101,
+                  "end_line": 114,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::F:BoidHelper.directions",
+              "title": "BoidHelper.directions",
+              "text": "    public static readonly Vector3[] directions;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidHelper.cs",
+                  "start_line": 8,
+                  "end_line": 8,
+                  "sha256": "a72c15334787eea8d02d24731d70b64cc8d4a06c13566a68c58fad2ad7dc9408"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "Assembly-CSharp::F:BoidHelper.numViewDirections",
+              "title": "BoidHelper.numViewDirections",
+              "text": "\n    const int numViewDirections = 300;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidHelper.cs",
+                  "start_line": 6,
+                  "end_line": 7,
+                  "sha256": "a72c15334787eea8d02d24731d70b64cc8d4a06c13566a68c58fad2ad7dc9408"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::T:BoidHelper",
+              "title": "BoidHelper",
+              "text": "public static class BoidHelper\nBases: \nconst int numViewDirections = 300;\npublic static readonly Vector3[] directions;\nstatic BoidHelper ()",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidHelper.cs",
+                  "start_line": 5,
+                  "end_line": 28,
+                  "sha256": "a72c15334787eea8d02d24731d70b64cc8d4a06c13566a68c58fad2ad7dc9408"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::M:BoidHelper.#cctor",
+              "title": "BoidHelper.BoidHelper()",
+              "text": "\n    static BoidHelper () {\n        directions = new Vector3[BoidHelper.numViewDirections];\n\n        float goldenRatio = (1 + Mathf.Sqrt (5)) / 2;\n        float angleIncrement = Mathf.PI * 2 * goldenRatio;\n\n        for (int i = 0; i < numViewDirections; i++) {\n            float t = (float) i / numViewDirections;\n            float inclination = Mathf.Acos (1 - 2 * t);\n            float azimuth = angleIncrement * i;\n\n            float x = Mathf.Sin (inclination) * Mathf.Cos (azimuth);\n            float y = Mathf.Sin (inclination) * Mathf.Sin (azimuth);\n            float z = Mathf.Cos (inclination);\n            directions[i] = new Vector3 (x, y, z);\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidHelper.cs",
+                  "start_line": 9,
+                  "end_line": 26,
+                  "sha256": "a72c15334787eea8d02d24731d70b64cc8d4a06c13566a68c58fad2ad7dc9408"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "cdec84f38ae8f3d8019269396ef66f9e83220af3d780b745e871a5e6fa1da193",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "02a556fa81ae8d76ed936ec5013d6cadb904d17f19b6f19fa3047dcd0d43917c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "0d1fe3f0663e25b66f11c30b85481ff44b401c2e9be8b60214789b21fb386666",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "edfdd4969cf21ed05a35e7f3037fe18080b88d280b9e1d629845333dd8154f84",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "compute-transfer",
+      "view": {
+        "question": "How does BoidManager.Update send boid state to the compute shader and apply the returned flock data before releasing the buffer?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 3830,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 10,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Check data population, buffer setup and radii, ceiling division by threadGroupSize, Dispatch then GetData, all four flock fields, UpdateBoid, and Release. C# call sequence is evidence; GPU execution timing is not measured.",
+        "answer": {
+          "question": "How does BoidManager.Update send boid state to the compute shader and apply the returned flock data before releasing the buffer?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "BoidManager.Update constructs a BoidData array by copying each boid's position and forward direction into the corresponding BoidData element.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "A new ComputeBuffer is created with the size of BoidData.Size and populated with the boidData array via SetData.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "The compute shader's buffer slot 0 named 'boids' is bound to the newly created ComputeBuffer.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1",
+                "E3"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 10,
+                  "end_line": 10,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "The integer parameter 'numBoids' is set on the compute shader using boids.Length.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "The float parameters 'viewRadius' and 'avoidRadius' are set on the compute shader from settings.perceptionRadius and settings.avoidanceRadius respectively.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "The compute shader is dispatched with thread groups calculated as ceil(numBoids / threadGroupSize) for the x dimension, 1 for y, and 1 for z.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "After dispatch, GetData is called on boidBuffer to read the returned flock data back into the boidData array.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "The flockHeading and flockCentre fields of each boid are assigned from the corresponding elements in boidData.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1",
+                "E4",
+                "E5"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                },
+                {
+                  "evidence_id": "E4",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 61,
+                  "end_line": 62,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                },
+                {
+                  "evidence_id": "E5",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 63,
+                  "end_line": 63,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "Additional fields (avoidanceHeading, numFlockmates) and the UpdateBoid method are called on each boid after reading the buffer.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            },
+            {
+              "text": "The ComputeBuffer is released via boidBuffer.Release() at the end of the Update method.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:BoidManager.Update",
+              "title": "BoidManager.Update()",
+              "text": "\n    void Update () {\n        if (boids != null) {\n\n            int numBoids = boids.Length;\n            var boidData = new BoidData[numBoids];\n\n            for (int i = 0; i < boids.Length; i++) {\n                boidData[i].position = boids[i].position;\n                boidData[i].direction = boids[i].forward;\n            }\n\n            var boidBuffer = new ComputeBuffer (numBoids, BoidData.Size);\n            boidBuffer.SetData (boidData);\n\n            compute.SetBuffer (0, \"boids\", boidBuffer);\n            compute.SetInt (\"numBoids\", boids.Length);\n            compute.SetFloat (\"viewRadius\", settings.perceptionRadius);\n            compute.SetFloat (\"avoidRadius\", settings.avoidanceRadius);\n\n            int threadGroups = Mathf.CeilToInt (numBoids / (float) threadGroupSize);\n            compute.Dispatch (0, threadGroups, 1, 1);\n\n            boidBuffer.GetData (boidData);\n\n            for (int i = 0; i < boids.Length; i++) {\n                boids[i].avgFlockHeading = boidData[i].flockHeading;\n                boids[i].centreOfFlockmates = boidData[i].flockCentre;\n                boids[i].avgAvoidanceHeading = boidData[i].avoidanceHeading;\n                boids[i].numPerceivedFlockmates = boidData[i].numFlockmates;\n\n                boids[i].UpdateBoid ();\n            }\n\n            boidBuffer.Release ();\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::T:BoidManager",
+              "title": "BoidManager",
+              "text": "public class BoidManager : MonoBehaviour\nBases: MonoBehaviour\nconst int threadGroupSize = 1024;\npublic BoidSettings settings;\npublic ComputeShader compute;\nBoid[] boids;\nvoid Start ()\nvoid Update ()\npublic struct BoidData",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 5,
+                  "end_line": 73,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "Assembly-CSharp::F:BoidManager.compute",
+              "title": "BoidManager.compute",
+              "text": "    public ComputeShader compute;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 10,
+                  "end_line": 10,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::F:BoidManager.BoidData.flockHeading",
+              "title": "BoidManager.BoidData.flockHeading",
+              "text": "\n        public Vector3 flockHeading;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 61,
+                  "end_line": 62,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::F:BoidManager.BoidData.flockCentre",
+              "title": "BoidManager.BoidData.flockCentre",
+              "text": "        public Vector3 flockCentre;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 63,
+                  "end_line": 63,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "c5c3d752e3365df5058eef0f194cb1cebee40c1e4af233d725bfae8db8979013",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "3e543017d0252f33da579b6d05c24771878ae50bcd5f8f2227aeb5743ed9f09c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "1512bc2321e6419825169d90c34de8f2f888f7952e4a5065f61dd9f00eb46b80",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "df76780afcb8c7048a3c848ca73cee8c0c01ef66058241b973de2cf99519e61f",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "254a28801c182b8689329b7e696b52bb664da47b248d0b299702b22d548edef7",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 6,
+          "claim_sha256": "809aa3324a26fb6c6649ebe054751436e7fb344324c2bf9a7dfd902cb2410855",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 7,
+          "claim_sha256": "6e91883d6b59022791bce641183cde084d23c22a906e771f0f084311ba5625d9",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 8,
+          "claim_sha256": "391e77620db8164b1bf065826c5afa392295bd9a77dce2894f4b67842162d3f1",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 9,
+          "claim_sha256": "28f361887fea9d701844f7a1f934bd487d7aa332c9cb147d4d377ae53ba3cd27",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 10,
+          "claim_sha256": "6acca87fda8948715ba3a44ae629c76e7917d1e6a2f609c6b73a5fce0f75c892",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "spawn-behavior",
+      "view": {
+        "question": "How does Spawner.Awake choose spawned positions and forward directions, and apply colour?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 4086,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 4,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Check insideUnitSphere scaled by radius and offset by spawner position, Instantiate, independent random forward assignment and SetColour. Do not describe spawning on the sphere surface or assume a measured population.",
+        "answer": {
+          "question": "How does Spawner.Awake choose spawned positions and forward directions, and apply colour?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "Spawner.Awake iterates from 0 to spawnCount-1, calculating a position as transform.position plus a random vector scaled by spawnRadius.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 14,
+                  "end_line": 24,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "The spawned Boid's position is set to the calculated Vector3 pos.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 14,
+                  "end_line": 24,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "Spawner.Awake sets the spawned Boid's forward direction to a random vector from Random.insideUnitSphere.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 14,
+                  "end_line": 24,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "Spawner.Awake calls boid.SetColour(colour) to apply the colour defined in the Spawner component.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1",
+                "E2"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 14,
+                  "end_line": 24,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                },
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 5,
+                  "end_line": 44,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Spawner.Awake",
+              "title": "Spawner.Awake()",
+              "text": "\n    void Awake () {\n        for (int i = 0; i < spawnCount; i++) {\n            Vector3 pos = transform.position + Random.insideUnitSphere * spawnRadius;\n            Boid boid = Instantiate (prefab);\n            boid.transform.position = pos;\n            boid.transform.forward = Random.insideUnitSphere;\n\n            boid.SetColour (colour);\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 14,
+                  "end_line": 24,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::T:Spawner",
+              "title": "Spawner",
+              "text": "public class Spawner : MonoBehaviour\nBases: MonoBehaviour\npublic enum GizmoType\npublic Boid prefab;\npublic float spawnRadius = 10;\npublic int spawnCount = 10;\npublic Color colour;\npublic GizmoType showSpawnRegion;\nvoid Awake ()\nprivate void OnDrawGizmos ()\nvoid OnDrawGizmosSelected ()\nvoid DrawGizmos ()",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 5,
+                  "end_line": 44,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "Assembly-CSharp::M:Boid.ObstacleRays",
+              "title": "Boid.ObstacleRays()",
+              "text": "\n    Vector3 ObstacleRays () {\n        Vector3[] rayDirections = BoidHelper.directions;\n\n        for (int i = 0; i < rayDirections.Length; i++) {\n            Vector3 dir = cachedTransform.TransformDirection (rayDirections[i]);\n            Ray ray = new Ray (position, dir);\n            if (!Physics.SphereCast (ray, settings.boundsRadius, settings.collisionAvoidDst, settings.obstacleMask)) {\n                return dir;\n            }\n        }\n\n        return forward;\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 101,
+                  "end_line": 114,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::M:Spawner.DrawGizmos",
+              "title": "Spawner.DrawGizmos()",
+              "text": "\n    void DrawGizmos () {\n\n        Gizmos.color = new Color (colour.r, colour.g, colour.b, 0.3f);\n        Gizmos.DrawSphere (transform.position, spawnRadius);\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 37,
+                  "end_line": 42,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::T:Boid",
+              "title": "Boid",
+              "text": "public class Boid : MonoBehaviour\nBases: MonoBehaviour\nBoidSettings settings;\n[HideInInspector]\r\n    public Vector3 position;\n[HideInInspector]\r\n    public Vector3 forward;\nVector3 velocity;\nVector3 acceleration;\n[HideInInspector]\r\n    public Vector3 avgFlockHeading;\n[HideInInspector]\r\n    public Vector3 avgAvoidanceHeading;\n[HideInInspector]\r\n    public Vector3 centreOfFlockmates;\n[HideInInspector]\r\n    public int numPerceivedFlockmates;\nMaterial material;\nTransform cachedTransform;\nTransform target;\nvoid Awake ()\npublic void Initialize (BoidSettings settings, Transform target)\npublic void SetColour (Color col)\npublic void UpdateBoid ()\nbool IsHeadingForCollision ()\nVector3 ObstacleRays ()\nVector3 SteerTowards (Vector3 vector)",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 5,
+                  "end_line": 121,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "a6684dbd2b244c9bb9a83b2bd07ef697916cf8ec76745713aead114469d464ee",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "e980b0dc5fb159d8d098919c8e8d10bbbc3194ee403519d184b608def07df1d8",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "91ee703064c808990112a781d6d5c4730a533b0df6fad284462ecd301fcd8f2c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "809508ae9d73757e9f366bdba6611c2e3c9e6d20fd5311f2b90deb5a94c8413b",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "spawn-gizmos",
+      "view": {
+        "question": "When does Spawner draw the spawn-region gizmo, and how does it choose the gizmo colour, opacity and radius?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 2856,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 5,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Check Always versus SelectedOnly callbacks, DrawGizmos RGB with alpha 0.3 and sphere centered on transform.position with spawnRadius. Never has no drawing branch.",
+        "answer": {
+          "question": "When does Spawner draw the spawn-region gizmo, and how does it choose the gizmo colour, opacity and radius?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "Spawner draws the spawn-region gizmo when the showSpawnRegion field equals GizmoType.Always, as checked in OnDrawGizmos().",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 25,
+                  "end_line": 30,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "Spawner draws the spawn-region gizmo when the showSpawnRegion field equals GizmoType.SelectedOnly, as checked in OnDrawGizmosSelected().",
+              "kind": "fact",
+              "evidence_ids": [
+                "E4"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E4",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 31,
+                  "end_line": 36,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "The gizmo colour is chosen from the RGB components of the Spawner.colour field.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 37,
+                  "end_line": 42,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "The gizmo opacity is set to 0.3f in DrawGizmos().",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 37,
+                  "end_line": 42,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "The gizmo radius is chosen from the Spawner.spawnRadius field.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 37,
+                  "end_line": 42,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Spawner.DrawGizmos",
+              "title": "Spawner.DrawGizmos()",
+              "text": "\n    void DrawGizmos () {\n\n        Gizmos.color = new Color (colour.r, colour.g, colour.b, 0.3f);\n        Gizmos.DrawSphere (transform.position, spawnRadius);\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 37,
+                  "end_line": 42,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::M:Spawner.OnDrawGizmos",
+              "title": "Spawner.OnDrawGizmos()",
+              "text": "\n    private void OnDrawGizmos () {\n        if (showSpawnRegion == GizmoType.Always) {\n            DrawGizmos ();\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 25,
+                  "end_line": 30,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "Assembly-CSharp::T:Spawner",
+              "title": "Spawner",
+              "text": "public class Spawner : MonoBehaviour\nBases: MonoBehaviour\npublic enum GizmoType\npublic Boid prefab;\npublic float spawnRadius = 10;\npublic int spawnCount = 10;\npublic Color colour;\npublic GizmoType showSpawnRegion;\nvoid Awake ()\nprivate void OnDrawGizmos ()\nvoid OnDrawGizmosSelected ()\nvoid DrawGizmos ()",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 5,
+                  "end_line": 44,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::M:Spawner.OnDrawGizmosSelected",
+              "title": "Spawner.OnDrawGizmosSelected()",
+              "text": "\n    void OnDrawGizmosSelected () {\n        if (showSpawnRegion == GizmoType.SelectedOnly) {\n            DrawGizmos ();\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 31,
+                  "end_line": 36,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::F:Spawner.showSpawnRegion",
+              "title": "Spawner.showSpawnRegion",
+              "text": "    public GizmoType showSpawnRegion;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 13,
+                  "end_line": 13,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "74e59110c206f0bcd87ef246a224e8cb30931da2e448d7471d2163807b363796",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "e6cf0258b41b34e38e99fae44f733b8f269d31fdd859f63101f507deb70c8964",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "061349b206645a542b5156c9eca66690a9b3b223adccd9acf2dfb6cfce7c079c",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "f21819adf465f33c38cf5e762dfafd07dfada928090767ba9c6e7e95878d02ac",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "702606d9ef0d8d22c71f9a6b1541b38c36dafce2ea90daac078facd5070020b4",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "saved-settings",
+      "view": {
+        "question": "In Assets/Settings/Settings.asset, what are the saved minSpeed, maxSpeed and maxSteerForce values, and how do they differ from the BoidSettings C# initializers?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 4789,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 7,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Saved values are 5, 8, 8; C# initializers are 2, 5, 3. Cite both sources and distinguish serialized values from initializer defaults and live runtime values.",
+        "answer": {
+          "question": "In Assets/Settings/Settings.asset, what are the saved minSpeed, maxSpeed and maxSteerForce values, and how do they differ from the BoidSettings C# initializers?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "In Assets/Settings/Settings.asset, the saved minSpeed value is 5.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "bdc6abddf4df4033c4ebc1dcdd5dde74f2561ad1651162403a3f3db9b05c1040",
+                  "role": "reference_dependency"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b",
+                  "role": "reference_dependency"
+                }
+              ]
+            },
+            {
+              "text": "In Assets/Settings/Settings.asset, the saved maxSpeed value is 8.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "bdc6abddf4df4033c4ebc1dcdd5dde74f2561ad1651162403a3f3db9b05c1040",
+                  "role": "reference_dependency"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b",
+                  "role": "reference_dependency"
+                }
+              ]
+            },
+            {
+              "text": "In Assets/Settings/Settings.asset, the saved maxSteerForce value is 8.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "bdc6abddf4df4033c4ebc1dcdd5dde74f2561ad1651162403a3f3db9b05c1040",
+                  "role": "reference_dependency"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b",
+                  "role": "reference_dependency"
+                }
+              ]
+            },
+            {
+              "text": "In BoidSettings.cs, the code initializer for minSpeed is 2.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ]
+            },
+            {
+              "text": "In BoidSettings.cs, the code initializer for maxSpeed is 5.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ]
+            },
+            {
+              "text": "In BoidSettings.cs, the code initializer for maxSteerForce is 3.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E1",
+                "E4"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                },
+                {
+                  "evidence_id": "E4",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 12,
+                  "end_line": 12,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ]
+            },
+            {
+              "text": "The Settings.asset values differ from the BoidSettings C# initializers: minSpeed (5 vs 2), maxSpeed (8 vs 5), and maxSteerForce (8 vs 3).",
+              "kind": "interpretation",
+              "evidence_ids": [
+                "E1",
+                "E2",
+                "E3"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E1",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                },
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "bdc6abddf4df4033c4ebc1dcdd5dde74f2561ad1651162403a3f3db9b05c1040",
+                  "role": "reference_dependency"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b",
+                  "role": "reference_dependency"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::T:BoidSettings",
+              "title": "BoidSettings",
+              "text": "[CreateAssetMenu]\r\npublic class BoidSettings : ScriptableObject\nBases: ScriptableObject\npublic float minSpeed = 2;\npublic float maxSpeed = 5;\npublic float perceptionRadius = 2.5f;\npublic float avoidanceRadius = 1;\npublic float maxSteerForce = 3;\npublic float alignWeight = 1;\npublic float cohesionWeight = 1;\npublic float seperateWeight = 1;\npublic float targetWeight = 1;\n[Header (\"Collisions\")]\r\n    public LayerMask obstacleMask;\npublic float boundsRadius = .27f;\npublic float avoidCollisionWeight = 10;\npublic float collisionAvoidDst = 5;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 5,
+                  "end_line": 26,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "asset:Assets/Settings/Settings.asset#11400000",
+              "title": "Assets/Settings/Settings.asset / Settings #11400000",
+              "text": "--- !u!114 &11400000\nMonoBehaviour:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: {fileID: 0}\n  m_Enabled: 1\n  m_EditorHideFlags: 0\n  m_Script: {fileID: 11500000, guid: e6194ee95dedb4d71a8fe738abba0f47, type: 3}\n  m_Name: Settings\n  m_EditorClassIdentifier: \n  minSpeed: 5\n  maxSpeed: 8\n  perceptionRadius: 2.5\n  avoidanceRadius: 1\n  maxSteerForce: 8\n  alignWeight: 2\n  cohesionWeight: 1\n  seperateWeight: 2.5\n  targetWeight: 2\n  obstacleMask:\n    serializedVersion: 2\n    m_Bits: 1536\n  boundsRadius: 0.27\n  avoidCollisionWeight: 20\n  collisionAvoidDst: 5",
+              "sources": [
+                {
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "asset_source",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "asset:Assets/Settings/Settings.asset#11400000",
+              "title": "Assets/Settings/Settings.asset / Settings #11400000",
+              "text": "Object: MonoBehaviour; role: serialized_object; stripped: False\nm_ObjectHideFlags: 0\nm_Enabled: 1\nm_EditorHideFlags: 0\nm_Name: Settings\nm_EditorClassIdentifier: \nminSpeed: 5\nmaxSpeed: 8\nperceptionRadius: 2.5\navoidanceRadius: 1\nmaxSteerForce: 8\nalignWeight: 2\ncohesionWeight: 1\nseperateWeight: 2.5\ntargetWeight: 2\nobstacleMask.serializedVersion: 2\nobstacleMask.m_Bits: 1536\nboundsRadius: 0.27\navoidCollisionWeight: 20\ncollisionAvoidDst: 5\nm_CorrespondingSourceObject -> {'fileID': '0'} [null]\nm_PrefabInstance -> {'fileID': '0'} [null]\nm_PrefabAsset -> {'fileID': '0'} [null]\nm_GameObject -> {'fileID': '0'} [null]\nm_Script -> asset:Assets/Scripts/BoidSettings.cs [resolved_asset_only]\nm_Script -> Assembly-CSharp::T:BoidSettings [inferred_filename]",
+              "sources": [
+                {
+                  "path": "Assets/Settings/Settings.asset",
+                  "start_line": 3,
+                  "end_line": 29,
+                  "sha256": "6abd8515c044965dde6bf2539a4ea85c73e5e924fb6b755798297a4ed6052c52"
+                },
+                {
+                  "path": "Assets/Scripts/BoidSettings.cs.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "bdc6abddf4df4033c4ebc1dcdd5dde74f2561ad1651162403a3f3db9b05c1040",
+                  "role": "reference_dependency"
+                },
+                {
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b",
+                  "role": "reference_dependency"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "asset_object",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::F:BoidSettings.maxSteerForce",
+              "title": "BoidSettings.maxSteerForce",
+              "text": "    public float maxSteerForce = 3;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidSettings.cs",
+                  "start_line": 12,
+                  "end_line": 12,
+                  "sha256": "c3b27ba70b36772f3d7a497544697048652dd991af1a759125353f3555a2933b"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::M:Boid.SteerTowards(Vector3)",
+              "title": "Boid.SteerTowards(Vector3)",
+              "text": "\n    Vector3 SteerTowards (Vector3 vector) {\n        Vector3 v = vector.normalized * settings.maxSpeed - velocity;\n        return Vector3.ClampMagnitude (v, settings.maxSteerForce);\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Boid.cs",
+                  "start_line": 115,
+                  "end_line": 119,
+                  "sha256": "60fd23749945322f2d15cecfa55b04d654ef0b329922535b34b8cf64ba37f2d2"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "20a48f083ac17effd1fec40e0d69afb62942ba649f79135e30c6441473dd3e29",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "bd1a7ced798c1b5d28e694fe90346b24beb9f4ffd81192f20beabdc8370da3cd",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "6b542d64108ede5107ea8fc0390fcfe811ad47046ae502d5324a9cd18fde0f33",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 4,
+          "claim_sha256": "2dad90da384f8f2b73240c52d37f31ed9b2464cc44003f7dced17f77fb928b5b",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 5,
+          "claim_sha256": "09c41518e33f13a671bb93b19b241b5af99eeb4ea426e8a5357e73e4b5cf2287",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 6,
+          "claim_sha256": "405f34ff007960f5e3c4347be6ee113135023f447aede2f3b55e4b2c8cde92a0",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 7,
+          "claim_sha256": "734432f3a23fa3a2cb55b027bfb95b0f43ebeeadacbdfea6c65477ec5328f153",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "saved-spawner",
+      "view": {
+        "question": "What spawnCount and spawnRadius are saved in Assets/Prefabs/Spawner.prefab, and how do they compare with the Spawner C# defaults?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 6173,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 3,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "Prefab saves radius 4 and count 80; C# initializes both to 10. The prefab values are not proof of the live scene population or instance overrides.",
+        "answer": {
+          "question": "What spawnCount and spawnRadius are saved in Assets/Prefabs/Spawner.prefab, and how do they compare with the Spawner C# defaults?",
+          "status": "answered",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [
+            {
+              "text": "The Spawner C# class defines default values of spawnRadius = 10 and spawnCount = 10.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E4"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E4",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 5,
+                  "end_line": 44,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ]
+            },
+            {
+              "text": "The serialized Spawner component in Assets/Prefabs/Spawner.prefab has a base value of spawnRadius = 4 and spawnCount = 80.",
+              "kind": "fact",
+              "evidence_ids": [
+                "E2",
+                "E3"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E2",
+                  "path": "Assets/Prefabs/Spawner.prefab",
+                  "start_line": 34,
+                  "end_line": 50,
+                  "sha256": "8d083b5b13f445dad4f17fa2e8d366189ecd195f6d71bcb8036a4561796f6572"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Prefabs/Spawner.prefab",
+                  "start_line": 34,
+                  "end_line": 50,
+                  "sha256": "8d083b5b13f445dad4f17fa2e8d366189ecd195f6d71bcb8036a4561796f6572"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/Spawner.cs.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "ebb56d2031ee40d968702b156119086cdaea0e8505858001883dda2b4246c7fd",
+                  "role": "reference_dependency"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1",
+                  "role": "reference_dependency"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Prefabs/Boid.prefab.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c583d6e812eb60429615204052197ff1b2eaed592a46dac84095970776435706",
+                  "role": "reference_dependency"
+                },
+                {
+                  "evidence_id": "E3",
+                  "path": "Assets/Prefabs/Boid.prefab",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "730000921d0a6b0c71ba1bc61284be89afce2c69cc2824b115ee510a4afc6b66",
+                  "role": "reference_dependency"
+                }
+              ]
+            },
+            {
+              "text": "The scene Obstacles.unity overrides the spawnRadius property on the Spawner prefab to an effective value of 2.37.",
+              "kind": "interpretation",
+              "evidence_ids": [
+                "E5"
+              ],
+              "citations": [
+                {
+                  "evidence_id": "E5",
+                  "path": "Assets/Scenes/Obstacles.unity",
+                  "start_line": 1941,
+                  "end_line": 1946,
+                  "sha256": "34f390fe1438d08e9209583f35a7a159899168cc622e02723c7e9de9dc13e9dd"
+                },
+                {
+                  "evidence_id": "E5",
+                  "path": "Assets/Prefabs/Spawner.prefab",
+                  "start_line": 47,
+                  "end_line": 47,
+                  "sha256": "8d083b5b13f445dad4f17fa2e8d366189ecd195f6d71bcb8036a4561796f6572"
+                },
+                {
+                  "evidence_id": "E5",
+                  "path": "Assets/Prefabs/Spawner.prefab.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "76346b5909f08d767a4b4ddffa1378f38b4638c77654a4a3da19dc0f048be3ec",
+                  "role": "reference_dependency"
+                }
+              ]
+            }
+          ],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::M:Spawner.Awake",
+              "title": "Spawner.Awake()",
+              "text": "\n    void Awake () {\n        for (int i = 0; i < spawnCount; i++) {\n            Vector3 pos = transform.position + Random.insideUnitSphere * spawnRadius;\n            Boid boid = Instantiate (prefab);\n            boid.transform.position = pos;\n            boid.transform.forward = Random.insideUnitSphere;\n\n            boid.SetColour (colour);\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 14,
+                  "end_line": 24,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "asset:Assets/Prefabs/Spawner.prefab#3559297176007848096",
+              "title": "Assets/Prefabs/Spawner.prefab / MonoBehaviour #3559297176007848096",
+              "text": "--- !u!114 &3559297176007848096\nMonoBehaviour:\n  m_ObjectHideFlags: 0\n  m_CorrespondingSourceObject: {fileID: 0}\n  m_PrefabInstance: {fileID: 0}\n  m_PrefabAsset: {fileID: 0}\n  m_GameObject: {fileID: 3559297176007848099}\n  m_Enabled: 1\n  m_EditorHideFlags: 0\n  m_Script: {fileID: 11500000, guid: 351b357d8278b4b8da32f976c630e4af, type: 3}\n  m_Name: \n  m_EditorClassIdentifier: \n  prefab: {fileID: 2931604500597588581, guid: a68eabc10bd1b4dcaa03efa0e2052ddb, type: 3}\n  spawnRadius: 4\n  spawnCount: 80\n  colour: {r: 1, g: 1, b: 1, a: 1}\n  showSpawnRegion: 2",
+              "sources": [
+                {
+                  "path": "Assets/Prefabs/Spawner.prefab",
+                  "start_line": 34,
+                  "end_line": 50,
+                  "sha256": "8d083b5b13f445dad4f17fa2e8d366189ecd195f6d71bcb8036a4561796f6572"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "asset_source",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "asset:Assets/Prefabs/Spawner.prefab#3559297176007848096",
+              "title": "Assets/Prefabs/Spawner.prefab / MonoBehaviour #3559297176007848096",
+              "text": "Object: MonoBehaviour; role: component; stripped: False\nm_ObjectHideFlags: 0\nm_Enabled: 1\nm_EditorHideFlags: 0\nm_Name: \nm_EditorClassIdentifier: \nspawnRadius: 4\nspawnCount: 80\ncolour.r: 1\ncolour.g: 1\ncolour.b: 1\ncolour.a: 1\nshowSpawnRegion: 2\nm_CorrespondingSourceObject -> {'fileID': '0'} [null]\nm_PrefabInstance -> {'fileID': '0'} [null]\nm_PrefabAsset -> {'fileID': '0'} [null]\nm_GameObject -> asset:Assets/Prefabs/Spawner.prefab#3559297176007848099 [resolved_object]\nm_Script -> asset:Assets/Scripts/Spawner.cs [resolved_asset_only]\nm_Script -> Assembly-CSharp::T:Spawner [inferred_filename]\nprefab -> asset:Assets/Prefabs/Boid.prefab#2931604500597588581 [resolved_object]",
+              "sources": [
+                {
+                  "path": "Assets/Prefabs/Spawner.prefab",
+                  "start_line": 34,
+                  "end_line": 50,
+                  "sha256": "8d083b5b13f445dad4f17fa2e8d366189ecd195f6d71bcb8036a4561796f6572"
+                },
+                {
+                  "path": "Assets/Scripts/Spawner.cs.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "ebb56d2031ee40d968702b156119086cdaea0e8505858001883dda2b4246c7fd",
+                  "role": "reference_dependency"
+                },
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1",
+                  "role": "reference_dependency"
+                },
+                {
+                  "path": "Assets/Prefabs/Boid.prefab.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "c583d6e812eb60429615204052197ff1b2eaed592a46dac84095970776435706",
+                  "role": "reference_dependency"
+                },
+                {
+                  "path": "Assets/Prefabs/Boid.prefab",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "730000921d0a6b0c71ba1bc61284be89afce2c69cc2824b115ee510a4afc6b66",
+                  "role": "reference_dependency"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "asset_object",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::T:Spawner",
+              "title": "Spawner",
+              "text": "public class Spawner : MonoBehaviour\nBases: MonoBehaviour\npublic enum GizmoType\npublic Boid prefab;\npublic float spawnRadius = 10;\npublic int spawnCount = 10;\npublic Color colour;\npublic GizmoType showSpawnRegion;\nvoid Awake ()\nprivate void OnDrawGizmos ()\nvoid OnDrawGizmosSelected ()\nvoid DrawGizmos ()",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/Spawner.cs",
+                  "start_line": 5,
+                  "end_line": 44,
+                  "sha256": "c64b2dc16eafb249faca146cab5302ac2c1e5cca1e27fc98eb86e3c3dcfbeea1"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "asset:Assets/Scenes/Obstacles.unity#3559297175903618778:override:19",
+              "title": "Prefab override spawnRadius",
+              "text": "{\n  \"instance\": \"asset:Assets/Scenes/Obstacles.unity#3559297175903618778\",\n  \"index\": 19,\n  \"record\": {\n    \"target\": {\n      \"fileID\": \"3559297176007848096\",\n      \"guid\": \"4cde6ba5a87074e8a973d577574f33c1\",\n      \"type\": \"3\"\n    },\n    \"propertyPath\": \"spawnRadius\",\n    \"value\": \"2.37\",\n    \"objectReference\": {\n      \"fileID\": \"0\"\n    }\n  },\n  \"origin\": \"prefab_override\",\n  \"resolution\": \"resolved_scalar_override\",\n  \"location\": {\n    \"path\": \"Assets/Scenes/Obstacles.unity\",\n    \"start_line\": 1941,\n    \"end_line\": 1946\n  },\n  \"target\": \"asset:Assets/Prefabs/Spawner.prefab#3559297176007848096\",\n  \"property\": \"spawnRadius\",\n  \"base_value\": \"4\",\n  \"effective_value\": \"2.37\",\n  \"base_location\": {\n    \"path\": \"Assets/Prefabs/Spawner.prefab\",\n    \"start_line\": 47,\n    \"end_line\": 47\n  }\n}",
+              "sources": [
+                {
+                  "path": "Assets/Scenes/Obstacles.unity",
+                  "start_line": 1941,
+                  "end_line": 1946,
+                  "sha256": "34f390fe1438d08e9209583f35a7a159899168cc622e02723c7e9de9dc13e9dd"
+                },
+                {
+                  "path": "Assets/Prefabs/Spawner.prefab",
+                  "start_line": 47,
+                  "end_line": 47,
+                  "sha256": "8d083b5b13f445dad4f17fa2e8d366189ecd195f6d71bcb8036a4561796f6572"
+                },
+                {
+                  "path": "Assets/Prefabs/Spawner.prefab.meta",
+                  "start_line": null,
+                  "end_line": null,
+                  "sha256": "76346b5909f08d767a4b4ddffa1378f38b4638c77654a4a3da19dc0f048be3ec",
+                  "role": "reference_dependency"
+                }
+              ],
+              "evidence_type": "derived_interpretation",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "prefab_override",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [],
+          "evidence_gaps": [],
+          "runtime_required": false
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": [
+        {
+          "index": 1,
+          "claim_sha256": "7eae200ec15954e2e8415ac9bc18933c403d25f73e87f2fbca98b26b7e870e11",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 2,
+          "claim_sha256": "d698c2d8353ce4ab593559ce87e1dcb075082413634c5a5c5a0317a3b0d7b544",
+          "support": null,
+          "rationale": ""
+        },
+        {
+          "index": 3,
+          "claim_sha256": "48bb6498db37b0be7f21ea3260be5751f569b4ad4fa565f1302da47c03efcde1",
+          "support": null,
+          "rationale": ""
+        }
+      ]
+    },
+    {
+      "id": "runtime-population",
+      "view": {
+        "question": "How many boids are alive right now in the running scene, and what frame rate is it achieving?",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 5,
+          "evidence_chars": 4988,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 0,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 1,
+          "expected_entity_coverage": null,
+          "expected_status": null,
+          "expected_runtime_flag": true
+        },
+        "error": null,
+        "review_guidance": "Static code and saved prefab counts cannot establish live population or measured frame rate. Require runtime observation and avoid substituting initializers or serialized counts.",
+        "answer": {
+          "question": "How many boids are alive right now in the running scene, and what frame rate is it achieving?",
+          "status": "insufficient_evidence",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [],
+          "evidence": {
+            "E1": {
+              "entity_id": "Assembly-CSharp::F:BoidManager.boids",
+              "title": "BoidManager.boids",
+              "text": "    Boid[] boids;",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 11,
+                  "end_line": 11,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E2": {
+              "entity_id": "Assembly-CSharp::M:BoidManager.Update",
+              "title": "BoidManager.Update()",
+              "text": "\n    void Update () {\n        if (boids != null) {\n\n            int numBoids = boids.Length;\n            var boidData = new BoidData[numBoids];\n\n            for (int i = 0; i < boids.Length; i++) {\n                boidData[i].position = boids[i].position;\n                boidData[i].direction = boids[i].forward;\n            }\n\n            var boidBuffer = new ComputeBuffer (numBoids, BoidData.Size);\n            boidBuffer.SetData (boidData);\n\n            compute.SetBuffer (0, \"boids\", boidBuffer);\n            compute.SetInt (\"numBoids\", boids.Length);\n            compute.SetFloat (\"viewRadius\", settings.perceptionRadius);\n            compute.SetFloat (\"avoidRadius\", settings.avoidanceRadius);\n\n            int threadGroups = Mathf.CeilToInt (numBoids / (float) threadGroupSize);\n            compute.Dispatch (0, threadGroups, 1, 1);\n\n            boidBuffer.GetData (boidData);\n\n            for (int i = 0; i < boids.Length; i++) {\n                boids[i].avgFlockHeading = boidData[i].flockHeading;\n                boids[i].centreOfFlockmates = boidData[i].flockCentre;\n                boids[i].avgAvoidanceHeading = boidData[i].avoidanceHeading;\n                boids[i].numPerceivedFlockmates = boidData[i].numFlockmates;\n\n                boids[i].UpdateBoid ();\n            }\n\n            boidBuffer.Release ();\n        }\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 20,
+                  "end_line": 56,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E3": {
+              "entity_id": "source:Assets/Scripts/BoidCompute.compute",
+              "title": "Assets/Scripts/BoidCompute.compute",
+              "text": "#pragma kernel CSMain\nstatic const int threadGroupSize = 1024;\n\nstruct Boid {\n    float3 position;\n    float3 direction;\n\n    float3 flockHeading;\n    float3 flockCentre;\n    float3 separationHeading;\n    int numFlockmates;\n};\n\nRWStructuredBuffer<Boid> boids;\nint numBoids;\nfloat viewRadius;\nfloat avoidRadius;\n\n[numthreads(threadGroupSize,1,1)]\nvoid CSMain (uint3 id : SV_DispatchThreadID)\n{\n    for (int indexB = 0; indexB < numBoids; indexB ++) {\n        if (id.x != indexB) {\n            Boid boidB = boids[indexB];\n            float3 offset = boidB.position - boids[id.x].position;\n            float sqrDst = offset.x * offset.x + offset.y * offset.y + offset.z * offset.z;\n\n            if (sqrDst < viewRadius * viewRadius) {\n                boids[id.x].numFlockmates += 1;\n                boids[id.x].flockHeading += boidB.direction;\n                boids[id.x].flockCentre += boidB.position;\n\n                if (sqrDst < avoidRadius * avoidRadius) {\n                    boids[id.x].separationHeading -= offset / sqrDst;\n                }\n            }\n        }\n    }\n}",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidCompute.compute",
+                  "start_line": 1,
+                  "end_line": 39,
+                  "sha256": "3c52cbc69c4b6bb5354130070c53684cf1caf5ba58b389b11223b65e8f4e9de5"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "shader_source",
+                "runtime_observed": false
+              }
+            },
+            "E4": {
+              "entity_id": "Assembly-CSharp::M:BoidManager.Start",
+              "title": "BoidManager.Start()",
+              "text": "\n    void Start () {\n        boids = FindObjectsOfType<Boid> ();\n        foreach (Boid b in boids) {\n            b.Initialize (settings, null);\n        }\n\n    }",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 12,
+                  "end_line": 19,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "original_source",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_member",
+                "runtime_observed": false
+              }
+            },
+            "E5": {
+              "entity_id": "Assembly-CSharp::T:BoidManager",
+              "title": "BoidManager",
+              "text": "public class BoidManager : MonoBehaviour\nBases: MonoBehaviour\nconst int threadGroupSize = 1024;\npublic BoidSettings settings;\npublic ComputeShader compute;\nBoid[] boids;\nvoid Start ()\nvoid Update ()\npublic struct BoidData",
+              "sources": [
+                {
+                  "path": "Assets/Scripts/BoidManager.cs",
+                  "start_line": 5,
+                  "end_line": 73,
+                  "sha256": "78291caec7d68be73954df77d987442adab5523c7f558328728982515ce9af58"
+                }
+              ],
+              "evidence_type": "parsed_fact",
+              "provenance": {
+                "scope": "repository_snapshot",
+                "record_kind": "code_type",
+                "runtime_observed": false
+              }
+            }
+          },
+          "missing_evidence": [
+            "The number of boids alive in the running scene cannot be determined from the provided evidence. The code initializes `boids` by finding objects at runtime (E4), but no current count or list of active boids is supplied.",
+            "The frame rate achieved by the running scene cannot be determined from the provided evidence. No performance metrics, FPS counters, or timing data are present in the repository snapshot."
+          ],
+          "evidence_gaps": [
+            {
+              "kind": "runtime_observation",
+              "description": "The number of boids alive in the running scene cannot be determined from the provided evidence. The code initializes `boids` by finding objects at runtime (E4), but no current count or list of active boids is supplied."
+            },
+            {
+              "kind": "runtime_observation",
+              "description": "The frame rate achieved by the running scene cannot be determined from the provided evidence. No performance metrics, FPS counters, or timing data are present in the repository snapshot."
+            }
+          ],
+          "runtime_required": true
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": []
+    },
+    {
+      "id": "missing-member",
+      "view": {
+        "question": "Boid.TeleportToMoon",
+        "checks": {
+          "valid_output_and_citations": true,
+          "retrieved_expected_entity_coverage": null,
+          "evidence_records": 0,
+          "evidence_chars": 2,
+          "evidence_tokens": null,
+          "truncated_evidence_records": 0,
+          "omitted_evidence_records": 0,
+          "retained_claims": 0,
+          "source_excerpts": 0,
+          "removed_claims": 0,
+          "model_calls": 0,
+          "expected_entity_coverage": null,
+          "expected_status": true,
+          "expected_runtime_flag": null
+        },
+        "error": null,
+        "review_guidance": "There is no exact indexed member with this name. Appropriate missing-evidence response must not invent implementation or use loosely matching methods.",
+        "answer": {
+          "question": "Boid.TeleportToMoon",
+          "status": "insufficient_evidence",
+          "snapshot": {
+            "discovery": "2026-11-22T20:41:19.993204+00:00",
+            "code": "c83045aa45e4a3e73898fca11b6ad1939b923f924a55ce0249f87cb2aa3ac55d",
+            "assets": "333a7e7b64aebcc77946e8049050725d3e44df8870a66482a78cd304a78bece5"
+          },
+          "claims": [],
+          "evidence": {},
+          "missing_evidence": [
+            "No verifiable evidence was retrieved."
+          ],
+          "evidence_gaps": [
+            {
+              "kind": "repository_evidence",
+              "description": "No verifiable evidence was retrieved."
+            }
+          ],
+          "runtime_required": null
+        }
+      },
+      "case_judgments": {
+        "correctness": null,
+        "completeness": null,
+        "abstention": null
+      },
+      "rationale": "",
+      "claims": []
+    }
+  ]
+}

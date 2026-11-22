@@ -44,6 +44,10 @@ class OllamaProvider:
                        'max_output_tokens': max_output_tokens, 'thinking': thinking,
                        'context_tokens': 16384, 'seed': seed}
 
+    @property
+    def evaluation_config(self):
+        return {**self.config, 'endpoint': self.endpoint, 'timeout': self.timeout}
+
     def generate(self, messages, schema):
         body = {'model': self.config['model'], 'messages': messages, 'format': schema,
                 'stream': False, 'options': {'temperature': 0, 'num_predict': self.config['max_output_tokens'],

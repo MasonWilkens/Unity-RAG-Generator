@@ -32,6 +32,17 @@ even formatting changes invalidate its binding. Regenerate older reports for thi
 workflow. The legacy `answer-review-template` and `review-answers` commands remain
 available for older case-level reviews.
 
+Provider settings are compared separately from changing request telemetry.
+`provider` retains the initial provider record, `provider_after` retains the final
+record, and `provider_settings` captures stable policy, including timeout and the
+OpenAI budget. Normal token/spending updates no longer invalidate a run.
+
+For a sample frozen before generation, see the
+[fresh Boids candidate](benchmarks/answer_sample_v1/README.md). Its preparation/run
+script locks sources, questions, index files, implementation and a local model
+digest, then creates this same unfilled review workflow. Its source guidance is
+agent-authored; actual independent source and answer reviews remain pending.
+
 ## Complete the review
 
 Give an independent reviewer the report, packet and pinned project sources. The

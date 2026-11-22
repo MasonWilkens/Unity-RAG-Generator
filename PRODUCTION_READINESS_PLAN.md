@@ -76,6 +76,13 @@ the production gate. The checked-in example is scripted and unreviewed. Next,
 freeze a fresh answer sample and arrange actual independent source and answer
 reviews; no independent review or model-quality target is claimed by this batch.
 
+The [fresh Boids answer sample](benchmarks/answer_sample_v1/README.md) adds twelve
+pre-frozen questions on a new repository, exact local model identity and run
+preconditions, with all outcomes retained for independent review. It is a small,
+agent-authored candidate, not the production corpus. Provider telemetry is now
+separate from stable settings so ordinary OpenAI usage updates do not invalidate
+evaluation. Actual source/answer judgments are still unassigned.
+
 Use at least three unfamiliar Unity repositories and approximately 60
 source-reviewed questions. Hold an entire repository out of development tuning.
 Freeze sources, labels, essential passages, question categories, answer budgets
